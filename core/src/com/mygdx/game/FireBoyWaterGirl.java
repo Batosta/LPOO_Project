@@ -27,8 +27,28 @@ public class FireBoyWaterGirl extends Game {
 	 */
 	private void beginGame(){
 
-		GameUnique game = new GameUnique(0, 0, 0, 0);
+		GameModel game = new GameModel(0, 0, 0, 0);
 
 		//setScreen(new GameView(this, model));
+	}
+
+	/**
+	 * Returns assetManager for all textures/sounds.
+	 *
+	 * @return assetManager.
+	 */
+	public AssetManager getAssetManager(){
+
+		return assetManager;
+	}
+
+	/**
+	 * Returns the batch used for drawing.
+	 *
+	 * @return batch.
+	 */
+	public SpriteBatch getSpriteBatch(){
+
+		return batch;
 	}
 }

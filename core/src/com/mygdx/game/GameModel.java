@@ -3,7 +3,7 @@ package com.mygdx.game;
 /**
  * The unique and full game.
  */
-public class GameUnique {
+public class GameModel {
 
     /**
      * The fire character controlled by one of the users.
@@ -15,7 +15,7 @@ public class GameUnique {
      */
     private WaterGirl watergirl;
 
-    public GameUnique(float fireX, float fireY, float waterX, float waterY){
+    public GameModel(float fireX, float fireY, float waterX, float waterY){
 
         fireboy = new FireBoy(fireX, fireY);
         watergirl = new WaterGirl(waterX, waterY);
