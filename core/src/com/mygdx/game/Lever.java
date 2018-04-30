@@ -7,6 +7,12 @@ public class Lever extends Body {
      */
     private boolean on;
 
+    /**
+     * constructur of the lever.
+     *
+     * @param x the x Coordinate
+     * @param y the y Coordinate
+     */
     public Lever(float x, float y){
 
         super(x, y);

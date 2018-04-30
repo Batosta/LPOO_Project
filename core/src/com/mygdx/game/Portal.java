@@ -1,14 +1,14 @@
 package com.mygdx.game;
 
-public class FireBoy extends Character {
+public class Portal extends Body {
 
     /**
-     * constructur of the FireBoy
+     * constructur of the portal
      *
      * @param x the x Coordinate
      * @param y the y Coordinate
      */
-    public FireBoy(float x, float y){
+    public Portal(float x, float y) {
         super(x, y);
     }
 }

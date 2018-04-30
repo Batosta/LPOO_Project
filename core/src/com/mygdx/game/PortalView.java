@@ -3,26 +3,27 @@ package com.mygdx.game;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
-public class LeverView extends BodyView {
+public class PortalView extends BodyView {
 
     /**
-     * constructor of the lever view
+     * constructor of the portal view
      * @param game the game.
      */
-    public LeverView(FireBoyWaterGirl game) {
+    public PortalView(FireBoyWaterGirl game) {
         super(game);
     }
 
     /**
-     * Abstract method creates the sprites for all the levers.
+     * Abstract method creates the sprites for all the portals.
      *
      * @param game the game.
      *
-     * @return the sprite representing lever view.
+     * @return the sprite representing platform view.
      */
     @Override
     public Sprite createSprite(FireBoyWaterGirl game) {
         Texture texture = game.getAssetManager().get("coise.png");  //TODO imagem certa. implementar para diferentes imagens
         return new Sprite(texture, texture.getWidth(), texture.getHeight());
     }
+
 }

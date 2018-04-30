@@ -3,22 +3,23 @@ package com.mygdx.game;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
-public class LeverView extends BodyView {
+public class PlatformView extends BodyView {
+
 
     /**
-     * constructor of the lever view
+     * constructor of the platform view
      * @param game the game.
      */
-    public LeverView(FireBoyWaterGirl game) {
+    public PlatformView(FireBoyWaterGirl game) {
         super(game);
     }
 
     /**
-     * Abstract method creates the sprites for all the levers.
+     * Abstract method creates the sprites for all the platforms.
      *
      * @param game the game.
      *
-     * @return the sprite representing lever view.
+     * @return the sprite representing platform view.
      */
     @Override
     public Sprite createSprite(FireBoyWaterGirl game) {
