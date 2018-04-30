@@ -1,5 +1,8 @@
 package com.mygdx.game;
 
+/**
+ * A model representing the WaterGirl.
+ */
 public class WaterGirl extends Character {
 
     /**

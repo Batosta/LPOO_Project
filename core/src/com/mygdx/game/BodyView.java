@@ -2,6 +2,9 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
+/**
+ * A view representing any body.
+ */
 public abstract class BodyView {
 
     Sprite sprite;

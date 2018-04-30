@@ -1,7 +1,7 @@
 package com.mygdx.game;
 
 /**
- * The unique and full game.
+ * The model representing the game.
  */
 public class GameModel {
 

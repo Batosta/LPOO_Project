@@ -1,5 +1,8 @@
 package com.mygdx.game;
 
+/**
+ * A model representing any body.
+ */
 public class Body {
 
     /**

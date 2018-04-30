@@ -3,6 +3,9 @@ package com.mygdx.game;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
+/**
+ * A view representing the WaterGirl.
+ */
 public class WaterGirlView extends BodyView {
 
     /**

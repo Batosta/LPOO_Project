@@ -1,5 +1,8 @@
 package com.mygdx.game;
 
+/**
+ * A model representing the FireBoy.
+ */
 public class FireBoy extends Character {
 
     /**

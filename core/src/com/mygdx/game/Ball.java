@@ -1,5 +1,8 @@
 package com.mygdx.game;
 
+/**
+ * A model representing a ball.
+ */
 public class Ball extends Body{
 
     /**

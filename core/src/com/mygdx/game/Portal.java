@@ -1,5 +1,8 @@
 package com.mygdx.game;
 
+/**
+ * A model representing a portal.
+ */
 public class Portal extends Body {
 
     /**

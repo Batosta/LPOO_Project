@@ -1,5 +1,8 @@
 package com.mygdx.game;
 
+/**
+ * A model representing a lever.
+ */
 public class Lever extends Body {
 
     /**

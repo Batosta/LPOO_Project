@@ -1,5 +1,8 @@
 package com.mygdx.game;
 
+/**
+ * A model representing a Character.
+ */
 public class Character extends Body {
 
     /**

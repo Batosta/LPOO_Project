@@ -1,5 +1,8 @@
 package com.mygdx.game;
 
+/**
+ * A model representing a platform.
+ */
 public class Platform extends Body{
 
     /**

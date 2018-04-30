@@ -1,5 +1,8 @@
 package com.mygdx.game;
 
+/**
+ * A model representing a lake.
+ */
 public class Lake extends Body{
 
     /**

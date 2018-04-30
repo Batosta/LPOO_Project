@@ -1,5 +1,8 @@
 package com.mygdx.game;
 
+/**
+ * A model representing a cube.
+ */
 public class Cube extends Body {
 
     /**
