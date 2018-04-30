@@ -3,29 +3,29 @@ package com.mygdx.game;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
-public class WaterGirlView extends BodyView {
+public class BallView extends BodyView{
 
     /**
-     * Constructor of the WaterGirl view
+     * Constructor of the ball view
      *
      * @param game the game.
      */
-    public WaterGirlView(FireBoyWaterGirl game) {
+    public BallView(FireBoyWaterGirl game) {
 
         super(game);
     }
 
     /**
-     * Abstract method creates the sprites for the WaterGirl.
+     * Abstract method creates the sprites for all the balls.
      *
      * @param game the game.
      *
-     * @return the sprite representing the WaterGirl.
+     * @return the sprite representing the Ball.
      * */
     @Override
     public Sprite createSprite(FireBoyWaterGirl game) {
 
-        Texture texture = game.getAssetManager().get("standWater.png");
+        Texture texture = game.getAssetManager().get("ball.png");
         return new Sprite(texture, texture.getWidth(), texture.getHeight());
     }
 }

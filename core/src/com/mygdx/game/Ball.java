@@ -1,14 +1,14 @@
 package com.mygdx.game;
 
-public class WaterGirl extends Character {
+public class Ball extends Body{
 
     /**
-     * Constructor of the WaterGirl
+     * Constructor of the Ball
      *
      * @param x the x Coordinate
      * @param y the y Coordinate
      */
-    public WaterGirl(float x, float y){
+    public Ball(float x, float y){
 
         super(x, y);
     }

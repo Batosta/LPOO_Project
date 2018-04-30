@@ -5,6 +5,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class FireBoyWaterGirl extends Game {
+
 	private SpriteBatch batch;
 	private AssetManager assetManager;
 	
