@@ -6,7 +6,15 @@ public abstract class BodyView {
 
     Sprite sprite;
 
-    public BodyView(FireBoyWaterGirl game) {
+     /**
+      * Abstract method creates the sprites for all the objects.
+      *
+      * @param game the game.
+      *
+      * @return the sprite representing this view.
+      */
+
+    public BodyView(FireBoyWaterGirl game){
         sprite = createSprite(game);
     }
 
