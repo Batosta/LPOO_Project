@@ -42,7 +42,9 @@ public class GameScreen extends ScreenAdapter{
      */
     GameModel model;
 
-
+    /**
+     * The camera used to show the viewport.
+     */
     private OrthographicCamera camera;
 
     /**
@@ -64,6 +66,11 @@ public class GameScreen extends ScreenAdapter{
      * A diamond view used to draw diamonds.
      */
     private DiamondView diamondView;
+
+    /**
+     * A door view used to draw doors.
+     */
+    private DoorView doorView;
 
     /**
      * The Fire Boy view used to the Fire Boy.
@@ -148,9 +155,14 @@ public class GameScreen extends ScreenAdapter{
      */
     public void loadImages(){
 
-        this.fbwg.getAssetManager().load("coise.png", Texture.class);
         this.fbwg.getAssetManager().load("standFire.png", Texture.class);
+        this.fbwg.getAssetManager().load("rightFire.png", Texture.class);
+        this.fbwg.getAssetManager().load("leftFire.png", Texture.class);
+        this.fbwg.getAssetManager().load("jumpFire.png", Texture.class);
         this.fbwg.getAssetManager().load("standWater.png", Texture.class);
+        this.fbwg.getAssetManager().load("rightWater.png", Texture.class);
+        this.fbwg.getAssetManager().load("fireWater.png", Texture.class);
+        this.fbwg.getAssetManager().load("jumpWater.png", Texture.class);
         this.fbwg.getAssetManager().load("ball.png", Texture.class);
         this.fbwg.getAssetManager().load("button.png", Texture.class);
         this.fbwg.getAssetManager().load("cube.png", Texture.class);
@@ -160,6 +172,7 @@ public class GameScreen extends ScreenAdapter{
         this.fbwg.getAssetManager().load("lever.png", Texture.class);
         this.fbwg.getAssetManager().load("wall.png", Texture.class);
         this.fbwg.getAssetManager().load("platform.png", Texture.class);
+        this.fbwg.getAssetManager().load("door.png", Texture.class);
 
         this.fbwg.getAssetManager().finishLoading();
     }
