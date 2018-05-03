@@ -1,6 +1,7 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -155,6 +156,12 @@ public class GameScreen extends ScreenAdapter{
      */
     public void loadImages(){
 
+        this.fbwg.getAssetManager().load("rightFire.png", Texture.class);
+        this.fbwg.getAssetManager().load("rightWater.png", Texture.class);
+        this.fbwg.getAssetManager().load("leftFire.png", Texture.class);
+        this.fbwg.getAssetManager().load("leftWater.png", Texture.class);
+        this.fbwg.getAssetManager().load("jumpFire.png", Texture.class);
+        this.fbwg.getAssetManager().load("jumpWater.png", Texture.class);
         this.fbwg.getAssetManager().load("standFire.png", Texture.class);
         this.fbwg.getAssetManager().load("rightFire.png", Texture.class);
         this.fbwg.getAssetManager().load("leftFire.png", Texture.class);
@@ -172,7 +179,6 @@ public class GameScreen extends ScreenAdapter{
         this.fbwg.getAssetManager().load("lever.png", Texture.class);
         this.fbwg.getAssetManager().load("wall.png", Texture.class);
         this.fbwg.getAssetManager().load("platform.png", Texture.class);
-        this.fbwg.getAssetManager().load("door.png", Texture.class);
 
         this.fbwg.getAssetManager().finishLoading();
     }
@@ -184,6 +190,9 @@ public class GameScreen extends ScreenAdapter{
      */
     @Override
     public void render(float delta) {
+
+        handleInputs(delta);
+
         //camera updates se quiseremos usar camara.
 
         //clear screen
@@ -209,4 +218,9 @@ public class GameScreen extends ScreenAdapter{
 
         //missing the rest of the object draws
     }
+
+        private void handleInputs(float delta) {
+        model.getFireBoy().handleInputs(delta);
+    }
+
 }
