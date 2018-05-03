@@ -4,28 +4,30 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
 /**
- * A view representing a portal.
+ * A view representing a door.
  */
-public class PortalView extends BodyView {
+public class DoorView extends BodyView {
 
     /**
-     * constructor of the portal view
+     * Constructor of the door view.
+     *
      * @param game the game.
      */
-    public PortalView(FireBoyWaterGirl game) {
+    public DoorView(FireBoyWaterGirl game) {
+
         super(game);
     }
 
     /**
-     * Abstract method creates the sprites for all the portals.
+     * Abstract method creates the sprites for all the doors.
      *
      * @param game the game.
      *
-     * @return the sprite representing platform view.
+     * @return the sprite representing door view.
      */
     @Override
     public Sprite createSprite(FireBoyWaterGirl game) {
-        Texture texture = game.getAssetManager().get("portal.png");  //TODO imagem certa. implementar para diferentes imagens
+        Texture texture = game.getAssetManager().get("door.png");  //TODO imagem certa. implementar para diferentes imagens
         return new Sprite(texture, texture.getWidth(), texture.getHeight());
     }
 }
