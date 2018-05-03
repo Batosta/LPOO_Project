@@ -27,7 +27,7 @@ public class DiamondView extends BodyView{
     @Override
     public Sprite createSprite(FireBoyWaterGirl game) {
 
-        Texture texture = game.getAssetManager().get("cube.png");
+        Texture texture = game.getAssetManager().get("diamond.png");
         return new Sprite(texture, texture.getWidth(), texture.getHeight());
     }
 }
