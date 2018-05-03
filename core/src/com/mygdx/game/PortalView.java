@@ -25,7 +25,7 @@ public class PortalView extends BodyView {
      */
     @Override
     public Sprite createSprite(FireBoyWaterGirl game) {
-        Texture texture = game.getAssetManager().get("coise.png");  //TODO imagem certa. implementar para diferentes imagens
+        Texture texture = game.getAssetManager().get("portal.png");  //TODO imagem certa. implementar para diferentes imagens
         return new Sprite(texture, texture.getWidth(), texture.getHeight());
     }
 

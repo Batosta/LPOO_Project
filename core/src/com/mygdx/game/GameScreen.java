@@ -3,12 +3,34 @@ package com.mygdx.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 
 /**
  * Game screen. Draws all the views of all objects of the game.
  */
 public class GameScreen extends ScreenAdapter{
+
+    /**
+     * Map width (meters).
+     */
+    public static int MAP_WIDTH = 100;
+
+    /**
+     * Map height (meters).
+     */
+    public static int MAP_HEIGHT = 100;
+
+    /**
+     * Viewport width (meters).
+     * Height is set using the screen ratio.
+     */
+    public static float VIEWPORT_WIDTH = 50;
+
+    /**
+     * Each pixel shows "PIXEL_TO_METER" meters.
+     */
+    public static float PIXEL_TO_METER = 0.05f;
 
     /**
      * The game.
@@ -19,6 +41,65 @@ public class GameScreen extends ScreenAdapter{
      * The game data.
      */
     GameModel model;
+
+
+    private OrthographicCamera camera;
+
+    /**
+     * A ball view used to draw balls.
+     */
+    private BallView ballView;
+
+    /**
+     * A button view used to draw buttons.
+     */
+    private ButtonView buttonView;
+
+    /**
+     * A cube view used to draw cubes.
+     */
+    private CubeView cubeView;
+
+    /**
+     * A diamond view used to draw diamonds.
+     */
+    private DiamondView diamondView;
+
+    /**
+     * The Fire Boy view used to the Fire Boy.
+     */
+    private FireBoyView fireBoyView;
+
+    /**
+     * A lake view used to draw lakes.
+     */
+    private LakeView lakeView;
+
+    /**
+     * A lever view used to draw levers.
+     */
+    private LeverView leverView;
+
+    /**
+     * A platform view used to draw platforms.
+     */
+    private PlatformView platformView;
+
+    /**
+     * A portal view used to draw portals.
+     */
+    private PortalView portalView;
+
+    /**
+     * A wall view used to draw walls.
+     */
+    private WallView wallView;
+
+    /**
+     * The Water Girl view used to draw the Water Girl.
+     */
+    private WaterGirlView waterGirlView;
+
 
     /**
      * Creates the screen.
@@ -31,14 +112,55 @@ public class GameScreen extends ScreenAdapter{
         this.model = model;
 
         loadImages();
+
+        ballView = new BallView(fbwg);
+        buttonView = new ButtonView(fbwg);
+        cubeView = new CubeView(fbwg);
+        diamondView = new DiamondView(fbwg);
+        fireBoyView = new FireBoyView(fbwg);
+        lakeView = new LakeView(fbwg);
+        leverView = new LeverView(fbwg);
+        platformView = new PlatformView(fbwg);
+        portalView = new PortalView(fbwg);
+        wallView = new WallView(fbwg);
+        waterGirlView = new WaterGirlView(fbwg);
+
+        camera = createCamera();
     }
 
     /**
-     * loads the images used in this screen
+     * Creates the camera that will display the viewport.
+     *
+     * @return the camera.
+     */
+    private OrthographicCamera createCamera(){
+
+        OrthographicCamera camera = new OrthographicCamera(VIEWPORT_WIDTH / PIXEL_TO_METER, VIEWPORT_WIDTH / PIXEL_TO_METER * ((float) Gdx.graphics.getHeight() / (float)Gdx.graphics.getWidth()));
+
+        camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
+        camera.update();
+
+        return camera;
+    }
+
+    /**
+     * Loads the images used in this screen.
      */
     public void loadImages(){
 
-        this.fbwg.getAssetManager().load("coise.jpg0", Texture.class);
+        this.fbwg.getAssetManager().load("coise.png", Texture.class);
+        this.fbwg.getAssetManager().load("standFire.png", Texture.class);
+        this.fbwg.getAssetManager().load("standWater.png", Texture.class);
+        this.fbwg.getAssetManager().load("ball.png", Texture.class);
+        this.fbwg.getAssetManager().load("button.png", Texture.class);
+        this.fbwg.getAssetManager().load("cube.png", Texture.class);
+        this.fbwg.getAssetManager().load("diamond.png", Texture.class);
+        this.fbwg.getAssetManager().load("lake.png", Texture.class);
+        this.fbwg.getAssetManager().load("portal.png", Texture.class);
+        this.fbwg.getAssetManager().load("lever.png", Texture.class);
+        this.fbwg.getAssetManager().load("wall.png", Texture.class);
+        this.fbwg.getAssetManager().load("platform.png", Texture.class);
+
         this.fbwg.getAssetManager().finishLoading();
     }
 
@@ -52,12 +174,12 @@ public class GameScreen extends ScreenAdapter{
         //camera updates se quiseremos usar camara.
 
         //clear screen
-        Gdx.gl.glClearColor(103 / 255f, 69 / 255f, 117 / 255f, 1);
+        Gdx.gl.glClearColor(0 / 255f, 0 / 255f, 0 / 255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);      // valores certos?
 
         fbwg.getSpriteBatch().begin();
         //drawBackground
-        //drawObjects
+        drawObjects();
         fbwg.getSpriteBatch().end();
     }
 
@@ -66,5 +188,12 @@ public class GameScreen extends ScreenAdapter{
      */
     private void drawObjects(){
 
+        fireBoyView.update(model.getFireBoy());
+        fireBoyView.draw(fbwg.getSpriteBatch());
+
+        waterGirlView.update(model.getWaterGirl());
+        waterGirlView.draw(fbwg.getSpriteBatch());
+
+        //missing the rest of the object draws
     }
 }

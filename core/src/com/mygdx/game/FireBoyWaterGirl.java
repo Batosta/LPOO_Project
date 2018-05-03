@@ -13,7 +13,7 @@ public class FireBoyWaterGirl extends Game {
 	private AssetManager assetManager;
 	
 	@Override
-	public void create () {
+	public void create() {
 		batch = new SpriteBatch();
 		assetManager = new AssetManager();
 
@@ -31,9 +31,9 @@ public class FireBoyWaterGirl extends Game {
 	 */
 	private void beginGame(){
 
-		GameModel game = new GameModel(0, 0, 0, 0);
+		GameModel game = new GameModel(15, 15, 5, 10);
 
-		//setScreen(new GameView(this, model));
+		setScreen(new GameScreen(this, game));
 	}
 
 	/**

@@ -25,7 +25,7 @@ public class LeverView extends BodyView {
      */
     @Override
     public Sprite createSprite(FireBoyWaterGirl game) {
-        Texture texture = game.getAssetManager().get("coise.png");  //TODO imagem certa. implementar para diferentes imagens
+        Texture texture = game.getAssetManager().get("lever.png");  //TODO imagem certa. implementar para diferentes imagens
         return new Sprite(texture, texture.getWidth(), texture.getHeight());
     }
 }

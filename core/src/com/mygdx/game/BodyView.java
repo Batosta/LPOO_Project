@@ -3,6 +3,8 @@ package com.mygdx.game;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import static com.mygdx.game.GameScreen.PIXEL_TO_METER;
+
 /**
  * A view representing any body.
  */
@@ -38,4 +40,14 @@ public abstract class BodyView {
      * @return the sprite representing this view.
      */
     public abstract Sprite createSprite(FireBoyWaterGirl game);
+
+    /**
+     * View updated using a determined body.
+     *
+     * @param body Body which view will use to be updated.
+     */
+    public void update(Body body){
+
+        sprite.setCenter(body.getX() / PIXEL_TO_METER, body.getY() / PIXEL_TO_METER);
+    }
 }

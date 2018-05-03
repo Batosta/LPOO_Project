@@ -10,9 +10,11 @@ public class FireBoyView extends BodyView {
 
     /**
      * constructor of the fireboy view
+     *
      * @param game the game.
      */
     public FireBoyView(FireBoyWaterGirl game) {
+
         super(game);
     }
 
@@ -23,10 +25,11 @@ public class FireBoyView extends BodyView {
      *
      * @return the sprite representing Fire Boy view.
      */
+    @Override
     public Sprite createSprite(FireBoyWaterGirl game){
-        Texture texture = game.getAssetManager().get("fireboy.png");
+
+        Texture texture = game.getAssetManager().get("standFire.png");
         return new Sprite(texture, texture.getWidth(), texture.getHeight());
     }
-
 }
 
