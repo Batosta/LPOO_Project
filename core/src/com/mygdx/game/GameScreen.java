@@ -156,6 +156,7 @@ public class GameScreen extends ScreenAdapter{
      */
     public void loadImages(){
 
+        this.fbwg.getAssetManager().load("fireboy.png", Texture.class);
         this.fbwg.getAssetManager().load("rightFire.png", Texture.class);
         this.fbwg.getAssetManager().load("rightWater.png", Texture.class);
         this.fbwg.getAssetManager().load("leftFire.png", Texture.class);
@@ -192,12 +193,13 @@ public class GameScreen extends ScreenAdapter{
     public void render(float delta) {
 
         handleInputs(delta);
+        updateObjects(delta);
 
         //camera updates se quiseremos usar camara.
 
         //clear screen
         Gdx.gl.glClearColor(0 / 255f, 0 / 255f, 0 / 255f, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);      // valores certos?
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
         fbwg.getSpriteBatch().begin();
         //drawBackground
@@ -217,6 +219,10 @@ public class GameScreen extends ScreenAdapter{
         waterGirlView.draw(fbwg.getSpriteBatch());
 
         //missing the rest of the object draws
+    }
+
+    private void updateObjects(float delta) {
+        model.getFireBoy().update(delta);
     }
 
         private void handleInputs(float delta) {

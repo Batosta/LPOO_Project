@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+
 /**
  * The game main class.
  */
@@ -11,6 +12,11 @@ public class FireBoyWaterGirl extends Game {
 
 	private SpriteBatch batch;
 	private AssetManager assetManager;
+
+    public enum Moving {
+        SUNDAY, MONDAY, TUESDAY, WEDNESDAY,
+        THURSDAY, FRIDAY, SATURDAY
+    }
 	
 	@Override
 	public void create() {

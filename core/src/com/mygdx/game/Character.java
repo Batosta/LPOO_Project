@@ -5,6 +5,12 @@ package com.mygdx.game;
  */
 public class Character extends Body {
 
+    public enum Moving {
+        RIGHT,LEFT,STAND,JUMP,JUMPLEFT
+    }
+
+    Moving moving;
+
     /**
      * constructur of the character
      *
@@ -14,5 +20,9 @@ public class Character extends Body {
     public Character(float x, float y){
 
         super(x,y);
+    }
+
+    public Moving getMoving(){
+        return this.moving;
     }
 }
