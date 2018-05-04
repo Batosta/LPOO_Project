@@ -168,7 +168,7 @@ public class GameScreen extends ScreenAdapter{
         this.fbwg.getAssetManager().load("jumpFire.png", Texture.class);
         this.fbwg.getAssetManager().load("standWater.png", Texture.class);
         this.fbwg.getAssetManager().load("rightWater.png", Texture.class);
-        this.fbwg.getAssetManager().load("fireWater.png", Texture.class);
+        this.fbwg.getAssetManager().load("leftWater.png", Texture.class);
         this.fbwg.getAssetManager().load("jumpWater.png", Texture.class);
         this.fbwg.getAssetManager().load("ball.png", Texture.class);
         this.fbwg.getAssetManager().load("button.png", Texture.class);
