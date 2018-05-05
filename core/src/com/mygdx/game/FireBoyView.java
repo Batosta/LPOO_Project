@@ -82,7 +82,6 @@ public class FireBoyView extends BodyView {
           *
           * @param model the model used to update this view
           */
-
         @Override
     public void update(Body model) {
             super.update(model);

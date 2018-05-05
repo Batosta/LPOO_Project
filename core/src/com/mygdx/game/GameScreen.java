@@ -242,7 +242,7 @@ public class GameScreen extends ScreenAdapter{
         model.getFireBoy().update(delta);
     }
 
-        private void handleInputs(float delta) {
+    private void handleInputs(float delta) {
         model.getFireBoy().handleInputs(delta);
     }
 
