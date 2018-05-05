@@ -6,6 +6,9 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
 /**
  * Game screen. Draws all the views of all objects of the game.
@@ -108,6 +111,11 @@ public class GameScreen extends ScreenAdapter{
      */
     private WaterGirlView waterGirlView;
 
+    TmxMapLoader maploader;
+
+    TiledMap tiledmap;
+
+    OrthogonalTiledMapRenderer renderer;
 
     /**
      * Creates the screen.
@@ -121,17 +129,11 @@ public class GameScreen extends ScreenAdapter{
 
         loadImages();
 
-        ballView = new BallView(fbwg);
-        buttonView = new ButtonView(fbwg);
-        cubeView = new CubeView(fbwg);
-        diamondView = new DiamondView(fbwg);
-        fireBoyView = new FireBoyView(fbwg);
-        lakeView = new LakeView(fbwg);
-        leverView = new LeverView(fbwg);
-        platformView = new PlatformView(fbwg);
-        portalView = new PortalView(fbwg);
-        wallView = new WallView(fbwg);
-        waterGirlView = new WaterGirlView(fbwg);
+        maploader = new TmxMapLoader();
+        //tiledmap = maploader.load("level1.tmx");
+        renderer = new OrthogonalTiledMapRenderer(tiledmap);
+
+        createViews();
 
         camera = createCamera();
     }
@@ -149,6 +151,20 @@ public class GameScreen extends ScreenAdapter{
         camera.update();
 
         return camera;
+    }
+
+    public void createViews(){
+        ballView = new BallView(fbwg);
+        buttonView = new ButtonView(fbwg);
+        cubeView = new CubeView(fbwg);
+        diamondView = new DiamondView(fbwg);
+        fireBoyView = new FireBoyView(fbwg);
+        lakeView = new LakeView(fbwg);
+        leverView = new LeverView(fbwg);
+        platformView = new PlatformView(fbwg);
+        portalView = new PortalView(fbwg);
+        wallView = new WallView(fbwg);
+        waterGirlView = new WaterGirlView(fbwg);
     }
 
     /**
@@ -196,6 +212,7 @@ public class GameScreen extends ScreenAdapter{
         updateObjects(delta);
 
         //camera updates se quiseremos usar camara.
+        camera.position.set(model.getFireBoy().getX(),model.getFireBoy().getY(),0);
 
         //clear screen
         Gdx.gl.glClearColor(0 / 255f, 0 / 255f, 0 / 255f, 1);
