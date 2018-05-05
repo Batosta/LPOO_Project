@@ -6,10 +6,12 @@ package com.mygdx.game;
 public class Character extends Body {
 
     public enum Moving {
-        RIGHT,LEFT,STAND,JUMP,JUMPLEFT
+        RIGHT,LEFT,STAND
     }
 
     Moving moving;
+
+    private boolean grounded;
 
     /**
      * constructur of the character
@@ -20,9 +22,18 @@ public class Character extends Body {
     public Character(float x, float y){
 
         super(x,y);
+        grounded=true;
     }
 
     public Moving getMoving(){
         return this.moving;
+    }
+
+    public boolean getGrounded(){
+        return this.grounded;
+    }
+
+    public void setGrounded(boolean grounded){
+        this.grounded = grounded;
     }
 }

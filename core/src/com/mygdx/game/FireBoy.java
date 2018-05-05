@@ -40,14 +40,19 @@ public class FireBoy extends Character {
 
     public void moveRight(float delta) {
         this.setXY(this.getX() + delta * MOVE_SPEED, this.getY());
+        moving=RIGHT;
     }
 
     public void moveLeft(float delta) {
         this.setXY(this.getX() - delta * MOVE_SPEED, this.getY());
+        moving=LEFT;
     }
 
     public void jump(float delta){
-
+        if(getGrounded()) {
+            jumpstate = ASCENDING;
+            setGrounded(false);
+        }
         if(jumpstate == ASCENDING) {       //está a subir
             this.setXY(this.getX(), this.getY() + delta * JUMP_SPEED);
             JUMP_SPEED-=0.5;
@@ -59,9 +64,9 @@ public class FireBoy extends Character {
             if(jumpstate == DESCENDING){       //essta a descer
                 this.setXY(this.getX(), this.getY() - delta * JUMP_SPEED);
                 JUMP_SPEED+=0.5;
-                if(JUMP_SPEED > 10f){
+                if(JUMP_SPEED > 10f){  //TODO      A condiçao de paragem vai ter a ver com as colisões e outras cenas. nao é esta
+                    setGrounded(true);
                     jumpstate=STOP;
-                    moving=STAND;
                 }
             }
 
@@ -69,23 +74,24 @@ public class FireBoy extends Character {
 
 
     public void handleInputs(float delta) {
-        if(moving!=JUMP)
         moving=STAND;
-                if(Gdx.input.isKeyPressed(Input.Keys.LEFT))
-                {
-                    if(moving==JUMP)
-                        moving=JUMPLEFT;
-                    else moving=LEFT;
-    }
-                if(Gdx.input.isKeyPressed(Input.Keys.RIGHT))
-    {
-        moving=RIGHT;
-    }
-                if(Gdx.input.isKeyJustPressed(Input.Keys.UP) && moving!=JUMP) {
-                    if(jumpstate != DESCENDING)
-                    jumpstate=ASCENDING;
-                    moving=JUMP;
-                }
+
+        if(Gdx.input.isKeyPressed(Input.Keys.LEFT))
+        {
+            moveLeft(delta);
+           // if(!getGrounded())
+             //   moving=JUMPLEFT;
+        }else  if(Gdx.input.isKeyPressed(Input.Keys.RIGHT))
+        {
+            moveRight(delta);
+        }
+
+        if((Gdx.input.isKeyJustPressed(Input.Keys.UP) && getGrounded()) || !getGrounded()) {
+            jump(delta);
+           // if(jumpstate != DESCENDING)
+             //   jumpstate=ASCENDING;
+            //setGrounded(false);
+        }
     }
 
     public Moving getMoving(){
@@ -93,13 +99,13 @@ public class FireBoy extends Character {
     }
 
     public void update(float delta) {
-        if(moving == LEFT || moving == JUMPLEFT)
-            moveLeft(delta);
-        if(moving == RIGHT)
-            moveRight(delta);
-        if(moving == JUMP || moving == JUMPLEFT){
-            jump(delta);
-        }
+        //if(moving == LEFT || moving == JUMPLEFT)
+          //  moveLeft(delta);
+        //if(moving == RIGHT)
+          //  moveRight(delta);
+        //if(!getGrounded() || moving == JUMPLEFT){
+         //   jump(delta);
+       // }
     }
 
     //   public void move(){
