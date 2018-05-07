@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import static com.mygdx.game.Character.Moving.*;
 import static com.mygdx.game.FireBoy.Jump.ASCENDING;
+import static com.mygdx.game.FireBoy.Jump.DESCENDING;
 
 /**
  * A view representing the FireBoy
@@ -16,32 +17,42 @@ public class FireBoyView extends BodyView {
     /**
      * The texture used when the Fire Boy is moving right
      */
-     private TextureRegion movrighttex;
+     private TextureRegion rightTex;
 
     /**
      * The texture used when the Fire Boy is moving left
      */
-    private TextureRegion movlefttex;
+    private TextureRegion leftTex;
 
     /**
-     * The texture used when the Fire Boy is stand
+     * The texture used when the Fire Boy is standing
      */
-    private TextureRegion standtex;
+    private TextureRegion standTex;
 
     /**
      * The texture used when the Fire Boy is jumping
      */
-    private TextureRegion jumptex;
+    private TextureRegion upTex;
 
     /**
      * The texture used when the Fire Boy is jumping right
      */
-    private TextureRegion jumprighttex;
+    private TextureRegion upRightTex;
 
     /**
      * The texture used when the Fire Boy is jumping left
      */
-    private TextureRegion jumplefttex;
+    private TextureRegion upLeftTex;
+
+    /**
+     * The texture used when the Fire Boy going down and right
+     */
+    private TextureRegion downRightTex;
+
+    /**
+     * The texture used when the Fire Boy going down and right
+     */
+    private TextureRegion downLeftTex;
 
     /**
      * constructor of the fireboy view
@@ -64,50 +75,69 @@ public class FireBoyView extends BodyView {
     @Override
     public Sprite createSprite(FireBoyWaterGirl game){
         createRegions(game);
-        return new Sprite(standtex);
+        return new Sprite(standTex);
     }
 
     public void createRegions(FireBoyWaterGirl game){
-        Texture texture = game.getAssetManager().get("fireboy.png");
-        standtex = new TextureRegion(texture, 0, 0, texture.getWidth()/6, texture.getHeight());
-        movlefttex = new TextureRegion(texture, texture.getWidth()/6, 0, texture.getWidth()/6, texture.getHeight());
-        movrighttex = new TextureRegion(texture, texture.getWidth()/3, 0, texture.getWidth()/6, texture.getHeight());
-        jumptex = new TextureRegion(texture, texture.getWidth()*3/6,0,texture.getWidth()/6, texture.getHeight());
-        jumprighttex = new TextureRegion(texture, texture.getWidth()*4/6,0,texture.getWidth()/6, texture.getHeight());
-        jumplefttex = new TextureRegion(texture, texture.getWidth()*5/6,0,texture.getWidth()/6, texture.getHeight());
+        Texture texture = game.getAssetManager().get("fire.png");
+        standTex = new TextureRegion(texture, 0, 0, texture.getWidth()/4, texture.getHeight()/2);
+        leftTex = new TextureRegion(texture, texture.getWidth()/4, 0, texture.getWidth()/4, texture.getHeight()/2);
+        rightTex = new TextureRegion(texture, texture.getWidth()/2, 0, texture.getWidth()/4, texture.getHeight()/2);
+        upTex = new TextureRegion(texture, texture.getWidth()*3/4,0,texture.getWidth()/4, texture.getHeight()/2);
+        upRightTex = new TextureRegion(texture, 0,texture.getHeight()/2,texture.getWidth()/4, texture.getHeight()/2);
+        upLeftTex = new TextureRegion(texture, texture.getWidth()/4,texture.getHeight()/2,texture.getWidth()/4, texture.getHeight()/2);
+        downRightTex = new TextureRegion(texture, texture.getWidth()/2,texture.getHeight()/2,texture.getWidth()/4, texture.getHeight()/2);
+        downLeftTex = new TextureRegion(texture, texture.getWidth()*3/4,texture.getHeight()/2,texture.getWidth()/4, texture.getHeight()/2);
     }
 
-        /**
-          * Updates this Fire Boy model.
-          *
-          * @param model the model used to update this view
-          */
-        @Override
-    public void update(Body model) {
+    /**
+      * Updates this Fire Boy model.
+      *
+      * @param model the model used to update this view
+      */
+    @Override
+    public void update(Body model) {        //dar re-check do código. Pode ser melhorado i guess
             super.update(model);
 
             if(((Character)model).getMoving() == STAND){        // ESTA SEMPRE A POR STAND. depois mete por cima as outras posiçoes
 
-                sprite.setRegion(standtex);
+                sprite.setRegion(standTex);
             }
             if(((Character)model).getMoving() == RIGHT)
             {
 
                 System.out.println("right tex");
-                sprite.setRegion(movrighttex);
+                sprite.setRegion(rightTex);
             }
             if(((Character)model).getMoving() == LEFT){
-                sprite.setRegion(movlefttex);
+
+                sprite.setRegion(leftTex);
             }
             if(((FireBoy)model).jumpstate == ASCENDING){
+
                 System.out.println("ascending tex");
-                sprite.setRegion(jumptex);
+                sprite.setRegion(upTex);
             }
             if((((FireBoy)model).jumpstate == ASCENDING) && (((Character)model).getMoving() == RIGHT)){
-                sprite.setRegion(jumprighttex);
+
+                sprite.setRegion(upRightTex);
             }
             if((((FireBoy)model).jumpstate == ASCENDING) && (((Character)model).getMoving() == LEFT)){
-                sprite.setRegion(jumplefttex);
+
+                sprite.setRegion(upLeftTex);
+            }
+            if(((FireBoy)model).jumpstate == DESCENDING){                       //nao há esta text ainda
+
+                System.out.println("descending tex");
+                sprite.setRegion(standTex);
+            }
+            if((((FireBoy)model).jumpstate == DESCENDING) && (((Character)model).getMoving() == LEFT)){
+
+                sprite.setRegion(downLeftTex);
+            }
+            if((((FireBoy)model).jumpstate == DESCENDING) && (((Character)model).getMoving() == RIGHT)){
+
+                sprite.setRegion(downRightTex);
             }
 
 

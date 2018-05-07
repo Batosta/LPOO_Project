@@ -28,7 +28,7 @@ public class WaterGirlView extends BodyView {
     @Override
     public Sprite createSprite(FireBoyWaterGirl game) {
 
-        Texture texture = game.getAssetManager().get("standWater.png");
+        Texture texture = game.getAssetManager().get("water.png");
         return new Sprite(texture, texture.getWidth(), texture.getHeight());
     }
 }

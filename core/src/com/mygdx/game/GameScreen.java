@@ -172,30 +172,35 @@ public class GameScreen extends ScreenAdapter{
      */
     public void loadImages(){
 
-        this.fbwg.getAssetManager().load("fireboy.png", Texture.class);
-        this.fbwg.getAssetManager().load("rightFire.png", Texture.class);
-        this.fbwg.getAssetManager().load("rightWater.png", Texture.class);
-        this.fbwg.getAssetManager().load("leftFire.png", Texture.class);
-        this.fbwg.getAssetManager().load("leftWater.png", Texture.class);
-        this.fbwg.getAssetManager().load("jumpFire.png", Texture.class);
-        this.fbwg.getAssetManager().load("jumpWater.png", Texture.class);
-        this.fbwg.getAssetManager().load("standFire.png", Texture.class);
-        this.fbwg.getAssetManager().load("rightFire.png", Texture.class);
-        this.fbwg.getAssetManager().load("leftFire.png", Texture.class);
-        this.fbwg.getAssetManager().load("jumpFire.png", Texture.class);
-        this.fbwg.getAssetManager().load("standWater.png", Texture.class);
-        this.fbwg.getAssetManager().load("rightWater.png", Texture.class);
-        this.fbwg.getAssetManager().load("leftWater.png", Texture.class);
-        this.fbwg.getAssetManager().load("jumpWater.png", Texture.class);
+        this.fbwg.getAssetManager().load("fire.png", Texture.class);
+        this.fbwg.getAssetManager().load("water.png", Texture.class);
+        //this.fbwg.getAssetManager().load("rightFire.png", Texture.class);
+        //this.fbwg.getAssetManager().load("rightWater.png", Texture.class);
+        //this.fbwg.getAssetManager().load("leftFire.png", Texture.class);
+        //this.fbwg.getAssetManager().load("leftWater.png", Texture.class);
+        //this.fbwg.getAssetManager().load("jumpFire.png", Texture.class);
+        //this.fbwg.getAssetManager().load("jumpWater.png", Texture.class);
+        //this.fbwg.getAssetManager().load("standFire.png", Texture.class);
+        //this.fbwg.getAssetManager().load("rightFire.png", Texture.class);
+        //this.fbwg.getAssetManager().load("leftFire.png", Texture.class);
+        //this.fbwg.getAssetManager().load("jumpFire.png", Texture.class);
+        //this.fbwg.getAssetManager().load("standWater.png", Texture.class);
+        //this.fbwg.getAssetManager().load("rightWater.png", Texture.class);
+        //this.fbwg.getAssetManager().load("leftWater.png", Texture.class);
+        //this.fbwg.getAssetManager().load("jumpWater.png", Texture.class);
         this.fbwg.getAssetManager().load("ball.png", Texture.class);
-        this.fbwg.getAssetManager().load("button.png", Texture.class);
+        this.fbwg.getAssetManager().load("purpleButton.png", Texture.class);
         this.fbwg.getAssetManager().load("cube.png", Texture.class);
-        this.fbwg.getAssetManager().load("diamond.png", Texture.class);
-        this.fbwg.getAssetManager().load("lake.png", Texture.class);
+        this.fbwg.getAssetManager().load("blueDiamond.png", Texture.class);
+        this.fbwg.getAssetManager().load("redDiamond.png", Texture.class);
+        this.fbwg.getAssetManager().load("greenLake.png", Texture.class);
+        this.fbwg.getAssetManager().load("blueLake.png", Texture.class);
+        this.fbwg.getAssetManager().load("redLake.png", Texture.class);
         this.fbwg.getAssetManager().load("portal.png", Texture.class);
         this.fbwg.getAssetManager().load("lever.png", Texture.class);
         this.fbwg.getAssetManager().load("wall.png", Texture.class);
-        this.fbwg.getAssetManager().load("platform.png", Texture.class);
+        this.fbwg.getAssetManager().load("purplePlatform.png", Texture.class);
+
 
         this.fbwg.getAssetManager().finishLoading();
     }

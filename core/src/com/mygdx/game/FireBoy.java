@@ -61,7 +61,7 @@ public class FireBoy extends Character {
                 JUMP_SPEED=0;
             }
         } else
-            if(jumpstate == DESCENDING){       //essta a descer
+            if(jumpstate == DESCENDING){       //está a descer
                 this.setXY(this.getX(), this.getY() - delta * JUMP_SPEED);
                 JUMP_SPEED+=0.5;
                 if(JUMP_SPEED > 10f){  //TODO      A condiçao de paragem vai ter a ver com as colisões e outras cenas. nao é esta

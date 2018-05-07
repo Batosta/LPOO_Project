@@ -27,7 +27,7 @@ public class DoorView extends BodyView {
      */
     @Override
     public Sprite createSprite(FireBoyWaterGirl game) {
-        Texture texture = game.getAssetManager().get("door.png");  //TODO imagem certa. implementar para diferentes imagens
+        Texture texture = game.getAssetManager().get("redDoor.png");  //TODO imagem certa. implementar para diferentes imagens
         return new Sprite(texture, texture.getWidth(), texture.getHeight());
     }
 }

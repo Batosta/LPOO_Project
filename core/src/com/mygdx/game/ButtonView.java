@@ -28,7 +28,7 @@ public class ButtonView extends BodyView{
     @Override
     public Sprite createSprite(FireBoyWaterGirl game) {
 
-        Texture texture = game.getAssetManager().get("button.png");
+        Texture texture = game.getAssetManager().get("purpleButton.png");
         return new Sprite(texture, texture.getWidth(), texture.getHeight());
     }
 }
