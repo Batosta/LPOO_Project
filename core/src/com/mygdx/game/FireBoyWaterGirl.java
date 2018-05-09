@@ -12,11 +12,6 @@ public class FireBoyWaterGirl extends Game {
 
 	private SpriteBatch batch;
 	private AssetManager assetManager;
-
-    public enum Moving {
-        SUNDAY, MONDAY, TUESDAY, WEDNESDAY,
-        THURSDAY, FRIDAY, SATURDAY
-    }
 	
 	@Override
 	public void create() {

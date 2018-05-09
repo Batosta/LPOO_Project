@@ -154,17 +154,18 @@ public class GameScreen extends ScreenAdapter{
     }
 
     public void createViews(){
-        ballView = new BallView(fbwg);
-        buttonView = new ButtonView(fbwg);
-        cubeView = new CubeView(fbwg);
-        diamondView = new DiamondView(fbwg);
-        fireBoyView = new FireBoyView(fbwg);
-        lakeView = new LakeView(fbwg);
-        leverView = new LeverView(fbwg);
-        platformView = new PlatformView(fbwg);
-        portalView = new PortalView(fbwg);
-        wallView = new WallView(fbwg);
-        waterGirlView = new WaterGirlView(fbwg);
+
+        ballView = new BallView(fbwg, "ball.png");
+        buttonView = new ButtonView(fbwg, "purpleButton.png");
+        cubeView = new CubeView(fbwg, "cube.png");
+        diamondView = new DiamondView(fbwg, "redDiamond.png");
+        fireBoyView = new FireBoyView(fbwg, "fire.png");
+        lakeView = new LakeView(fbwg, "redLake.png");
+        leverView = new LeverView(fbwg, "lever.png");
+        platformView = new PlatformView(fbwg, "purplePlatform.png");
+        portalView = new PortalView(fbwg, "portal.png");
+        wallView = new WallView(fbwg, "wall.png");
+        waterGirlView = new WaterGirlView(fbwg, "water.png");
     }
 
     /**
@@ -174,20 +175,6 @@ public class GameScreen extends ScreenAdapter{
 
         this.fbwg.getAssetManager().load("fire.png", Texture.class);
         this.fbwg.getAssetManager().load("water.png", Texture.class);
-        //this.fbwg.getAssetManager().load("rightFire.png", Texture.class);
-        //this.fbwg.getAssetManager().load("rightWater.png", Texture.class);
-        //this.fbwg.getAssetManager().load("leftFire.png", Texture.class);
-        //this.fbwg.getAssetManager().load("leftWater.png", Texture.class);
-        //this.fbwg.getAssetManager().load("jumpFire.png", Texture.class);
-        //this.fbwg.getAssetManager().load("jumpWater.png", Texture.class);
-        //this.fbwg.getAssetManager().load("standFire.png", Texture.class);
-        //this.fbwg.getAssetManager().load("rightFire.png", Texture.class);
-        //this.fbwg.getAssetManager().load("leftFire.png", Texture.class);
-        //this.fbwg.getAssetManager().load("jumpFire.png", Texture.class);
-        //this.fbwg.getAssetManager().load("standWater.png", Texture.class);
-        //this.fbwg.getAssetManager().load("rightWater.png", Texture.class);
-        //this.fbwg.getAssetManager().load("leftWater.png", Texture.class);
-        //this.fbwg.getAssetManager().load("jumpWater.png", Texture.class);
         this.fbwg.getAssetManager().load("ball.png", Texture.class);
         this.fbwg.getAssetManager().load("purpleButton.png", Texture.class);
         this.fbwg.getAssetManager().load("cube.png", Texture.class);
@@ -244,11 +231,15 @@ public class GameScreen extends ScreenAdapter{
     }
 
     private void updateObjects(float delta) {
+
         model.getFireBoy().update(delta);
+        model.getWaterGirl().handleInputs(delta);
     }
 
     private void handleInputs(float delta) {
+
         model.getFireBoy().handleInputs(delta);
+        model.getWaterGirl().handleInputs(delta);
     }
 
 }

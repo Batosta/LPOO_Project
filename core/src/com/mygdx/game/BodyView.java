@@ -15,11 +15,12 @@ public abstract class BodyView {
     /**
      * Creates a view belonging to a body.
      *
-     * @param game the game
+     * @param game the game;
+     * @param text the texture with all possible positions for a certain object.
      */
-    public BodyView(FireBoyWaterGirl game){
+    public BodyView(FireBoyWaterGirl game, String text){
 
-        sprite = createSprite(game);
+        sprite = createSprite(game, text);
     }
 
     /**
@@ -36,10 +37,11 @@ public abstract class BodyView {
      * Abstract method creates the sprites for all the objects.
      *
      * @param game the game.
+     * @param text the texture with all possible positions for a certain object.
      *
      * @return the sprite representing this view.
      */
-    public abstract Sprite createSprite(FireBoyWaterGirl game);
+    public abstract Sprite createSprite(FireBoyWaterGirl game, String text);
 
     /**
      * View updated using a determined body.
