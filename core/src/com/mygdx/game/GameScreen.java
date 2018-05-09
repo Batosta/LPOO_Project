@@ -3,6 +3,7 @@ package com.mygdx.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -50,6 +51,11 @@ public class GameScreen extends ScreenAdapter{
      * The camera used to show the viewport.
      */
     private OrthographicCamera camera;
+
+    /**
+     * The music playing.
+     */
+    private Music music = Gdx.audio.newMusic(Gdx.files.internal("facil.mp3"));
 
     /**
      * A ball view used to draw balls.
@@ -188,6 +194,7 @@ public class GameScreen extends ScreenAdapter{
         this.fbwg.getAssetManager().load("wall.png", Texture.class);
         this.fbwg.getAssetManager().load("purplePlatform.png", Texture.class);
 
+        this.fbwg.getAssetManager().load("facil.mp3", Music.class);
 
         this.fbwg.getAssetManager().finishLoading();
     }
@@ -214,6 +221,9 @@ public class GameScreen extends ScreenAdapter{
         //drawBackground
         drawObjects();
         fbwg.getSpriteBatch().end();
+
+        music.setVolume((float) 0.05);
+        music.play();
     }
 
     /**

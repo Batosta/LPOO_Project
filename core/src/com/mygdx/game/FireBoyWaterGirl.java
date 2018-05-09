@@ -23,6 +23,7 @@ public class FireBoyWaterGirl extends Game {
 	
 	@Override
 	public void dispose () {
+
 		batch.dispose();
 		assetManager.dispose();
 	}
