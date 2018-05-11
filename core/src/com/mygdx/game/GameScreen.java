@@ -136,7 +136,7 @@ public class GameScreen extends ScreenAdapter{
         loadImages();
 
         maploader = new TmxMapLoader();
-        //tiledmap = maploader.load("level1.tmx");
+        tiledmap = maploader.load("gamemap.tmx");
         renderer = new OrthogonalTiledMapRenderer(tiledmap);
 
         createViews();
@@ -209,13 +209,16 @@ public class GameScreen extends ScreenAdapter{
 
         handleInputs(delta);
         updateObjects(delta);
+        renderer.setView(camera);
 
         //camera updates se quiseremos usar camara.
-        camera.position.set(model.getFireBoy().getX(),model.getFireBoy().getY(),0);
+        //camera.position.set(model.getFireBoy().getX(),model.getFireBoy().getY(),0);
 
         //clear screen
         Gdx.gl.glClearColor(0 / 255f, 0 / 255f, 0 / 255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+
+        renderer.render();
 
         fbwg.getSpriteBatch().begin();
         //drawBackground
