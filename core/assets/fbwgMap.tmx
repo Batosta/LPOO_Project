@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="2017.07.26" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="10" tileheight="10" nextobjectid="24">
+ <tileset firstgid="1" source="tileset.tsx"/>
+ <tileset firstgid="876" source="tileset.tsx"/>
+ <layer name="background" width="50" height="50">
+  <data encoding="base64" compression="zlib">
+   eJzVmEEOwjAMBPP/v6R8pfCVwp0casla0haIY3sPllYtCbI88TqtpZSlxa1FJdYVnt9bPFqsZHrdA/PZWjxbvEj0tofOR3LJwsy3XC2QTy18vOEzXRsm3s5YY+Lt6j3yJu8zsHTG1ZHu5RLN0hVXZ7/Nytiv67byefaZuNIaa8LGlWipieTByNXRXMbIlazL1LtG1mXqXSN74Dlh5Ap7VzRjo3tkmcEs9sgwg1nuh+eFiSvUWBMmrpAxzIWNK9HIFyNXorEmbFyJrp1c2LgS3asLG1dae/ijR1/08EcPv/X4RuHpt4z9qqdn+qPnXaHHFxtXs79RRM101v4YdQe17l1Rd1CsCSNXM3pXBFd6trfqXRFczZjto7iqqiYWc1cUV9a9K5Ir+X/MhY0rXQM882xciZb4l7ForvTcNTLbZ+DKwh+zcDXqj1m46vkjM1fij8jXVS3fPuPgHw==
+  </data>
+ </layer>
+ <layer name="wall" width="50" height="50">
+  <data encoding="base64" compression="zlib">
+   eJztmkEKQyEMBb3/PX57lbZXaXuHZukmiM0TR3gDgazyEGcR0Ku1dou6R12b+8qMR9Qz6gXoKzP6M72jPlHfTX1lRn+m08ju4DQyr07DXrGwVyzsFQt7xcJesbBXLOwVC3vFwl6xsFcsVng1M0eVucKrmTmqzBVezcxRZdqrHHv1P5lXqn6EKifzStWPUOWsfvMYocrxfsXC+xULe8XCXrGwVyzsFYv+Dih/lqp7O+XPUnVv3/lPSbm3/wBCoisx
+  </data>
+ </layer>
+ <layer name="platform" width="50" height="50">
+  <data encoding="base64" compression="zlib">
+   eJztz0t2AVEYReEqMglCIoJMH/EmJhGJeMskxDu2AaherdLYe92v9zfODQIzMzMzMzMzM4ujKmqo4x0NNNFCGx100UMfA3xgmMTYiD4xwhe+McYPJphihjkWWGKFNX4T2BrVBn/YYoc9DjjihDP+r4chDymk8RAmNPhGGfZk8Ygc8njCMwp4QRGvKKGMCt7u7B9mZmZmZmZmZmZxdAGTUCNH
+  </data>
+ </layer>
+ <objectgroup name="platform">
+  <object id="17" x="181.333" y="220.667" width="148" height="38.6667"/>
+ </objectgroup>
+ <objectgroup name="button">
+  <object id="19" x="121.333" y="441.333" width="68.6667" height="28"/>
+  <object id="20" x="332" y="292" width="65.3333" height="26"/>
+ </objectgroup>
+ <layer name="button" width="50" height="50">
+  <data encoding="base64" compression="zlib">
+   eJzt1rENgmAUReE/bKGiLmDCAohobxxBURiAglncRAt3cRbOCtI8o+dLTn/Lm5IkSZIkSTH6LKU3vehJBQ10pwcd6USbLHqpJEn6dTOa04JyWtKK1pGjJihpSxXtqKY9HQI3TXGmCzV0pRu11AVukiRJ0mf82N/Fj61/MgLaHQ/n
+  </data>
+ </layer>
+ <layer name="redDiamond" width="50" height="50">
+  <data encoding="base64" compression="zlib">
+   eJztzjERwCAUBUGsBKwkWIH4N5CnIRS/2Z25/loDAAAAAPjnSj2N6pFDd3rSrB45tNJOb/UIAAAAQJEP63ICbg==
+  </data>
+ </layer>
+ <objectgroup name="redDiamond">
+  <object id="21" x="40.6667" y="261.333" width="28.6667" height="30"/>
+ </objectgroup>
+ <objectgroup name="blueDiamond">
+  <object id="22" x="412.667" y="252.667" width="26.6667" height="28"/>
+ </objectgroup>
+ <layer name="blueDiamond" width="50" height="50">
+  <data encoding="base64" compression="zlib">
+   eJztzkENgDAQRcH17wSwAlgpddDvoYcNyUzy7q8KAAAAAKDqSGe6ukc23elJb/fIppG+NLtHAAAAAH5kAfFvBzY=
+  </data>
+ </layer>
+ <layer name="blueDoor" width="50" height="50">
+  <data encoding="base64" compression="zlib">
+   eJztz8lNgmEYReHvpxAGoRFEsBGRoREZN4zWAAhsGNQalGkjgzTCeCiBhIS8yT3Js7/XOaWUUkoppZRSSimllFJKKaWUsl3Fc66KGupooIl3797LrmvA3iFGGOMTX/g29uOPvUussMYG/9ga+7Fj7x4HHHG67Pc55/nuvey6/OwNIIgQHhBGxNiPKHsfEcMT4kjg2diPF/Ym8YoU0sgga+zHG3tzyKOAIkooG/vRYm8bHXygix76xn78sPcXE0wxwxwLYz+UukVnh94oQg==
+  </data>
+ </layer>
+ <objectgroup name="blueDoor">
+  <object id="14" x="42" y="370.667" width="68" height="98"/>
+ </objectgroup>
+ <objectgroup name="redDoor">
+  <object id="13" x="391.333" y="370" width="69.3333" height="101.333"/>
+ </objectgroup>
+ <layer name="redDoor" width="50" height="50">
+  <data encoding="base64" compression="zlib">
+   eJztz8lNglEAReHHRkDYMNfAIGxEhBqYN0zSCIPaCCDQCKDSiEx2wWmBF5KXP7kn+fb3GqOUUkoppZRSSimllFJKKaWUUupeRRBFDHEkkETK5SiLnlHEC0p4RRkVl6Ms6qCLHvoY4A1Dl6MsGmGMCaZ4xwc+HW6yaYY5FvjCEiusHW6yaYMtdvjGD36xd7jJpj8ccMQJZ1zw73KURQ8+Y/wIIIhHhBD2uV52W2n2ZpBFDk/Io+CxH1X21lBHA0200PbYD+XdrvUTG58=
+  </data>
+ </layer>
+ <objectgroup name="wall">
+  <object id="4" x="1" y="1" width="500" height="30"/>
+  <object id="8" x="470" y="0.333333" width="30" height="499.667"/>
+  <object id="9" x="0.333333" y="470.667" width="499.667" height="29.3333"/>
+  <object id="10" x="0" y="-1.33333" width="30.3333" height="501.333"/>
+ </objectgroup>
+</map>
