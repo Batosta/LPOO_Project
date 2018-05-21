@@ -7,9 +7,17 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 /**
  * Game screen. Draws all the views of all objects of the game.
@@ -19,23 +27,29 @@ public class GameScreen extends ScreenAdapter{
     /**
      * Map width (meters).
      */
-    public static int MAP_WIDTH = 100;
+    public static int MAP_WIDTH = 20;
 
     /**
      * Map height (meters).
      */
-    public static int MAP_HEIGHT = 100;
+    public static int MAP_HEIGHT = 18;
 
     /**
      * Viewport width (meters).
      * Height is set using the screen ratio.
      */
-    public static float VIEWPORT_WIDTH = 50;
+    public static float VIEWPORT_WIDTH = 20;
+
+    /**
+     * Viewport height (meters).
+     * Height is set using the screen ratio.
+     */
+    public static float VIEWPORT_HEIGHT = 18;
 
     /**
      * Each pixel shows "PIXEL_TO_METER" meters.
      */
-    public static float PIXEL_TO_METER = 0.05f;
+    public static float PIXEL_TO_METER = 1/30f;
 
     /**
      * The game.
@@ -51,6 +65,11 @@ public class GameScreen extends ScreenAdapter{
      * The camera used to show the viewport.
      */
     private OrthographicCamera camera;
+
+    /**
+     * The game viewport.
+     */
+    private Viewport gamePort;
 
     /**
      * The music playing.
@@ -117,6 +136,15 @@ public class GameScreen extends ScreenAdapter{
      */
     private WaterGirlView waterGirlView;
 
+    /**
+     * Fire Boy used in Box2D
+     */
+    private FireBoy2D fireboy2d;
+
+    private World world;
+
+    private Box2DDebugRenderer boxrenderer;
+
     TmxMapLoader maploader;
 
     TiledMap tiledmap;
@@ -136,12 +164,18 @@ public class GameScreen extends ScreenAdapter{
         loadImages();
 
         maploader = new TmxMapLoader();
-        tiledmap = maploader.load("gamemap.tmx");
-        renderer = new OrthogonalTiledMapRenderer(tiledmap);
+        tiledmap = maploader.load("provmap.tmx");
+        renderer = new OrthogonalTiledMapRenderer(tiledmap,PIXEL_TO_METER);
 
         createViews();
 
         camera = createCamera();
+        gamePort = new FitViewport(VIEWPORT_WIDTH*PIXEL_TO_METER,VIEWPORT_HEIGHT*PIXEL_TO_METER,camera);
+
+        world = new World(new Vector2(0, -20f), true);
+        boxrenderer = new Box2DDebugRenderer();
+
+        createObjects();
     }
 
     /**
@@ -151,7 +185,7 @@ public class GameScreen extends ScreenAdapter{
      */
     private OrthographicCamera createCamera(){
 
-        OrthographicCamera camera = new OrthographicCamera(VIEWPORT_WIDTH / PIXEL_TO_METER, VIEWPORT_WIDTH / PIXEL_TO_METER * ((float) Gdx.graphics.getHeight() / (float)Gdx.graphics.getWidth()));
+        OrthographicCamera camera = new OrthographicCamera(VIEWPORT_WIDTH, VIEWPORT_WIDTH * ((float) Gdx.graphics.getHeight() / (float)Gdx.graphics.getWidth()));
 
         camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
         camera.update();
@@ -207,6 +241,7 @@ public class GameScreen extends ScreenAdapter{
     @Override
     public void render(float delta) {
 
+        handleInput(delta);
         handleInputs(delta);
         updateObjects(delta);
         renderer.setView(camera);
@@ -218,7 +253,13 @@ public class GameScreen extends ScreenAdapter{
         Gdx.gl.glClearColor(0 / 255f, 0 / 255f, 0 / 255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
+        //game map renderer
         renderer.render();
+
+        // world renderer
+        boxrenderer.render(world,camera.combined);
+
+        world.step(1/60f, 6, 2);
 
         fbwg.getSpriteBatch().begin();
         //drawBackground
@@ -250,9 +291,46 @@ public class GameScreen extends ScreenAdapter{
     }
 
     private void handleInputs(float delta) {
-
         model.getFireBoy().handleInputs(delta);
         model.getWaterGirl().handleInputs(delta);
+    }
+
+    public void handleInput(float delta){
+
+        if(Gdx.input.isKeyJustPressed(Input.Keys.UP)){
+            fireboy2d.b2body.applyLinearImpulse(new Vector2(0,15f),fireboy2d.b2body.getWorldCenter(),true);
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) && fireboy2d.b2body.getLinearVelocity().x <= 10){
+            fireboy2d.b2body.applyLinearImpulse(new Vector2(1f,0),fireboy2d.b2body.getWorldCenter(),true);
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.LEFT) && fireboy2d.b2body.getLinearVelocity().x >= -10) {
+            fireboy2d.b2body.applyLinearImpulse(new Vector2(-1f, 0), fireboy2d.b2body.getWorldCenter(), true);
+        }
+
+    }
+
+    public void createObjects(){
+
+
+        fireboy2d = new FireBoy2D(world);
+
+        BodyDef bdef = new BodyDef();
+        PolygonShape shape = new PolygonShape();
+        FixtureDef fdef = new FixtureDef();
+        Body body;
+
+        for (MapObject object : tiledmap.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)) {
+            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+            bdef.type = BodyDef.BodyType.StaticBody;
+            bdef.position.set((rect.getX() + rect.getWidth() / 2)  * PIXEL_TO_METER, (rect.getY() + rect.getHeight() / 2)*PIXEL_TO_METER);
+
+            body = world.createBody(bdef);
+
+            shape.setAsBox((rect.getWidth() / 2)*PIXEL_TO_METER, (rect.getHeight() / 2)*PIXEL_TO_METER);
+            fdef.shape = shape;
+
+            body.createFixture(fdef);
+        }
     }
 
 }
