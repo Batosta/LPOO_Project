@@ -8,16 +8,19 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import java.lang.Object;
 
 /**
  * Game screen. Draws all the views of all objects of the game.
@@ -27,29 +30,27 @@ public class GameScreen extends ScreenAdapter{
     /**
      * Map width (meters).
      */
-    public static int MAP_WIDTH = 20;
+    public static int MAP_WIDTH = 30;
 
     /**
      * Map height (meters).
      */
-    public static int MAP_HEIGHT = 18;
+    public static int MAP_HEIGHT = 25;
 
     /**
      * Viewport width (meters).
-     * Height is set using the screen ratio.
      */
-    public static float VIEWPORT_WIDTH = 20;
+    public static float VIEWPORT_WIDTH = 30;
 
     /**
      * Viewport height (meters).
-     * Height is set using the screen ratio.
      */
-    public static float VIEWPORT_HEIGHT = 18;
+    public static float VIEWPORT_HEIGHT = 25;
 
     /**
      * Each pixel shows "PIXEL_TO_METER" meters.
      */
-    public static float PIXEL_TO_METER = 1/30f;
+    public static float PIXEL_TO_METER = 1/32f;
 
     /**
      * The game.
@@ -172,7 +173,7 @@ public class GameScreen extends ScreenAdapter{
         camera = createCamera();
         gamePort = new FitViewport(VIEWPORT_WIDTH*PIXEL_TO_METER,VIEWPORT_HEIGHT*PIXEL_TO_METER,camera);
 
-        world = new World(new Vector2(0, -20f), true);
+        world = new World(new Vector2(0, -15f), true);
         boxrenderer = new Box2DDebugRenderer();
 
         createObjects();
@@ -185,7 +186,7 @@ public class GameScreen extends ScreenAdapter{
      */
     private OrthographicCamera createCamera(){
 
-        OrthographicCamera camera = new OrthographicCamera(VIEWPORT_WIDTH, VIEWPORT_WIDTH * ((float) Gdx.graphics.getHeight() / (float)Gdx.graphics.getWidth()));
+        OrthographicCamera camera = new OrthographicCamera(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
 
         camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
         camera.update();
@@ -247,6 +248,8 @@ public class GameScreen extends ScreenAdapter{
         renderer.setView(camera);
 
         //camera updates se quiseremos usar camara.
+        //camera.position.x = fireboy2d.b2body.getPosition().x;
+        //camera.position.y = fireboy2d.b2body.getPosition().y;
         //camera.position.set(model.getFireBoy().getX(),model.getFireBoy().getY(),0);
 
         //clear screen
@@ -275,10 +278,10 @@ public class GameScreen extends ScreenAdapter{
      */
     private void drawObjects(){
 
-        fireBoyView.update(model.getFireBoy());
+        fireBoyView.update(fireboy2d);
         fireBoyView.draw(fbwg.getSpriteBatch());
 
-        waterGirlView.update(model.getWaterGirl());
+        //waterGirlView.update(watergirl2d);
         waterGirlView.draw(fbwg.getSpriteBatch());
 
         //missing the rest of the object draws
@@ -288,6 +291,7 @@ public class GameScreen extends ScreenAdapter{
 
         model.getFireBoy().update(delta);
         model.getWaterGirl().handleInputs(delta);
+        fireboy2d.update(delta);
     }
 
     private void handleInputs(float delta) {
@@ -298,28 +302,53 @@ public class GameScreen extends ScreenAdapter{
     public void handleInput(float delta){
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.UP)){
-            fireboy2d.b2body.applyLinearImpulse(new Vector2(0,15f),fireboy2d.b2body.getWorldCenter(),true);
+            fireboy2d.b2body.applyLinearImpulse(new Vector2(0,7f),fireboy2d.b2body.getWorldCenter(),true);
         }
-        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) && fireboy2d.b2body.getLinearVelocity().x <= 10){
-            fireboy2d.b2body.applyLinearImpulse(new Vector2(1f,0),fireboy2d.b2body.getWorldCenter(),true);
+        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) && fireboy2d.b2body.getLinearVelocity().x <= 6){
+            fireboy2d.b2body.applyLinearImpulse(new Vector2(0.5f,0),fireboy2d.b2body.getWorldCenter(),true);
         }
-        if(Gdx.input.isKeyPressed(Input.Keys.LEFT) && fireboy2d.b2body.getLinearVelocity().x >= -10) {
-            fireboy2d.b2body.applyLinearImpulse(new Vector2(-1f, 0), fireboy2d.b2body.getWorldCenter(), true);
+        if(Gdx.input.isKeyPressed(Input.Keys.LEFT) && fireboy2d.b2body.getLinearVelocity().x >= -6) {
+            fireboy2d.b2body.applyLinearImpulse(new Vector2(-0.5f, 0), fireboy2d.b2body.getWorldCenter(), true);
         }
+
+        if(!Gdx.input.isKeyPressed(Input.Keys.LEFT) && !Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            if(fireboy2d.b2body.getLinearVelocity().x>0)
+                fireboy2d.b2body.applyLinearImpulse(new Vector2(-0.4f, 0), fireboy2d.b2body.getWorldCenter(), true);
+            if(fireboy2d.b2body.getLinearVelocity().x<0)
+                fireboy2d.b2body.applyLinearImpulse(new Vector2(0.4f, 0), fireboy2d.b2body.getWorldCenter(), true);
+        }
+
+
 
     }
 
     public void createObjects(){
 
-
-        fireboy2d = new FireBoy2D(world);
+        fireboy2d = new FireBoy2D(world,50,150);
 
         BodyDef bdef = new BodyDef();
         PolygonShape shape = new PolygonShape();
         FixtureDef fdef = new FixtureDef();
         Body body;
 
-        for (MapObject object : tiledmap.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)) {
+        for (MapObject object : tiledmap.getLayers().get(4).getObjects().getByType(PolygonMapObject.class)) {
+            Polygon poly = ((PolygonMapObject) object).getPolygon();
+            bdef.type = BodyDef.BodyType.StaticBody;
+            bdef.position.set(poly.getX()*PIXEL_TO_METER,poly.getY()*PIXEL_TO_METER);
+            float[] vertices = poly.getVertices();
+            float[] newVertices = new float[vertices.length];
+            for (int i = 0; i < vertices.length; ++i) {
+                newVertices[i] = vertices[i]*PIXEL_TO_METER;
+            }
+
+            body = world.createBody(bdef);
+            shape.set(newVertices);
+            fdef.shape = shape;
+
+            body.createFixture(fdef);
+        }
+
+        for (MapObject object : tiledmap.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
             bdef.type = BodyDef.BodyType.StaticBody;
             bdef.position.set((rect.getX() + rect.getWidth() / 2)  * PIXEL_TO_METER, (rect.getY() + rect.getHeight() / 2)*PIXEL_TO_METER);

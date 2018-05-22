@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import static com.mygdx.game.Character.Jump.*;
 import static com.mygdx.game.Character.Moving.*;
+import static com.mygdx.game.GameScreen.PIXEL_TO_METER;
 
 /**
  * A view representing the FireBoy
@@ -20,60 +21,62 @@ public class FireBoyView extends CharacterView {
 
         super(game, text);
     }
+    FireBoy2D fb;
 
 
     /**
      * Updates this Fire Boy model.
      *
-     * @param model the model used to update this view
+     * @param body the body from world. to update the sprites
      */
     @Override
-    public void update(Body model) {        //dar re-check do código. Pode ser melhorado i guess
-        super.update(model);
+    public void update(BoxBody body) {
 
-        if(((Character)model).getMoving() == STAND){        // ESTA SEMPRE A POR STAND. depois mete por cima as outras posiçoes
+        System.out.println("x:" + body.b2body.getPosition().x + "y: " + body.b2body.getPosition().y);
+        sprite.setCenter(body.b2body.getPosition().x/ PIXEL_TO_METER, body.b2body.getPosition().y / PIXEL_TO_METER);
 
+        if(((BoxCharacter)body).getMoving() == BoxCharacter.Moving.STAND){        // ESTA SEMPRE A POR STAND. depois mete por cima as outras posiçoes
+            System.out.println("stand tex");
             sprite.setRegion(standTex);
         }
-        if(((Character)model).getMoving() == RIGHT)
+        if(((BoxCharacter)body).getMoving() == BoxCharacter.Moving.RIGHT)
         {
 
             System.out.println("right tex");
             sprite.setRegion(rightTex);
         }
-        if(((Character)model).getMoving() == LEFT){
+        if(((BoxCharacter)body).getMoving() == BoxCharacter.Moving.LEFT){
 
             sprite.setRegion(leftTex);
         }
-        if(((FireBoy)model).jumpstate == ASCENDING){
-
-            System.out.println("ascending tex");
+        if(((BoxCharacter)body).jumpstate == FireBoy2D.Jump.ASCENDING){
+            System.out.println("ascendin");
             sprite.setRegion(upTex);
-        }
-        if((((FireBoy)model).jumpstate == ASCENDING) && (((Character)model).getMoving() == RIGHT)){
+        }/*
+        if(((body2d).jumpstate == ASCENDING) && ((body2d).getMoving() == RIGHT)){
 
             sprite.setRegion(upRightTex);
         }
-        if((((FireBoy)model).jumpstate == ASCENDING) && (((Character)model).getMoving() == LEFT)){
+        if(((body2d).jumpstate == ASCENDING) && ((body2d).getMoving() == LEFT)){
 
             sprite.setRegion(upLeftTex);
         }
-        if(((FireBoy)model).jumpstate == DESCENDING){                       //nao há esta text ainda
+        if((body2d).jumpstate == DESCENDING){                       //nao há esta text ainda
 
             System.out.println("descending tex");
             sprite.setRegion(standTex);
         }
-        if((((FireBoy)model).jumpstate == DESCENDING) && (((Character)model).getMoving() == LEFT)){
+        if(((body2d).jumpstate == DESCENDING) && ((body2d).getMoving() == LEFT)){
 
             sprite.setRegion(downLeftTex);
         }
-        if((((FireBoy)model).jumpstate == DESCENDING) && (((Character)model).getMoving() == RIGHT)){
+        if(((body2d).jumpstate == DESCENDING) && ((body2d).getMoving() == RIGHT)){
 
             sprite.setRegion(downRightTex);
         }
 
         // goingright = ((FireBoy)model).isAccelerating();
-        //((ShipModel)model).setAccelerating(false);
+        //((ShipModel)model).setAccelerating(false);*/
     }
 
     /**

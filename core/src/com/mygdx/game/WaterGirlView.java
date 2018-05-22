@@ -25,9 +25,9 @@ public class WaterGirlView extends CharacterView {
      * @param model the model used to update this view
      */
     @Override
-    public void update(Body model) {        //dar re-check do código. Pode ser melhorado i guess
+    public void update(BoxBody model) {        //dar re-check do código. Pode ser melhorado i guess
         super.update(model);
-
+/*
         if(((Character)model).getMoving() == STAND){        // ESTA SEMPRE A POR STAND. depois mete por cima as outras posiçoes
 
             sprite.setRegion(standTex);
@@ -71,5 +71,6 @@ public class WaterGirlView extends CharacterView {
 
         // goingright = ((FireBoy)model).isAccelerating();
         //((ShipModel)model).setAccelerating(false);
+        */
     }
 }

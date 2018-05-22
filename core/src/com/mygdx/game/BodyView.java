@@ -46,10 +46,10 @@ public abstract class BodyView {
     /**
      * View updated using a determined body.
      *
-     * @param body Body which view will use to be updated.
+     * @param body Body from World which view will use to be updated.
      */
-    public void update(Body body){
-
-        sprite.setCenter(body.getX() / PIXEL_TO_METER, body.getY() / PIXEL_TO_METER);
+    public void update(BoxBody body){                       //      NAO SEI COM USAR ISTO
+        //System.out.println("x:" + body.b2body.getPosition().x + "y: " + body.b2body.getPosition().y);
+        //sprite.setCenter(body.b2body.getPosition().x / PIXEL_TO_METER, body.b2body.getPosition().y / PIXEL_TO_METER);
     }
 }
