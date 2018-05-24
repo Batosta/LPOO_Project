@@ -41,22 +41,16 @@ public class MainMenuScreen implements Screen {
         table.center();
         table.setFillParent(true);
 
-        Label startGameLabel = new Label("Start", font);
-        Label exitLabel = new Label("Exit", font);
-
         Image backgroundImage = new Image((Texture)((FireBoyWaterGirl) game).getAssetManager().get("mainMenuBackground.jpg"));
-        table.add(backgroundImage);
+        stage.addActor(backgroundImage);
         Image startButton = new Image((Texture)((FireBoyWaterGirl) game).getAssetManager().get("startButtonNormal.png"));
         table.add(startButton);
+        table.row();
         Image quitButton = new Image((Texture)((FireBoyWaterGirl) game).getAssetManager().get("quitButtonNormal.png"));
-        table.add(quitButton);
+        table.add(quitButton).padTop(50f);
 
 
-        table.debugAll();
-        //table.add(startGameLabel).expandX();
-        //table.row();
-        //table.add(exitLabel).expandX();
-
+        //table.debugAll();
         stage.addActor(table);
     }
 
@@ -69,7 +63,7 @@ public class MainMenuScreen implements Screen {
     @Override
     public void render(float delta) {
 
-        Gdx.gl.glClearColor(0,0,0,1);
+        Gdx.gl.glClearColor(100,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.draw();
     }
