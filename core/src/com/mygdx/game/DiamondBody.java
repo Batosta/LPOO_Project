@@ -17,9 +17,11 @@ public class DiamondBody{
     protected FixtureDef fdef;
     PolygonShape polyshape;
     boolean caught = false;
+    int color;
 
-    public DiamondBody(World world,MapObject object){     //x , y meters ??
+    public DiamondBody(World world,MapObject object,int color){     //x , y meters ??           color = 0 if red, 1 if blue
         this.world = world;
+        this.color = color;
         defineDiamond(object);
     }
 
@@ -41,7 +43,10 @@ public class DiamondBody{
         polyshape.set(newVertices);
         fdef.shape = polyshape;
         fdef.isSensor = true;
-        body.createFixture(fdef).setUserData("diamond");
+        if(this.color == 1)
+            body.createFixture(fdef).setUserData("bluediamond");
+        else
+            body.createFixture(fdef).setUserData("reddiamond");
 
     }
 

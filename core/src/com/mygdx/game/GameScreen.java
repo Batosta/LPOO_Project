@@ -18,6 +18,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.utils.Queue;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.badlogic.gdx.math.Matrix4;
@@ -163,7 +164,16 @@ public class GameScreen extends ScreenAdapter{
      */
     private WaterGirl2D watergirl2d;
 
-    DiamondBody diamond;
+    /**
+     * Queue with the red diamonds to be caught by Fire Boy
+     */
+    Queue<DiamondBody> reddiamonds;
+
+    /**
+     * Queue with the blue diamonds to be caught by Water Girl
+     */
+    Queue<DiamondBody> bluediamonds;
+
 
     private World world;
 
@@ -200,7 +210,7 @@ public class GameScreen extends ScreenAdapter{
         world = new World(new Vector2(0, -15f), true);
 
         createObjects();
-        world.setContactListener(new WorldContactListener());
+        world.setContactListener(new WorldContactListener(this));
 
     }
 
@@ -230,9 +240,8 @@ public class GameScreen extends ScreenAdapter{
     public void createViews(){
 
         ballView = new BallView(fbwg, "ball.png");
-        buttonView = new ButtonView(fbwg, "purpleButton.png"); 
+        buttonView = new ButtonView(fbwg, "purpleButton.png");
         cubeView = new CubeView(fbwg, "cube.png");
-        //diamondView = new DiamondView(fbwg, "redDiamond.png");
         fireBoyView = new FireBoyView(fbwg, "fire.png");
         lakeView = new LakeView(fbwg, "redLake.png");
         leverView = new LeverView(fbwg, "lever.png");
@@ -260,6 +269,9 @@ public class GameScreen extends ScreenAdapter{
         this.fbwg.getAssetManager().load("portal.png", Texture.class);
         this.fbwg.getAssetManager().load("lever.png", Texture.class);
         this.fbwg.getAssetManager().load("wall.png", Texture.class);
+        this.fbwg.getAssetManager().load("purplePlatform.png", Texture.class);
+        this.fbwg.getAssetManager().load("reddiamondanimation.png", Texture.class);
+        this.fbwg.getAssetManager().load("bluediamondanimation.png", Texture.class);
         this.fbwg.getAssetManager().load("purplePlatform.png", Texture.class);
 
         this.fbwg.getAssetManager().load("facil.mp3", Music.class);
@@ -400,12 +412,13 @@ public class GameScreen extends ScreenAdapter{
 
         fireboy2d = new FireBoy2D(world,50f*PIXEL_TO_METER,100f*PIXEL_TO_METER);
         watergirl2d = new WaterGirl2D(world,50f*PIXEL_TO_METER,200f*PIXEL_TO_METER);
+
         BodyDef bdef = new BodyDef();
         PolygonShape polyshape = new PolygonShape();
         FixtureDef fdef = new FixtureDef();
         Body body;
 
-        for (MapObject object : tiledmap.getLayers().get(6).getObjects().getByType(PolygonMapObject.class)) {
+        for (MapObject object : tiledmap.getLayers().get(7).getObjects().getByType(PolygonMapObject.class)) {
             Polygon poly = ((PolygonMapObject) object).getPolygon();
             bdef.type = BodyDef.BodyType.StaticBody;
             bdef.position.set(poly.getX()*PIXEL_TO_METER,poly.getY()*PIXEL_TO_METER);
@@ -422,7 +435,7 @@ public class GameScreen extends ScreenAdapter{
             body.createFixture(fdef);
         }
 
-        for (MapObject object : tiledmap.getLayers().get(5).getObjects().getByType(RectangleMapObject.class)) {
+        for (MapObject object : tiledmap.getLayers().get(6).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
             bdef.type = BodyDef.BodyType.StaticBody;
             bdef.position.set((rect.getX() + rect.getWidth() / 2)  * PIXEL_TO_METER, (rect.getY() + rect.getHeight() / 2)*PIXEL_TO_METER);
@@ -435,26 +448,16 @@ public class GameScreen extends ScreenAdapter{
             body.createFixture(fdef);
         }
 
-        for (MapObject object : tiledmap.getLayers().get(4).getObjects().getByType(PolygonMapObject.class)) {
-            diamond = new DiamondBody(world,object);
-
-            /*
-            Polygon poly = ((PolygonMapObject) object).getPolygon();
-            bdef.type = BodyDef.BodyType.StaticBody;
-            bdef.position.set(poly.getX()*PIXEL_TO_METER,poly.getY()*PIXEL_TO_METER);
-            float[] vertices = poly.getVertices();
-            float[] newVertices = new float[vertices.length];
-            for (int i = 0; i < vertices.length; ++i) {
-                newVertices[i] = vertices[i]*PIXEL_TO_METER;
-            }
-
-            body = world.createBody(bdef);
-            polyshape.set(newVertices);
-            fdef.shape = polyshape;
-            fdef.isSensor = true;
-            body.createFixture(fdef);*/
-
+        bluediamonds = new Queue<DiamondBody>();
+        for (MapObject object : tiledmap.getLayers().get(5).getObjects().getByType(PolygonMapObject.class)) {
+            bluediamonds.addFirst(new DiamondBody(world,object,1));     //1 if blue
         }
+
+        reddiamonds = new Queue<DiamondBody>();
+        for (MapObject object : tiledmap.getLayers().get(4).getObjects().getByType(PolygonMapObject.class)) {
+            reddiamonds.addFirst(new DiamondBody(world,object,0));      //0 if red
+        }
+
     }
 
 }

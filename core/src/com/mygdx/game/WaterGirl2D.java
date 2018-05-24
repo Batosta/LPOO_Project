@@ -26,6 +26,7 @@ public class WaterGirl2D extends BoxCharacter{
         fdef.shape = shape;
         fdef.friction = 1f;
         b2body.createFixture(fdef);
+        b2body.createFixture(fdef).setUserData("watergirl");
 
     }
 
