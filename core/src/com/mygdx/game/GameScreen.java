@@ -33,6 +33,8 @@ import java.lang.Object;
  */
 public class GameScreen extends ScreenAdapter{
 
+    private int gameLevel = 0;
+
     /**
      * Used to debug the position of the physics fixtures (show lines)
      */
@@ -46,7 +48,7 @@ public class GameScreen extends ScreenAdapter{
     /**
      * Map height (meters).
      */
-    public static int MAP_HEIGHT = 25;
+    //public static int MAP_HEIGHT = 25;
 
     /*
      * Viewport width (meters).
@@ -56,7 +58,7 @@ public class GameScreen extends ScreenAdapter{
     /**
      * Viewport height (meters).
      */
-   // public static float VIEWPORT_HEIGHT = 25;
+    public static float VIEWPORT_HEIGHT = 25;
 
     /**
      * Each pixel shows "PIXEL_TO_METER" meters.
@@ -195,8 +197,6 @@ public class GameScreen extends ScreenAdapter{
         this.fbwg = fbwg;
         this.model = model;
 
-        loadImages();
-
         maploader = new TmxMapLoader();
         tiledmap = maploader.load("provmap.tmx");
         renderer = new OrthogonalTiledMapRenderer(tiledmap,1);
@@ -249,34 +249,6 @@ public class GameScreen extends ScreenAdapter{
         portalView = new PortalView(fbwg, "portal.png");
         wallView = new WallView(fbwg, "wall.png");
         waterGirlView = new WaterGirlView(fbwg, "water.png");
-    }
-
-    /**
-     * Loads the images used in this screen.
-     */
-    public void loadImages(){
-
-        this.fbwg.getAssetManager().load("fire.png", Texture.class);
-        this.fbwg.getAssetManager().load("water.png", Texture.class);
-        this.fbwg.getAssetManager().load("ball.png", Texture.class);
-        this.fbwg.getAssetManager().load("purpleButton.png", Texture.class);
-        this.fbwg.getAssetManager().load("cube.png", Texture.class);
-        this.fbwg.getAssetManager().load("blueDiamond.png", Texture.class);
-        this.fbwg.getAssetManager().load("redDiamond.png", Texture.class);
-        this.fbwg.getAssetManager().load("greenLake.png", Texture.class);
-        this.fbwg.getAssetManager().load("blueLake.png", Texture.class);
-        this.fbwg.getAssetManager().load("redLake.png", Texture.class);
-        this.fbwg.getAssetManager().load("portal.png", Texture.class);
-        this.fbwg.getAssetManager().load("lever.png", Texture.class);
-        this.fbwg.getAssetManager().load("wall.png", Texture.class);
-        this.fbwg.getAssetManager().load("purplePlatform.png", Texture.class);
-        this.fbwg.getAssetManager().load("reddiamondanimation.png", Texture.class);
-        this.fbwg.getAssetManager().load("bluediamondanimation.png", Texture.class);
-        this.fbwg.getAssetManager().load("purplePlatform.png", Texture.class);
-
-        this.fbwg.getAssetManager().load("facil.mp3", Music.class);
-
-        this.fbwg.getAssetManager().finishLoading();
     }
 
     /**
@@ -459,5 +431,4 @@ public class GameScreen extends ScreenAdapter{
         }
 
     }
-
 }
