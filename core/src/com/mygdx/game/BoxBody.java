@@ -7,6 +7,9 @@ public class BoxBody {
 
     public World world;
     public Body b2body;
+    protected BodyDef bdef;
+    protected FixtureDef fdef;
+
     protected float x;
     protected float y;
 
@@ -16,25 +19,26 @@ public class BoxBody {
         this.y=y;
     }
 
-    /**
-     * Returns the x coordinate of the body.
-     *
-     * @return the x coordinate.
-     */
-    public float getX(){
-
-        return x;
-    }
-
-    /**
-     * Returns the y coordinate of the body.
-     *
-     * @return the y coordinate.
-     */
-    public float getY(){
-
-        return y;
-    }
+//
+//        /**
+//         * Returns the x coordinate of the body.
+//         *
+//         * @return the x coordinate.
+//         */
+//    public float getX(){
+//
+//        return x;
+//    }
+//
+//    /**
+//     * Returns the y coordinate of the body.
+//     *
+//     * @return the y coordinate.
+//     */
+//    public float getY(){
+//
+//        return y;
+//    }
 
 
 }

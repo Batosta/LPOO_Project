@@ -21,63 +21,57 @@ public class FireBoyView extends CharacterView {
 
         super(game, text);
     }
-    FireBoy2D fb;
 
 
-    /**
-     * Updates this Fire Boy model.
-     *
-     * @param body the body from world. to update the sprites
-     */
+    /*
     @Override
     public void update(BoxBody body) {
+        super.update(body);
 
-        System.out.println("x:" + body.b2body.getPosition().x + "y: " + body.b2body.getPosition().y);
-        sprite.setCenter(body.b2body.getPosition().x/ PIXEL_TO_METER, body.b2body.getPosition().y / PIXEL_TO_METER);
-
-        if(((BoxCharacter)body).getMoving() == BoxCharacter.Moving.STAND){        // ESTA SEMPRE A POR STAND. depois mete por cima as outras posiçoes
+        if(((BoxCharacter)body).moving == BoxCharacter.Moving.STAND){        // ESTA SEMPRE A POR STAND. depois mete por cima as outras posiçoes
             System.out.println("stand tex");
             sprite.setRegion(standTex);
         }
-        if(((BoxCharacter)body).getMoving() == BoxCharacter.Moving.RIGHT)
+        if(((BoxCharacter)body).moving == BoxCharacter.Moving.RIGHT)
         {
 
             System.out.println("right tex");
             sprite.setRegion(rightTex);
         }
-        if(((BoxCharacter)body).getMoving() == BoxCharacter.Moving.LEFT){
+        if(((BoxCharacter)body).moving == BoxCharacter.Moving.LEFT){
 
             sprite.setRegion(leftTex);
         }
-        if(((BoxCharacter)body).jumpstate == FireBoy2D.Jump.ASCENDING){
+        if(((BoxCharacter)body).jumpstate == BoxCharacter.Jump.ASCENDING){
             System.out.println("ascendin");
             sprite.setRegion(upTex);
-        }/*
-        if(((body2d).jumpstate == ASCENDING) && ((body2d).getMoving() == RIGHT)){
-
+        }
+        if(((BoxCharacter)body).jumpstate == BoxCharacter.Jump.ASCENDING && ((BoxCharacter)body).moving == BoxCharacter.Moving.RIGHT){
             sprite.setRegion(upRightTex);
         }
-        if(((body2d).jumpstate == ASCENDING) && ((body2d).getMoving() == LEFT)){
 
+
+        if(((BoxCharacter)body).jumpstate == BoxCharacter.Jump.ASCENDING && ((BoxCharacter)body).moving == BoxCharacter.Moving.LEFT){
             sprite.setRegion(upLeftTex);
         }
-        if((body2d).jumpstate == DESCENDING){                       //nao há esta text ainda
-
-            System.out.println("descending tex");
+        if(((BoxCharacter)body).jumpstate == BoxCharacter.Jump.DESCENDING){
+            System.out.println("ascendin");
             sprite.setRegion(standTex);
         }
-        if(((body2d).jumpstate == DESCENDING) && ((body2d).getMoving() == LEFT)){
+        if((((BoxCharacter)body).jumpstate == BoxCharacter.Jump.DESCENDING) && (((BoxCharacter)body).moving == BoxCharacter.Moving.LEFT)){
 
             sprite.setRegion(downLeftTex);
         }
-        if(((body2d).jumpstate == DESCENDING) && ((body2d).getMoving() == RIGHT)){
+
+        if((((BoxCharacter)body).jumpstate == BoxCharacter.Jump.DESCENDING) && (((BoxCharacter)body).moving == FireBoy2D.Moving.RIGHT)){
 
             sprite.setRegion(downRightTex);
         }
 
         // goingright = ((FireBoy)model).isAccelerating();
-        //((ShipModel)model).setAccelerating(false);*/
+        //((ShipModel)model).setAccelerating(false);
     }
+    */
 
     /**
      * Draws the sprite from this view using a sprite batch.

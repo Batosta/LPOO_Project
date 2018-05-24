@@ -78,4 +78,46 @@ public class CharacterView extends BodyView {
         downRightTex = new TextureRegion(texture, texture.getWidth()/2,texture.getHeight()/2,texture.getWidth()/4, texture.getHeight()/2);
         downLeftTex = new TextureRegion(texture, texture.getWidth()*3/4,texture.getHeight()/2,texture.getWidth()/4, texture.getHeight()/2);
     }
+
+    @Override
+    public void update(BoxBody body){
+        super.update(body);
+
+        if(((BoxCharacter)body).moving == BoxCharacter.Moving.STAND){        // ESTA SEMPRE A POR STAND. depois mete por cima as outras posiçoes
+              sprite.setRegion(standTex);
+        }
+        if(((BoxCharacter)body).moving == BoxCharacter.Moving.RIGHT)
+        {
+
+            sprite.setRegion(rightTex);
+        }
+        if(((BoxCharacter)body).moving == BoxCharacter.Moving.LEFT){
+
+            sprite.setRegion(leftTex);
+        }
+        if(((BoxCharacter)body).jumpstate == BoxCharacter.Jump.ASCENDING){
+            sprite.setRegion(upTex);
+        }
+        if(((BoxCharacter)body).jumpstate == BoxCharacter.Jump.ASCENDING && ((BoxCharacter)body).moving == BoxCharacter.Moving.RIGHT){
+            sprite.setRegion(upRightTex);
+        }
+
+
+        if(((BoxCharacter)body).jumpstate == BoxCharacter.Jump.ASCENDING && ((BoxCharacter)body).moving == BoxCharacter.Moving.LEFT){
+            sprite.setRegion(upLeftTex);
+        }
+        if(((BoxCharacter)body).jumpstate == BoxCharacter.Jump.DESCENDING){
+            sprite.setRegion(standTex);
+        }
+        if((((BoxCharacter)body).jumpstate == BoxCharacter.Jump.DESCENDING) && (((BoxCharacter)body).moving == BoxCharacter.Moving.LEFT)){
+
+            sprite.setRegion(downLeftTex);
+        }
+
+        if((((BoxCharacter)body).jumpstate == BoxCharacter.Jump.DESCENDING) && (((BoxCharacter)body).moving == FireBoy2D.Moving.RIGHT)){
+
+            sprite.setRegion(downRightTex);
+        }
+    }
+
 }

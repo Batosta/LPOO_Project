@@ -10,9 +10,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.*;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.tiles.AnimatedTiledMapTile;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -20,12 +20,22 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.maps.Map;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+
+
 import java.lang.Object;
 
 /**
  * Game screen. Draws all the views of all objects of the game.
  */
 public class GameScreen extends ScreenAdapter{
+
+    /**
+     * Used to debug the position of the physics fixtures (show lines)
+     */
+    private static final boolean DEBUG_PHYSICS = true;
 
     /**
      * Map width (meters).
@@ -37,7 +47,7 @@ public class GameScreen extends ScreenAdapter{
      */
     public static int MAP_HEIGHT = 25;
 
-    /**
+    /*
      * Viewport width (meters).
      */
     public static float VIEWPORT_WIDTH = 30;
@@ -45,12 +55,12 @@ public class GameScreen extends ScreenAdapter{
     /**
      * Viewport height (meters).
      */
-    public static float VIEWPORT_HEIGHT = 25;
+   // public static float VIEWPORT_HEIGHT = 25;
 
     /**
      * Each pixel shows "PIXEL_TO_METER" meters.
      */
-    public static float PIXEL_TO_METER = 1/32f;
+    public static float PIXEL_TO_METER = 0.03125f;
 
     /**
      * The game.
@@ -73,6 +83,12 @@ public class GameScreen extends ScreenAdapter{
     private Viewport gamePort;
 
     /**
+     * The transformation matrix used to transform meters into
+     * pixels in order to show fixtures in their correct places.
+     */
+    private Matrix4 debugCamera;
+
+    /**
      * The music playing.
      */
     private Music music = Gdx.audio.newMusic(Gdx.files.internal("facil.mp3"));
@@ -92,10 +108,10 @@ public class GameScreen extends ScreenAdapter{
      */
     private CubeView cubeView;
 
-    /**
-     * A diamond view used to draw diamonds.
-     */
-    private DiamondView diamondView;
+//    /**
+//     * A diamond view used to draw diamonds.
+//     */
+//    private DiamondView diamondView;
 
     /**
      * A door view used to draw doors.
@@ -136,11 +152,18 @@ public class GameScreen extends ScreenAdapter{
      * The Water Girl view used to draw the Water Girl.
      */
     private WaterGirlView waterGirlView;
-
     /**
      * Fire Boy used in Box2D
      */
+
     private FireBoy2D fireboy2d;
+
+    /**
+     * Water Girl used in Box2D
+     */
+    private WaterGirl2D watergirl2d;
+
+    DiamondBody diamond;
 
     private World world;
 
@@ -166,18 +189,22 @@ public class GameScreen extends ScreenAdapter{
 
         maploader = new TmxMapLoader();
         tiledmap = maploader.load("provmap.tmx");
-        renderer = new OrthogonalTiledMapRenderer(tiledmap,PIXEL_TO_METER);
+        renderer = new OrthogonalTiledMapRenderer(tiledmap,1);
 
         createViews();
 
         camera = createCamera();
-        gamePort = new FitViewport(VIEWPORT_WIDTH*PIXEL_TO_METER,VIEWPORT_HEIGHT*PIXEL_TO_METER,camera);
+        //gamePort = new FitViewport(VIEWPORT_WIDTH/PIXEL_TO_METER,VIEWPORT_WIDTH/PIXEL_TO_METER* ((float) Gdx.graphics.getHeight() / (float)Gdx.graphics.getWidth()),camera);
+        //gamePort.apply();
 
         world = new World(new Vector2(0, -15f), true);
-        boxrenderer = new Box2DDebugRenderer();
 
         createObjects();
+        world.setContactListener(new WorldContactListener());
+
     }
+
+
 
     /**
      * Creates the camera that will display the viewport.
@@ -186,10 +213,16 @@ public class GameScreen extends ScreenAdapter{
      */
     private OrthographicCamera createCamera(){
 
-        OrthographicCamera camera = new OrthographicCamera(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
+        OrthographicCamera camera = new OrthographicCamera(VIEWPORT_WIDTH/PIXEL_TO_METER, VIEWPORT_WIDTH/PIXEL_TO_METER * ((float) Gdx.graphics.getHeight() / (float)Gdx.graphics.getWidth()));
 
         camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
         camera.update();
+
+        if (DEBUG_PHYSICS) {
+            boxrenderer = new Box2DDebugRenderer();
+            debugCamera = camera.combined.cpy();
+            debugCamera.scl(1 / PIXEL_TO_METER);
+        }
 
         return camera;
     }
@@ -197,9 +230,9 @@ public class GameScreen extends ScreenAdapter{
     public void createViews(){
 
         ballView = new BallView(fbwg, "ball.png");
-        buttonView = new ButtonView(fbwg, "purpleButton.png");
+        buttonView = new ButtonView(fbwg, "purpleButton.png"); 
         cubeView = new CubeView(fbwg, "cube.png");
-        diamondView = new DiamondView(fbwg, "redDiamond.png");
+        //diamondView = new DiamondView(fbwg, "redDiamond.png");
         fireBoyView = new FireBoyView(fbwg, "fire.png");
         lakeView = new LakeView(fbwg, "redLake.png");
         leverView = new LeverView(fbwg, "lever.png");
@@ -269,19 +302,29 @@ public class GameScreen extends ScreenAdapter{
         drawObjects();
         fbwg.getSpriteBatch().end();
 
-        music.setVolume((float) 0.05);
+        music.setVolume((float) 0.1);
         music.play();
+
+        if (DEBUG_PHYSICS) {
+            debugCamera = camera.combined.cpy();
+            debugCamera.scl(1 / PIXEL_TO_METER);
+            boxrenderer.render(world, debugCamera);
+        }
     }
+
+//    @Override
+//    public void resize(int width, int height){
+//        gamePort.update(width,height);
+//    }
 
     /**
      * Draw objects on the screen
      */
     private void drawObjects(){
-
         fireBoyView.update(fireboy2d);
         fireBoyView.draw(fbwg.getSpriteBatch());
 
-        //waterGirlView.update(watergirl2d);
+        waterGirlView.update(watergirl2d);
         waterGirlView.draw(fbwg.getSpriteBatch());
 
         //missing the rest of the object draws
@@ -289,9 +332,10 @@ public class GameScreen extends ScreenAdapter{
 
     private void updateObjects(float delta) {
 
-        model.getFireBoy().update(delta);
-        model.getWaterGirl().handleInputs(delta);
+        //model.getFireBoy().update(delta);
+        //model.getWaterGirl().handleInputs(delta);
         fireboy2d.update(delta);
+        watergirl2d.update(delta);
     }
 
     private void handleInputs(float delta) {
@@ -301,6 +345,7 @@ public class GameScreen extends ScreenAdapter{
 
     public void handleInput(float delta){
 
+        //              FireBoy input
         if(Gdx.input.isKeyJustPressed(Input.Keys.UP)){
             fireboy2d.b2body.applyLinearImpulse(new Vector2(0,7f),fireboy2d.b2body.getWorldCenter(),true);
         }
@@ -310,12 +355,41 @@ public class GameScreen extends ScreenAdapter{
         if(Gdx.input.isKeyPressed(Input.Keys.LEFT) && fireboy2d.b2body.getLinearVelocity().x >= -6) {
             fireboy2d.b2body.applyLinearImpulse(new Vector2(-0.5f, 0), fireboy2d.b2body.getWorldCenter(), true);
         }
-
+                // TODO por isto a dar bem. a sprite a cair para a direita/esquerda;
         if(!Gdx.input.isKeyPressed(Input.Keys.LEFT) && !Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            if(fireboy2d.b2body.getLinearVelocity().x>0)
+            if(fireboy2d.b2body.getLinearVelocity().x>0) {
                 fireboy2d.b2body.applyLinearImpulse(new Vector2(-0.4f, 0), fireboy2d.b2body.getWorldCenter(), true);
-            if(fireboy2d.b2body.getLinearVelocity().x<0)
+                if(fireboy2d.b2body.getLinearVelocity().x<0)
+                    fireboy2d.b2body.setLinearVelocity(0,fireboy2d.b2body.getLinearVelocity().y);
+            }
+            if(fireboy2d.b2body.getLinearVelocity().x<0) {
                 fireboy2d.b2body.applyLinearImpulse(new Vector2(0.4f, 0), fireboy2d.b2body.getWorldCenter(), true);
+                if (fireboy2d.b2body.getLinearVelocity().x > 0)
+                    fireboy2d.b2body.setLinearVelocity(0, fireboy2d.b2body.getLinearVelocity().y);
+            }
+        }
+        //              WaterGirl input
+        if(Gdx.input.isKeyJustPressed(Input.Keys.W)){
+            watergirl2d.b2body.applyLinearImpulse(new Vector2(0,7f),watergirl2d.b2body.getWorldCenter(),true);
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.D) && watergirl2d.b2body.getLinearVelocity().x <= 6){
+            watergirl2d.b2body.applyLinearImpulse(new Vector2(0.5f,0),watergirl2d.b2body.getWorldCenter(),true);
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.A) && watergirl2d.b2body.getLinearVelocity().x >= -6) {
+            watergirl2d.b2body.applyLinearImpulse(new Vector2(-0.5f, 0), watergirl2d.b2body.getWorldCenter(), true);
+        }
+        // TODO por isto a dar bem. a sprite a cair para a direita/esquerda;
+        if(!Gdx.input.isKeyPressed(Input.Keys.A) && !Gdx.input.isKeyPressed(Input.Keys.D)) {
+            if(watergirl2d.b2body.getLinearVelocity().x>0) {
+                watergirl2d.b2body.applyLinearImpulse(new Vector2(-0.4f, 0), watergirl2d.b2body.getWorldCenter(), true);
+                if (watergirl2d.b2body.getLinearVelocity().x < 0)
+                    watergirl2d.b2body.setLinearVelocity(0, watergirl2d.b2body.getLinearVelocity().y);
+            }
+            if(watergirl2d.b2body.getLinearVelocity().x<0) {
+                watergirl2d.b2body.applyLinearImpulse(new Vector2(0.4f, 0), watergirl2d.b2body.getWorldCenter(), true);
+                if (watergirl2d.b2body.getLinearVelocity().x > 0)
+                    watergirl2d.b2body.setLinearVelocity(0, watergirl2d.b2body.getLinearVelocity().y);
+            }
         }
 
 
@@ -324,14 +398,14 @@ public class GameScreen extends ScreenAdapter{
 
     public void createObjects(){
 
-        fireboy2d = new FireBoy2D(world,50,150);
-
+        fireboy2d = new FireBoy2D(world,50f*PIXEL_TO_METER,100f*PIXEL_TO_METER);
+        watergirl2d = new WaterGirl2D(world,50f*PIXEL_TO_METER,200f*PIXEL_TO_METER);
         BodyDef bdef = new BodyDef();
-        PolygonShape shape = new PolygonShape();
+        PolygonShape polyshape = new PolygonShape();
         FixtureDef fdef = new FixtureDef();
         Body body;
 
-        for (MapObject object : tiledmap.getLayers().get(4).getObjects().getByType(PolygonMapObject.class)) {
+        for (MapObject object : tiledmap.getLayers().get(6).getObjects().getByType(PolygonMapObject.class)) {
             Polygon poly = ((PolygonMapObject) object).getPolygon();
             bdef.type = BodyDef.BodyType.StaticBody;
             bdef.position.set(poly.getX()*PIXEL_TO_METER,poly.getY()*PIXEL_TO_METER);
@@ -342,23 +416,44 @@ public class GameScreen extends ScreenAdapter{
             }
 
             body = world.createBody(bdef);
-            shape.set(newVertices);
-            fdef.shape = shape;
+            polyshape.set(newVertices);
+            fdef.shape = polyshape;
 
             body.createFixture(fdef);
         }
 
-        for (MapObject object : tiledmap.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)) {
+        for (MapObject object : tiledmap.getLayers().get(5).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
             bdef.type = BodyDef.BodyType.StaticBody;
             bdef.position.set((rect.getX() + rect.getWidth() / 2)  * PIXEL_TO_METER, (rect.getY() + rect.getHeight() / 2)*PIXEL_TO_METER);
 
             body = world.createBody(bdef);
 
-            shape.setAsBox((rect.getWidth() / 2)*PIXEL_TO_METER, (rect.getHeight() / 2)*PIXEL_TO_METER);
-            fdef.shape = shape;
+            polyshape.setAsBox((rect.getWidth() / 2)*PIXEL_TO_METER, (rect.getHeight() / 2)*PIXEL_TO_METER);
+            fdef.shape = polyshape;
 
             body.createFixture(fdef);
+        }
+
+        for (MapObject object : tiledmap.getLayers().get(4).getObjects().getByType(PolygonMapObject.class)) {
+            diamond = new DiamondBody(world,object);
+
+            /*
+            Polygon poly = ((PolygonMapObject) object).getPolygon();
+            bdef.type = BodyDef.BodyType.StaticBody;
+            bdef.position.set(poly.getX()*PIXEL_TO_METER,poly.getY()*PIXEL_TO_METER);
+            float[] vertices = poly.getVertices();
+            float[] newVertices = new float[vertices.length];
+            for (int i = 0; i < vertices.length; ++i) {
+                newVertices[i] = vertices[i]*PIXEL_TO_METER;
+            }
+
+            body = world.createBody(bdef);
+            polyshape.set(newVertices);
+            fdef.shape = polyshape;
+            fdef.isSensor = true;
+            body.createFixture(fdef);*/
+
         }
     }
 

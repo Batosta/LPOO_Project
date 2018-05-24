@@ -1,5 +1,7 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
 import static com.mygdx.game.Character.Jump.*;
 import static com.mygdx.game.Character.Moving.*;
 
@@ -18,12 +20,7 @@ public class WaterGirlView extends CharacterView {
 
         super(game, text);
     }
-
-    /**
-     * Updates this Fire Boy model.
-     *
-     * @param model the model used to update this view
-     */
+/*
     @Override
     public void update(BoxBody model) {        //dar re-check do código. Pode ser melhorado i guess
         super.update(model);
@@ -71,6 +68,23 @@ public class WaterGirlView extends CharacterView {
 
         // goingright = ((FireBoy)model).isAccelerating();
         //((ShipModel)model).setAccelerating(false);
-        */
+
+    }
+    */
+    /**
+     * Draws the sprite from this view using a sprite batch.
+     * Chooses the correct texture or animation to be used
+     * depending on the moving flags.
+     *
+     * @param batch The sprite batch to be used for drawing.
+     */
+    @Override
+    public void draw(SpriteBatch batch) {
+        //                      if (goingleft)
+        //                    sprite.setRegion(acceleratingAnimation.getKeyFrame(stateTime, true));
+        //          else
+        //            sprite.setRegion(notAcceleratingRegion);
+
+        sprite.draw(batch);
     }
 }

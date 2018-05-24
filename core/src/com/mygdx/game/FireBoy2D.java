@@ -8,25 +8,25 @@ import java.awt.*;
 
 public class FireBoy2D extends BoxCharacter{
 
-    public FireBoy2D(World world,float x, float y){
+    public FireBoy2D(World world,float x, float y){     //x , y meters
         super(world,x,y);
         this.world = world;
         defineFireboy();
     }
 
     public void defineFireboy(){
-        BodyDef bdef = new BodyDef();
-        bdef.position.set(x*GameScreen.PIXEL_TO_METER,y*GameScreen.PIXEL_TO_METER);
+        bdef = new BodyDef();
+        bdef.position.set(x,y);
         bdef.type = BodyDef.BodyType.DynamicBody;
         b2body = world.createBody(bdef);
 
-        FixtureDef fdef = new FixtureDef();
+        fdef = new FixtureDef();
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(15*GameScreen.PIXEL_TO_METER,20*GameScreen.PIXEL_TO_METER);
 
         fdef.shape = shape;
         fdef.friction = 1f;
-        b2body.createFixture(fdef);
+        b2body.createFixture(fdef).setUserData("fireboy");
 
     }
 

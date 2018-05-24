@@ -27,6 +27,7 @@ public class BoxCharacter extends BoxBody {
 
     public void update(float delta){
         moving=Moving.STAND;
+        jumpstate=Jump.STOP;
         if(b2body.getLinearVelocity().y>0){
             jumpstate=Jump.ASCENDING;
         }else if(b2body.getLinearVelocity().y<0){
@@ -36,7 +37,8 @@ public class BoxCharacter extends BoxBody {
         if(b2body.getLinearVelocity().x>0){
             moving=Moving.RIGHT;
         }
-        if (b2body.getLinearVelocity().x>0){
+
+        if (b2body.getLinearVelocity().x<0){
             moving=Moving.LEFT;
         }
     }
