@@ -50,6 +50,7 @@ public class DiamondBody{
 
     }
 
+    public boolean getCaught(){ return this.caught;}
     public void setCaught(){
         this.caught = !this.caught;
     }

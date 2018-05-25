@@ -167,6 +167,16 @@ public class GameScreen extends ScreenAdapter{
     private WaterGirl2D watergirl2d;
 
     /**
+     * Blue door body used in Box2D. Is only a sensor
+     */
+    public DoorBody bluedoorbody;
+
+    /**
+     * Red door body used in Box2D. Is only a sensor
+     */
+    public DoorBody reddoorbody;
+
+    /**
      * Queue with the red diamonds to be caught by Fire Boy
      */
     Queue<DiamondBody> reddiamonds;
@@ -175,6 +185,8 @@ public class GameScreen extends ScreenAdapter{
      * Queue with the blue diamonds to be caught by Water Girl
      */
     Queue<DiamondBody> bluediamonds;
+
+    Queue<Body> todestroydiamonds;
 
 
     private World world;
@@ -187,6 +199,8 @@ public class GameScreen extends ScreenAdapter{
 
     OrthogonalTiledMapRenderer renderer;
 
+    public float gametimer;
+
     /**
      * Creates the screen.
      *
@@ -196,6 +210,10 @@ public class GameScreen extends ScreenAdapter{
     public GameScreen(FireBoyWaterGirl fbwg, GameModel model) {
         this.fbwg = fbwg;
         this.model = model;
+
+        gametimer=0;
+
+        loadImages();
 
         maploader = new TmxMapLoader();
         tiledmap = maploader.load("provmap.tmx");
@@ -258,7 +276,7 @@ public class GameScreen extends ScreenAdapter{
      */
     @Override
     public void render(float delta) {
-
+        gametimer++;
         handleInput(delta);
         handleInputs(delta);
         updateObjects(delta);
@@ -281,6 +299,10 @@ public class GameScreen extends ScreenAdapter{
 
         world.step(1/60f, 6, 2);
 
+        destroyObjects();
+
+        checkLevelEnd();
+
         fbwg.getSpriteBatch().begin();
         //drawBackground
         drawObjects();
@@ -293,6 +315,23 @@ public class GameScreen extends ScreenAdapter{
             debugCamera = camera.combined.cpy();
             debugCamera.scl(1 / PIXEL_TO_METER);
             boxrenderer.render(world, debugCamera);
+        }
+    }
+
+    private void checkLevelEnd() {
+        System.out.println("1: " + bluedoorbody.getDooropened()+ "2: " + reddoorbody.getDooropened()+ "3: " + bluediamonds.size +"4: " + reddiamonds.size);
+        if(bluedoorbody.getDooropened() && reddoorbody.getDooropened() && bluediamonds.size == 0 && reddiamonds.size == 0)
+            System.out.println("WIN");
+    }
+
+    private void destroyObjects() {
+        for(int i = 0 ; i < todestroydiamonds.size ; i++){
+             if(todestroydiamonds.get(i).getFixtureList().get(0).getUserData() == "bluediamond")
+                 bluediamonds.removeLast();
+            if(todestroydiamonds.get(i).getFixtureList().get(0).getUserData() == "reddiamond")
+                reddiamonds.removeLast();
+            world.destroyBody(todestroydiamonds.get(i));
+            todestroydiamonds.removeIndex(i);
         }
     }
 
@@ -320,6 +359,7 @@ public class GameScreen extends ScreenAdapter{
         //model.getWaterGirl().handleInputs(delta);
         fireboy2d.update(delta);
         watergirl2d.update(delta);
+        bluedoorbody.update(delta);
     }
 
     private void handleInputs(float delta) {
@@ -382,6 +422,7 @@ public class GameScreen extends ScreenAdapter{
 
     public void createObjects(){
 
+        todestroydiamonds = new Queue<Body>();
         fireboy2d = new FireBoy2D(world,50f*PIXEL_TO_METER,100f*PIXEL_TO_METER);
         watergirl2d = new WaterGirl2D(world,50f*PIXEL_TO_METER,200f*PIXEL_TO_METER);
 
@@ -389,6 +430,14 @@ public class GameScreen extends ScreenAdapter{
         PolygonShape polyshape = new PolygonShape();
         FixtureDef fdef = new FixtureDef();
         Body body;
+
+        for (MapObject object : tiledmap.getLayers().get(8).getObjects().getByType(RectangleMapObject.class)) {
+            if(object.getName().equals("bluedoor")) {
+                bluedoorbody = new DoorBody(world, object, 1);
+            }
+            else if (object.getName().equals("reddoor"))
+                reddoorbody = new DoorBody(world, object, 0);
+        }
 
         for (MapObject object : tiledmap.getLayers().get(7).getObjects().getByType(PolygonMapObject.class)) {
             Polygon poly = ((PolygonMapObject) object).getPolygon();
@@ -403,6 +452,7 @@ public class GameScreen extends ScreenAdapter{
             body = world.createBody(bdef);
             polyshape.set(newVertices);
             fdef.shape = polyshape;
+            fdef.isSensor=false;
 
             body.createFixture(fdef);
         }
@@ -431,4 +481,5 @@ public class GameScreen extends ScreenAdapter{
         }
 
     }
+
 }
