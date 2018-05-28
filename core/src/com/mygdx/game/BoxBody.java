@@ -1,17 +1,24 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.Body;
 
 public class BoxBody {
 
     public World world;
-    public Body b2body;
+    protected Body b2body;
     protected BodyDef bdef;
     protected FixtureDef fdef;
+    protected MapObject object;
 
     protected float x;
     protected float y;
+
+    public BoxBody(World world,MapObject object){     //x , y meters
+        this.world = world;
+        this.object=object;
+    }
 
     public BoxBody(World world,float x,float y){
         this.world = world;

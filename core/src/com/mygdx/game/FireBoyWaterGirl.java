@@ -19,7 +19,6 @@ public class FireBoyWaterGirl extends Game {
 	public void create() {
 		batch = new SpriteBatch();
 		assetManager = new AssetManager();
-
 		beginGame();
 	}
 	
@@ -38,8 +37,8 @@ public class FireBoyWaterGirl extends Game {
 		GameModel game = new GameModel(15, 15, 5, 10);
 
 		loadImages();
-		//setScreen(new GameScreen(this, game));
-		setScreen(new MainMenuScreen(this));
+		setScreen(new GameScreen(this, game));
+		//setScreen(new MainMenuScreen(this));
 	}
 
 	/**
@@ -71,7 +70,7 @@ public class FireBoyWaterGirl extends Game {
 		this.assetManager.load("lever.png", Texture.class);
 		this.assetManager.load("wall.png", Texture.class);
 		this.assetManager.load("purplePlatform.png", Texture.class);
-
+		this.assetManager.load("hordooropening.png", Texture.class);
 
 		this.assetManager.load("mainMenuBackground.jpg", Texture.class);
 		this.assetManager.load("startButtonNormal.png", Texture.class);

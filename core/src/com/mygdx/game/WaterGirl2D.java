@@ -21,7 +21,7 @@ public class WaterGirl2D extends BoxCharacter{
 
         FixtureDef fdef = new FixtureDef();
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(15*GameScreen.PIXEL_TO_METER,20*GameScreen.PIXEL_TO_METER);
+        shape.setAsBox(10*GameScreen.PIXEL_TO_METER,20*GameScreen.PIXEL_TO_METER);
 
         fdef.shape = shape;
         fdef.friction = 1f;

@@ -20,6 +20,7 @@ public class WorldContactListener implements ContactListener {
 
     @Override
     public void beginContact(Contact contact) {
+
         Fixture fixtureA = contact.getFixtureA();
         Fixture fixtureB = contact.getFixtureB();
 
@@ -40,17 +41,25 @@ public class WorldContactListener implements ContactListener {
 
         if (fixtureA.getUserData() == "fireboy" && fixtureB.getUserData() == "reddoor") {
             gamescreen.reddoorbody.setDooropened(true);
-            //Body bodyB = fixtureB.getBody();
-            if(gamescreen.bluedoorbody.getDooropened())
-            gamescreen.tiledmap.getLayers().get(9).setVisible(false);
         }
 
         if (fixtureA.getUserData() == "watergirl" && fixtureB.getUserData() == "bluedoor") {
             gamescreen.bluedoorbody.setDooropened(true);
-            //Body bodyB = fixtureB.getBody();
-            if(gamescreen.reddoorbody.getDooropened())
-            gamescreen.tiledmap.getLayers().get(9).setVisible(false);
         }
+
+        if (fixtureA.getUserData() == "fireboy" && fixtureB.getUserData() == "button") {
+        }
+
+        //  allows fire boy to jump on slopes
+        if (fixtureA.getUserData() == "fireboy" && fixtureB.getUserData() == "rampa") {
+            gamescreen.fireboy2d.canjump = true;
+        }
+
+        //  allows water girl to jump on slopes
+        if (fixtureA.getUserData() == "watergirl" && fixtureB.getUserData() == "rampa") {
+            gamescreen.watergirl2d.canjump = true;
+        }
+
     }
 
 
@@ -61,8 +70,13 @@ public class WorldContactListener implements ContactListener {
         public void endContact(Contact contact) {
             Fixture fixtureA = contact.getFixtureA();
             Fixture fixtureB = contact.getFixtureB();
+
             if (fixtureA.getUserData() == "fireboy" && fixtureB.getUserData() == "reddoor") {
                 gamescreen.reddoorbody.setDooropened(false);
+            }
+
+            if (fixtureA.getUserData() == "watergirl" && fixtureB.getUserData() == "bluedoor") {
+                gamescreen.bluedoorbody.setDooropened(false);
             }
         }
 

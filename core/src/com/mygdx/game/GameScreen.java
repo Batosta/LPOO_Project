@@ -27,11 +27,15 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 
 
 import java.lang.Object;
+import java.util.HashMap;
 
 /**
  * Game screen. Draws all the views of all objects of the game.
  */
 public class GameScreen extends ScreenAdapter{
+
+
+    public static float BATCH_CONST = 1.5f;
 
     private int gameLevel = 0;
 
@@ -147,9 +151,9 @@ public class GameScreen extends ScreenAdapter{
     private PortalView portalView;
 
     /**
-     * A wall view used to draw walls.
+     * HashMap with the view of the horizontal and vertical colored doors to be opened by the colored buttons
      */
-    private WallView wallView;
+    HashMap<String, ODoorView> ODoorsView;
 
     /**
      * The Water Girl view used to draw the Water Girl.
@@ -159,12 +163,12 @@ public class GameScreen extends ScreenAdapter{
      * Fire Boy used in Box2D
      */
 
-    private FireBoy2D fireboy2d;
+    public FireBoy2D fireboy2d;
 
     /**
      * Water Girl used in Box2D
      */
-    private WaterGirl2D watergirl2d;
+    public WaterGirl2D watergirl2d;
 
     /**
      * Blue door body used in Box2D. Is only a sensor
@@ -186,8 +190,20 @@ public class GameScreen extends ScreenAdapter{
      */
     Queue<DiamondBody> bluediamonds;
 
+    /**
+     * HashMap with the horizontal and vertical colored doors to be opened by the colored buttons
+     */
+    HashMap<String, ODoorBody> ODoors;
+
+    /**
+     * Queue with the diamonds set before to destroy
+     */
     Queue<Body> todestroydiamonds;
 
+    /**
+     * hash map with the colored buttons to open colored doors
+     */
+    HashMap<String, ButtonBody> buttons;
 
     private World world;
 
@@ -201,6 +217,8 @@ public class GameScreen extends ScreenAdapter{
 
     public float gametimer;
 
+    public boolean gamewon = false;
+
     /**
      * Creates the screen.
      *
@@ -212,8 +230,6 @@ public class GameScreen extends ScreenAdapter{
         this.model = model;
 
         gametimer=0;
-
-        loadImages();
 
         maploader = new TmxMapLoader();
         tiledmap = maploader.load("provmap.tmx");
@@ -265,7 +281,6 @@ public class GameScreen extends ScreenAdapter{
         leverView = new LeverView(fbwg, "lever.png");
         platformView = new PlatformView(fbwg, "purplePlatform.png");
         portalView = new PortalView(fbwg, "portal.png");
-        wallView = new WallView(fbwg, "wall.png");
         waterGirlView = new WaterGirlView(fbwg, "water.png");
     }
 
@@ -320,8 +335,10 @@ public class GameScreen extends ScreenAdapter{
 
     private void checkLevelEnd() {
         System.out.println("1: " + bluedoorbody.getDooropened()+ "2: " + reddoorbody.getDooropened()+ "3: " + bluediamonds.size +"4: " + reddiamonds.size);
-        if(bluedoorbody.getDooropened() && reddoorbody.getDooropened() && bluediamonds.size == 0 && reddiamonds.size == 0)
-            System.out.println("WIN");
+        if(bluedoorbody.getDooropened() && reddoorbody.getDooropened() && bluediamonds.size == 0 && reddiamonds.size == 0) {
+            tiledmap.getLayers().get(10).setVisible(false);
+            gamewon=true;
+        }
     }
 
     private void destroyObjects() {
@@ -350,6 +367,12 @@ public class GameScreen extends ScreenAdapter{
         waterGirlView.update(watergirl2d);
         waterGirlView.draw(fbwg.getSpriteBatch());
 
+        for (HashMap.Entry<String, ODoorView> entry: ODoorsView.entrySet()) {
+
+            entry.getValue().update(ODoors.get(entry.getKey()));
+            entry.getValue().draw(fbwg.getSpriteBatch());
+        }
+
         //missing the rest of the object draws
     }
 
@@ -369,9 +392,15 @@ public class GameScreen extends ScreenAdapter{
 
     public void handleInput(float delta){
 
+
         //              FireBoy input
         if(Gdx.input.isKeyJustPressed(Input.Keys.UP)){
-            fireboy2d.b2body.applyLinearImpulse(new Vector2(0,7f),fireboy2d.b2body.getWorldCenter(),true);
+            if(fireboy2d.jumpstate == BoxCharacter.Jump.STOP)
+            fireboy2d.b2body.applyLinearImpulse(new Vector2(0,8.3f),fireboy2d.b2body.getWorldCenter(),true);
+            else if (fireboy2d.canjump) {
+                fireboy2d.b2body.applyLinearImpulse(new Vector2(0, 8.3f), fireboy2d.b2body.getWorldCenter(), true);
+                fireboy2d.canjump=false;
+            }
         }
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) && fireboy2d.b2body.getLinearVelocity().x <= 6){
             fireboy2d.b2body.applyLinearImpulse(new Vector2(0.5f,0),fireboy2d.b2body.getWorldCenter(),true);
@@ -394,7 +423,12 @@ public class GameScreen extends ScreenAdapter{
         }
         //              WaterGirl input
         if(Gdx.input.isKeyJustPressed(Input.Keys.W)){
-            watergirl2d.b2body.applyLinearImpulse(new Vector2(0,7f),watergirl2d.b2body.getWorldCenter(),true);
+            if(watergirl2d.jumpstate == BoxCharacter.Jump.STOP)
+            watergirl2d.b2body.applyLinearImpulse(new Vector2(0,8.3f),watergirl2d.b2body.getWorldCenter(),true);
+            else if (watergirl2d.canjump) {
+                watergirl2d.b2body.applyLinearImpulse(new Vector2(0, 8.3f), fireboy2d.b2body.getWorldCenter(), true);
+                watergirl2d.canjump=false;
+            }
         }
         if(Gdx.input.isKeyPressed(Input.Keys.D) && watergirl2d.b2body.getLinearVelocity().x <= 6){
             watergirl2d.b2body.applyLinearImpulse(new Vector2(0.5f,0),watergirl2d.b2body.getWorldCenter(),true);
@@ -431,6 +465,23 @@ public class GameScreen extends ScreenAdapter{
         FixtureDef fdef = new FixtureDef();
         Body body;
 
+        ODoors = new HashMap<String, ODoorBody>();
+        ODoorsView = new HashMap<String, ODoorView>();
+        for (MapObject object : tiledmap.getLayers().get(11).getObjects().getByType(RectangleMapObject.class)){
+            ODoors.put(object.getName(),new ODoorBody(world,object));
+            ODoorsView.put(object.getName(), new ODoorView(fbwg, "hordooropening.png"));
+        }
+
+        for (MapObject object : tiledmap.getLayers().get(10).getObjects().getByType(RectangleMapObject.class)){
+            ODoors.put(object.getName(),new ODoorBody(world,object));
+            //ODoorsView.put(object.getName(), new ODoorView(fbwg, "hordooropening.png"));
+        }
+
+        buttons = new HashMap<String, ButtonBody>();
+        for (MapObject object : tiledmap.getLayers().get(9).getObjects().getByType(RectangleMapObject.class)) {
+            buttons.put(object.getName(),new ButtonBody(world,object));
+        }
+
         for (MapObject object : tiledmap.getLayers().get(8).getObjects().getByType(RectangleMapObject.class)) {
             if(object.getName().equals("bluedoor")) {
                 bluedoorbody = new DoorBody(world, object, 1);
@@ -453,8 +504,7 @@ public class GameScreen extends ScreenAdapter{
             polyshape.set(newVertices);
             fdef.shape = polyshape;
             fdef.isSensor=false;
-
-            body.createFixture(fdef);
+            body.createFixture(fdef).setUserData("rampa");
         }
 
         for (MapObject object : tiledmap.getLayers().get(6).getObjects().getByType(RectangleMapObject.class)) {

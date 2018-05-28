@@ -3,6 +3,7 @@ package com.mygdx.game;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import static com.mygdx.game.GameScreen.BATCH_CONST;
 import static com.mygdx.game.GameScreen.PIXEL_TO_METER;
 
 /**
@@ -50,8 +51,7 @@ public abstract class BodyView {
      */
     public void update(BoxBody body){                       //      NAO SEI COM USAR ISTO
 
-        sprite.setCenter(body.b2body.getPosition().x/PIXEL_TO_METER/1.5f, body.b2body.getPosition().y/PIXEL_TO_METER/1.5f);
-
+        sprite.setCenter(body.b2body.getPosition().x/PIXEL_TO_METER/BATCH_CONST, body.b2body.getPosition().y/PIXEL_TO_METER/BATCH_CONST);
 
     }
 }

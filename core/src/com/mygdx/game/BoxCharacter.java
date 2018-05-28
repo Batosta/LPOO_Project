@@ -14,6 +14,7 @@ public class BoxCharacter extends BoxBody {
 
     protected Moving moving;
     protected Jump jumpstate;
+    protected boolean canjump;
 
     /**
      * constructor of the character b2body

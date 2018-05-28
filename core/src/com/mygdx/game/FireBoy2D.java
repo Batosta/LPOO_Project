@@ -22,7 +22,7 @@ public class FireBoy2D extends BoxCharacter{
 
         fdef = new FixtureDef();
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(15*GameScreen.PIXEL_TO_METER,20*GameScreen.PIXEL_TO_METER);
+        shape.setAsBox(10*GameScreen.PIXEL_TO_METER,20*GameScreen.PIXEL_TO_METER);
 
         fdef.shape = shape;
         fdef.friction = 1f;
