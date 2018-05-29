@@ -310,7 +310,7 @@ public class GameScreen extends ScreenAdapter{
         renderer.render();
 
         // world renderer
-        boxrenderer.render(world,camera.combined);
+//        boxrenderer.render(world,camera.combined);
 
         world.step(1/60f, 6, 2);
 
@@ -383,6 +383,7 @@ public class GameScreen extends ScreenAdapter{
         watergirl2d.update(delta);
         bluedoorbody.update(delta);
         ODoors.get("purple").update(delta);
+        ODoors.get("red").update(delta);
     }
 
     private void handleInputs(float delta) {
@@ -467,14 +468,23 @@ public class GameScreen extends ScreenAdapter{
 
         ODoors = new HashMap<String, ODoorBody>();
         ODoorsView = new HashMap<String, ODoorView>();
-        for (MapObject object : tiledmap.getLayers().get(11).getObjects().getByType(RectangleMapObject.class)){
-            ODoors.put(object.getName(),new ODoorBody(world,object));
-            ODoorsView.put(object.getName(), new ODoorView(fbwg, "hordooropening.png"));
+        for (MapObject object : tiledmap.getLayers().get(11).getObjects().getByType(RectangleMapObject.class)){         //ADD DOORS COLORS HERE
+            System.out.println("out" + object.getName());
+            ODoors.put(object.getName(),new ODoorBody(world,object,0));
+            if(object.getName().equals("purple"))
+                ODoorsView.put(object.getName(), new ODoorView(fbwg, "horpurpledoor.png"));
+            if(object.getName().equals("red"))
+                ODoorsView.put(object.getName(), new ODoorView(fbwg, "horreddoor.png"));
         }
 
         for (MapObject object : tiledmap.getLayers().get(10).getObjects().getByType(RectangleMapObject.class)){
-            ODoors.put(object.getName(),new ODoorBody(world,object));
-            //ODoorsView.put(object.getName(), new ODoorView(fbwg, "hordooropening.png"));
+            ODoors.put(object.getName(),new ODoorBody(world,object,1));
+            if(object.getName().equals("purple"))
+                ODoorsView.put(object.getName(), new ODoorView(fbwg, "verpurpledoor.png"));
+            if(object.getName().equals("red")) {
+                System.out.println("doorview:dir: ");
+                ODoorsView.put(object.getName(), new ODoorView(fbwg, "verreddoor.png"));
+            }
         }
 
         buttons = new HashMap<String, ButtonBody>();

@@ -24,16 +24,16 @@ public class ODoorView extends BodyView {
 
     private Animation animation;
 
+    private int dir;
+
     /**
      * constructor of the ODoor view
      *
      * @param game the game.
      * @param text the texture with all possible positions for the ODoor
      */
-    public ODoorView(FireBoyWaterGirl game, String text) {
-
+    public ODoorView(FireBoyWaterGirl game, String text) {              // dir == 0 if horizontal, 1 if vertical
         super(game, text);
-
     }
 
     @Override
@@ -63,25 +63,42 @@ public class ODoorView extends BodyView {
 
     @Override
     public Sprite createSprite(FireBoyWaterGirl game, String text) {
-        System.out.println(text);
         Texture texture = game.getAssetManager().get(text);
-        TextureRegion[][] thrustRegion = TextureRegion.split(
-                texture,
-                96,    // 3 columns
-                32);   // 4 lines
         TextureRegion[] frames = new TextureRegion[11];
+        if(text.contains("hor")) {
+            TextureRegion[][] thrustRegion = TextureRegion.split(
+                    texture,
+                    96,    // 3 columns
+                    32);   // 4 lines
 
-        int index=0;
+            int index = 0;
 
-        for(int i = 0; i < 4 ; i++){
-            for(int j = 0 ; j < 3 ; j++){
-                if(index==11)
-                    break;
-                frames[index++] =  thrustRegion[i][j];
+            for (int i = 0; i < 4; i++) {
+                for (int j = 0; j < 3; j++) {
+                    if (index == 11)
+                        break;
+                    frames[index++] = thrustRegion[i][j];
+                }
             }
+        } else if(text.contains("ver")){
+            TextureRegion[][] thrustRegion = TextureRegion.split(
+                    texture,
+                    32,    // 3 columns
+                    96);   // 4 lines
+
+            int index = 0;
+
+            for (int j = 0; j < 4; j++) {
+                for (int i = 0; i < 3; i++) {
+                    if (index == 11)
+                        break;
+                    frames[index++] = thrustRegion[i][j];
+                }
+            }
+
         }
 
-
+        System.out.println("after");
         // 0.25 seconds per frame
         animation = new Animation<TextureRegion>(.10f, frames);
         animation.setPlayMode(Animation.PlayMode.NORMAL);                           // Can hide this

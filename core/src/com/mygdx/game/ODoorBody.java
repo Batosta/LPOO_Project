@@ -31,12 +31,17 @@ public class ODoorBody extends BoxBody{
 
     private float oldwidth;
 
+    private float oldheight;
+
     private float width;
 
     private float height;
 
-    public ODoorBody(World world,MapObject object){
+    private int dir;
+
+    public ODoorBody(World world,MapObject object,int dir){             // dir == 0 if horizontal; 1 if vertical
         super(world,object);
+        this.dir=dir;
         doorstate=DoorState.CLOSED;
         buttonpressed=false;
         fullyopened=false;
@@ -54,7 +59,7 @@ public class ODoorBody extends BoxBody{
 
         polyshape.setAsBox((rect.getWidth() / 2)*GameScreen.PIXEL_TO_METER, (rect.getHeight() / 2)*GameScreen.PIXEL_TO_METER);
         width = oldwidth = (rect.getWidth() / 2)*GameScreen.PIXEL_TO_METER;
-        height = (rect.getHeight()/2)*GameScreen.PIXEL_TO_METER;
+        height = oldheight = (rect.getHeight()/2)*GameScreen.PIXEL_TO_METER;
         fdef.shape = polyshape;
         b2body.createFixture(fdef).setUserData(object.getName());
 
@@ -80,12 +85,14 @@ public class ODoorBody extends BoxBody{
             }
         }
         if(doorstate == DoorState.CLOSING || doorstate == DoorState.OPENING)
-        resize(delta);
+            if(this.dir==0)
+        resizeHor(delta);
+        else resizeVer(delta);
     }
 
     /*                ESTE ERA PA O BODY DA PORTA IR DIMINUINDO D TAMANHO
      */
-    public void resize(float delta) {
+    public void resizeHor(float delta) {
 
         b2body.destroyFixture(b2body.getFixtureList().get(0));
 
@@ -116,6 +123,39 @@ public class ODoorBody extends BoxBody{
 
         b2body.createFixture(fdef).setUserData(object.getName());
         //b2body.setTransform(b2body.getPosition().x,b2body.getPosition().y,0);
+
+    }
+
+    public void resizeVer(float delta) {
+
+        b2body.destroyFixture(b2body.getFixtureList().get(0));
+
+
+        Vector2[] newVertices = new Vector2[4]; //It is a box
+        newVertices[0] = new Vector2(-width,oldheight);
+        newVertices[1] = new Vector2(width,oldheight);
+        newVertices[2] = new Vector2(width,-1.5f);
+        newVertices[3] = new Vector2(-width,-1.5f);
+
+        polyshape.set(newVertices);
+        if(doorstate==DoorState.OPENING) {
+            oldheight = oldheight - 0.04f;
+            if(oldheight<-1.3f) {
+                doorstate=DoorState.OPENED;
+            }
+        }
+        else if (doorstate==DoorState.CLOSING) {
+            oldwidth = oldwidth + 0.04f;
+            if(oldheight>=height) {
+                doorstate=DoorState.CLOSED;
+            }
+        }
+
+
+        fdef.shape = polyshape;
+        //polyshape.dispose();
+
+        b2body.createFixture(fdef).setUserData(object.getName());
 
     }
 
