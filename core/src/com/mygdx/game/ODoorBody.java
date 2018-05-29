@@ -71,7 +71,7 @@ public class ODoorBody extends BoxBody{
     }
 
     public void update(float delta){
-        if(this.buttonpressed==true) {              // button is pressed
+        if(this.buttonpressed) {              // button is pressed
             if(doorstate!=DoorState.OPENED)
             doorstate=DoorState.OPENING;
         } else {
@@ -105,9 +105,7 @@ public class ODoorBody extends BoxBody{
         }
         else if (doorstate==DoorState.CLOSING) {
             oldwidth = oldwidth + 0.04f;
-            System.out.println("fora");
             if(oldwidth>=width) {
-                System.out.println("dentro");
                 doorstate=DoorState.CLOSED;
             }
         }

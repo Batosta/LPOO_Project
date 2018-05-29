@@ -23,7 +23,13 @@ public class DoorBody{
     float doortimer;
 
     boolean dooropened;
-
+    /**
+     * Constructor of the moving door body.
+     *
+     * @param world the box2d world.
+     * @param object the object from the tiled map that defines the box2d body
+     * @param color it decides the door color (0 if red, 1 if blue)
+     */
     public DoorBody(World world,MapObject object,int color){     //x , y meters ??           color = 0 if red, 1 if blue
         dooropened=false;
         this.world = world;

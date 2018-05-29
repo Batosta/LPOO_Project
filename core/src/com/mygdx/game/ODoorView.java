@@ -24,10 +24,6 @@ public class ODoorView extends BodyView {
 
     private Animation animation;
 
-    boolean entered=false;
-
-    boolean zerostate=true;
-
     /**
      * constructor of the ODoor view
      *
@@ -43,21 +39,13 @@ public class ODoorView extends BodyView {
     @Override
     public void update(BoxBody body){
         super.update(body);
-        if(((ODoorBody)body).getButtonpressed()){
+        if(((ODoorBody)body).doorstate==ODoorBody.DoorState.OPENING){
             stateTime += Gdx.graphics.getDeltaTime();
-            entered=true;
             sprite.setRegion((TextureRegion)animation.getKeyFrame(stateTime));
-        } else {
-            if(entered){
-                if(zerostate) {
-                    stateTime = 0;
-                    zerostate=false;
-                }
-                stateTime += Gdx.graphics.getDeltaTime();
-                animation.setPlayMode(Animation.PlayMode.REVERSED);
+        } else if(((ODoorBody)body).doorstate==ODoorBody.DoorState.CLOSING){
+                //animation.setPlayMode(Animation.PlayMode.REVERSED);
                 sprite.setRegion((TextureRegion)animation.getKeyFrame(stateTime));
-            }
-
+                stateTime -= Gdx.graphics.getDeltaTime();
         }
     }
 
@@ -70,7 +58,6 @@ public class ODoorView extends BodyView {
      */
     @Override
     public void draw(SpriteBatch batch) {
-
         sprite.draw(batch);
     }
 
@@ -103,5 +90,4 @@ public class ODoorView extends BodyView {
         sprite.setSize(sprite.getWidth()/BATCH_CONST,sprite.getHeight()/BATCH_CONST);
         return sprite;
     }
-
 }
