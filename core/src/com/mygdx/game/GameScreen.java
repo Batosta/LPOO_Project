@@ -334,7 +334,6 @@ public class GameScreen extends ScreenAdapter{
     }
 
     private void checkLevelEnd() {
-        System.out.println("1: " + bluedoorbody.getDooropened()+ "2: " + reddoorbody.getDooropened()+ "3: " + bluediamonds.size +"4: " + reddiamonds.size);
         if(bluedoorbody.getDooropened() && reddoorbody.getDooropened() && bluediamonds.size == 0 && reddiamonds.size == 0) {
             tiledmap.getLayers().get(10).setVisible(false);
             gamewon=true;
@@ -383,6 +382,7 @@ public class GameScreen extends ScreenAdapter{
         fireboy2d.update(delta);
         watergirl2d.update(delta);
         bluedoorbody.update(delta);
+        ODoors.get("purple").update(delta);
     }
 
     private void handleInputs(float delta) {

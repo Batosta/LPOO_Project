@@ -20,6 +20,7 @@ public class ButtonBody extends BoxBody{
     public ButtonBody(World world,MapObject object){     //x , y meters
         super(world,object);
         defineButton(object);
+        this.object=object;
     }
 
     public void defineButton(MapObject object){
@@ -36,7 +37,7 @@ public class ButtonBody extends BoxBody{
         polyshape.setAsBox((rect.getWidth() / 2)*GameScreen.PIXEL_TO_METER, (rect.getHeight() / 2)*GameScreen.PIXEL_TO_METER);
         fdef.shape = polyshape;
 
-        b2body.createFixture(fdef).setUserData("button");
+        b2body.createFixture(fdef).setUserData(this);
 
     }
 

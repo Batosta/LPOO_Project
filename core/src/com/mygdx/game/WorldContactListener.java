@@ -47,7 +47,12 @@ public class WorldContactListener implements ContactListener {
             gamescreen.bluedoorbody.setDooropened(true);
         }
 
-        if (fixtureA.getUserData() == "fireboy" && fixtureB.getUserData() == "button") {
+        if (fixtureA.getUserData() == "fireboy" && (fixtureB.getUserData() instanceof ButtonBody)) {
+            gamescreen.ODoors.get(((ButtonBody) fixtureB.getUserData()).getMapObject().getName()).setOpendoor(true);
+        }
+
+        if (fixtureA.getUserData() == "watergirl" && (fixtureB.getUserData() instanceof ButtonBody)) {
+            gamescreen.ODoors.get(((ButtonBody) fixtureB.getUserData()).getMapObject().getName()).setOpendoor(true);
         }
 
         //  allows fire boy to jump on slopes
@@ -77,6 +82,15 @@ public class WorldContactListener implements ContactListener {
 
             if (fixtureA.getUserData() == "watergirl" && fixtureB.getUserData() == "bluedoor") {
                 gamescreen.bluedoorbody.setDooropened(false);
+            }
+
+
+            if (fixtureA.getUserData() == "fireboy" && (fixtureB.getUserData() instanceof ButtonBody)) {
+                gamescreen.ODoors.get(((ButtonBody) fixtureB.getUserData()).getMapObject().getName()).setOpendoor(false);
+            }
+
+            if (fixtureA.getUserData() == "watergirl" && (fixtureB.getUserData() instanceof ButtonBody)) {
+                gamescreen.ODoors.get(((ButtonBody) fixtureB.getUserData()).getMapObject().getName()).setOpendoor(false);
             }
         }
 

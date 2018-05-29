@@ -48,4 +48,7 @@ public class BoxBody {
 //    }
 
 
+    public MapObject getMapObject(){
+        return this.object;
+    }
 }

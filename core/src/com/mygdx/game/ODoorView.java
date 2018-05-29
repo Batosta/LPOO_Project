@@ -24,6 +24,8 @@ public class ODoorView extends BodyView {
 
     private Animation animation;
 
+    boolean entered=false;
+
     /**
      * constructor of the ODoor view
      *
@@ -39,7 +41,17 @@ public class ODoorView extends BodyView {
     @Override
     public void update(BoxBody body){
         super.update(body);
-        stateTime += Gdx.graphics.getDeltaTime();
+        if(((ODoorBody)body).getOpendoor()){
+            stateTime += Gdx.graphics.getDeltaTime();
+            entered=true;
+            sprite.setRegion((TextureRegion)animation.getKeyFrame(stateTime));
+        } else {
+            if(entered){
+                animation.setPlayMode(Animation.PlayMode.REVERSED);
+                sprite.setRegion((TextureRegion)animation.getKeyFrame(stateTime));
+            }
+
+        }
     }
 
     /**
@@ -63,20 +75,22 @@ public class ODoorView extends BodyView {
                 texture,
                 96,    // 3 columns
                 32);   // 4 lines
-        TextureRegion[] frames = new TextureRegion[12];
+        TextureRegion[] frames = new TextureRegion[11];
 
         int index=0;
 
-        for(int i = 0; i < 3 ; i++){
-            for(int j = 0 ; j < 4 ; j++){
-                System.out.println(". " + i + " " + j + " " + index);
-                frames[index++] =  thrustRegion[j][i];
+        for(int i = 0; i < 4 ; i++){
+            for(int j = 0 ; j < 3 ; j++){
+                if(index==11)
+                    break;
+                frames[index++] =  thrustRegion[i][j];
             }
         }
 
 
         // 0.25 seconds per frame
-        animation = new Animation<TextureRegion>(.25f, frames);
+        animation = new Animation<TextureRegion>(.10f, frames);
+        animation.setPlayMode(Animation.PlayMode.NORMAL);                           // Can hide this
         //return new Sprite((Texture)game.getAssetManager().get(text));
         Sprite sprite = new Sprite((TextureRegion)animation.getKeyFrame(0));
         sprite.setSize(sprite.getWidth()/BATCH_CONST,sprite.getHeight()/BATCH_CONST);
