@@ -26,6 +26,8 @@ public class ODoorView extends BodyView {
 
     boolean entered=false;
 
+    boolean zerostate=true;
+
     /**
      * constructor of the ODoor view
      *
@@ -41,12 +43,17 @@ public class ODoorView extends BodyView {
     @Override
     public void update(BoxBody body){
         super.update(body);
-        if(((ODoorBody)body).getOpendoor()){
+        if(((ODoorBody)body).getButtonpressed()){
             stateTime += Gdx.graphics.getDeltaTime();
             entered=true;
             sprite.setRegion((TextureRegion)animation.getKeyFrame(stateTime));
         } else {
             if(entered){
+                if(zerostate) {
+                    stateTime = 0;
+                    zerostate=false;
+                }
+                stateTime += Gdx.graphics.getDeltaTime();
                 animation.setPlayMode(Animation.PlayMode.REVERSED);
                 sprite.setRegion((TextureRegion)animation.getKeyFrame(stateTime));
             }
