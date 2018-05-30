@@ -44,6 +44,7 @@ public class WorldContactListener implements ContactListener {
      */
     @Override
     public void beginContact(Contact contact) {
+        System.out.println("begin" + contact.getFixtureA().getUserData() + contact.getFixtureB().getUserData());
 
         this.contact = contact;
         fixtureA = contact.getFixtureA();
@@ -150,6 +151,11 @@ public class WorldContactListener implements ContactListener {
      */
     @Override
     public void endContact(Contact contact) {
+        System.out.println("end");
+
+        this.contact = contact;
+        fixtureA = contact.getFixtureA();
+        fixtureB = contact.getFixtureB();
 
 
         if (fixtureA.getUserData() == "fireboy" && fixtureB.getUserData() == "reddoor") {
@@ -162,10 +168,12 @@ public class WorldContactListener implements ContactListener {
 
 
         if (fixtureA.getUserData() == "fireboy" && (fixtureB.getUserData() instanceof ButtonBody)) {
+            System.out.println("fire dentro button");
             gamescreen.ODoors.get(((ButtonBody) fixtureB.getUserData()).getMapObject().getName()).setButtonpressed(false);
         }
 
         if (fixtureA.getUserData() == "watergirl" && (fixtureB.getUserData() instanceof ButtonBody)) {
+            System.out.println("water dentro button");
             gamescreen.ODoors.get(((ButtonBody) fixtureB.getUserData()).getMapObject().getName()).setButtonpressed(false);
         }
     }

@@ -53,6 +53,7 @@ public class ODoorBody extends BoxBody{
         fdef = new FixtureDef();
         polyshape = new PolygonShape();
         Rectangle rect = ((RectangleMapObject) object).getRectangle();
+
         bdef.type = BodyDef.BodyType.KinematicBody;
         bdef.position.set((rect.getX() + rect.getWidth() / 2)  * GameScreen.PIXEL_TO_METER, (rect.getY() + rect.getHeight() / 2)*GameScreen.PIXEL_TO_METER);
         b2body = world.createBody(bdef);
@@ -132,10 +133,10 @@ public class ODoorBody extends BoxBody{
 
 
         Vector2[] newVertices = new Vector2[4]; //It is a box
-        newVertices[0] = new Vector2(-width,oldheight);
-        newVertices[1] = new Vector2(width,oldheight);
-        newVertices[2] = new Vector2(width,-1.5f);
-        newVertices[3] = new Vector2(-width,-1.5f);
+        newVertices[0] = new Vector2(-width,1.5f);
+        newVertices[1] = new Vector2(width,1.5f);
+        newVertices[2] = new Vector2(width,-oldheight);
+        newVertices[3] = new Vector2(-width,-oldheight);
 
         polyshape.set(newVertices);
         if(doorstate==DoorState.OPENING) {
@@ -145,7 +146,7 @@ public class ODoorBody extends BoxBody{
             }
         }
         else if (doorstate==DoorState.CLOSING) {
-            oldwidth = oldwidth + 0.04f;
+            oldheight = oldheight + 0.04f;
             if(oldheight>=height) {
                 doorstate=DoorState.CLOSED;
             }
