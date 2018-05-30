@@ -11,18 +11,33 @@ import com.badlogic.gdx.physics.box2d.Body;
 
 import java.awt.*;
 
+/**
+ * A class derived from BoxBody that represents the button bodies on the world
+ */
 public class DoorBody{
 
     public World world;
     public Body body;
     protected BodyDef bdef;
     protected FixtureDef fdef;
+
+    /**
+     * Shape of the object
+     */
     PolygonShape polyshape;
+
+    /**
+     * The color of the door
+     */
     int color;
 
     float doortimer;
 
+    /**
+     * Boolean that is 0 in case the door is not open yet and 1 in case it is
+     */
     boolean dooropened;
+
     /**
      * Constructor of the moving door body.
      *
@@ -37,6 +52,11 @@ public class DoorBody{
         defineBody(object);
     }
 
+    /**
+     * Defines the doors in the map
+     *
+     * @param object The doors in the map
+     */
     public void defineBody(MapObject object){
         bdef = new BodyDef();
         fdef = new FixtureDef();
@@ -60,14 +80,30 @@ public class DoorBody{
 
     }
 
+    /**
+     * Function that returns if the door has been opened already
+     *
+     * @return the value of the opened door
+     */
     public boolean getDooropened(){
+
         return this.dooropened;
     }
 
+    /**
+     * Sets the value of the variable dooropened to the received boolean
+     *
+     * @param dooropened
+     */
     public void setDooropened(boolean dooropened){
         this.dooropened = dooropened;
     }
 
+    /**
+     * Updates the door body
+     *
+     * @param delta ?
+     */
     public void update(float delta){
 
     }

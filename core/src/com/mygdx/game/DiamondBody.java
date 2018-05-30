@@ -9,22 +9,42 @@ import com.badlogic.gdx.physics.box2d.Body;
 
 import java.awt.*;
 
+/**
+ * A class derived from BoxBody that represents the diamonds bodies on the world
+ */
 public class DiamondBody{
 
     public World world;
     public Body body;
     protected BodyDef bdef;
     protected FixtureDef fdef;
+
+    /**
+     * Shape of the object
+     */
     PolygonShape polyshape;
     boolean caught = false;
     int color;
 
-    public DiamondBody(World world,MapObject object,int color){     //x , y meters ??           color = 0 if red, 1 if blue
+    /**
+     * Construct of the box for the world's diamonds
+     *
+     * @param world The world of the body
+     * @param object The diamond itself
+     * @param color The color of this diamond
+     */
+    public DiamondBody(World world,MapObject object, int color){     //x , y meters ??           color = 0 if red, 1 if blue
+
         this.world = world;
         this.color = color;
         defineDiamond(object);
     }
 
+    /**
+     * Defines the button in the map
+     *
+     * @param object The diamonds in the map
+     */
     public void defineDiamond(MapObject object){
         polyshape = new PolygonShape();
         bdef = new BodyDef();
@@ -50,8 +70,20 @@ public class DiamondBody{
 
     }
 
-    public boolean getCaught(){ return this.caught;}
+    /**
+     * Function that returns if the diamond has been yet caught
+     *
+     * @return if the diamond has already been caught
+     */
+    public boolean getCaught(){
+
+        return this.caught;}
+
+    /**
+     * Function that sets the oposite of the value of the caught variable
+     */
     public void setCaught(){
+
         this.caught = !this.caught;
     }
 

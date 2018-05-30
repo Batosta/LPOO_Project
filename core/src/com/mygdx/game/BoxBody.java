@@ -6,49 +6,81 @@ import com.badlogic.gdx.physics.box2d.Body;
 
 public class BoxBody {
 
+    /**
+     * The world of the object
+     */
     public World world;
+
     protected Body b2body;
     protected BodyDef bdef;
     protected FixtureDef fdef;
+
+    /**
+     * The object itself
+     */
     protected MapObject object;
 
+    /**
+     * The X position of the object
+     */
     protected float x;
+
+    /**
+     * The Y position of the object
+     */
     protected float y;
 
+    /**
+     * Constructor of BoxBody
+     *
+     * @param world the whole world of the object
+     * @param object the object itself
+     */
     public BoxBody(World world,MapObject object){     //x , y meters
         this.world = world;
         this.object=object;
     }
 
+    /**
+     * Another constructor of BoxBody
+     *
+     * @param world the whole world of the object
+     * @param x the X position of the object
+     * @param y the Y position of the object
+     */
     public BoxBody(World world,float x,float y){
         this.world = world;
         this.x=x;
         this.y=y;
     }
 
-//
-//        /**
-//         * Returns the x coordinate of the body.
-//         *
-//         * @return the x coordinate.
-//         */
-//    public float getX(){
-//
-//        return x;
-//    }
-//
-//    /**
-//     * Returns the y coordinate of the body.
-//     *
-//     * @return the y coordinate.
-//     */
-//    public float getY(){
-//
-//        return y;
-//    }
+    /**
+     * Function that returns the Y position of the character
+     *
+     * @return the Y position of the character
+     */
+    public float getY(){
 
+        return this.y;
+    }
 
+    /**
+     * Function that returns the X position of the character
+     *
+     * @return the X position of the character
+     */
+    public float getX(){
+
+        return this.x;
+    }
+
+    /**
+     * Function used to return the object in the world
+     *
+     * @return the object in the map
+     */
     public MapObject getMapObject(){
+
         return this.object;
     }
 }

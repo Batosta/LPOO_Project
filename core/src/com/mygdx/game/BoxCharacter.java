@@ -4,20 +4,37 @@ import com.badlogic.gdx.physics.box2d.*;
 
 public class BoxCharacter extends BoxBody {
 
-    public enum Moving {                // PARA METER NO CHARACTER. NAO VALE A PENA REPETIR para as duas personagens
+    /**
+     * The state Moving
+     */
+    public enum Moving {
         RIGHT,LEFT,STAND
     }
 
+    /**
+     * The state Jump
+     */
     public enum Jump {
         ASCENDING, DESCENDING, STOP
     }
 
+    /**
+     * The state of the moving of the character
+     */
     protected Moving moving;
+
+    /**
+     * The state of the jump of the character
+     */
     protected Jump jumpstate;
+
+    /**
+     * A boolean that represents if the character is able to jump or not
+     */
     protected boolean canjump;
 
     /**
-     * constructor of the character b2body
+     * Constructor of the character b2body
      *
      * @param x the x Coordinate
      * @param y the y Coordinate
@@ -26,6 +43,11 @@ public class BoxCharacter extends BoxBody {
         super(world, x,y);
     }
 
+    /**
+     * Update
+     *
+     * @param delta
+     */
     public void update(float delta){
         moving=Moving.STAND;
         jumpstate=Jump.STOP;
@@ -44,10 +66,21 @@ public class BoxCharacter extends BoxBody {
         }
     }
 
+    /**
+     * Function that returns the moving of the box of a character
+     *
+     * @return the moving
+     */
     public Moving getMoving(){
+
         return this.moving;
     }
 
+    /**
+     * Function that returns the state of the jump of the box of a character
+     *
+     * @return the jumpstate
+     */
     public Jump getJumpstate(){
         return this.jumpstate;
     }

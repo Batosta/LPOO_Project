@@ -101,54 +101,9 @@ public class GameScreen extends ScreenAdapter{
     private Music music = Gdx.audio.newMusic(Gdx.files.internal("facil.mp3"));
 
     /**
-     * A ball view used to draw balls.
-     */
-    private BallView ballView;
-
-    /**
-     * A button view used to draw buttons.
-     */
-    private ButtonView buttonView;
-
-    /**
-     * A cube view used to draw cubes.
-     */
-    private CubeView cubeView;
-
-//    /**
-//     * A diamond view used to draw diamonds.
-//     */
-//    private DiamondView diamondView;
-
-    /**
-     * A door view used to draw doors.
-     */
-    private DoorView doorView;
-
-    /**
      * The Fire Boy view used to the Fire Boy.
      */
     private FireBoyView fireBoyView;
-
-    /**
-     * A lake view used to draw lakes.
-     */
-    private LakeView lakeView;
-
-    /**
-     * A lever view used to draw levers.
-     */
-    private LeverView leverView;
-
-    /**
-     * A platform view used to draw platforms.
-     */
-    private PlatformView platformView;
-
-    /**
-     * A portal view used to draw portals.
-     */
-    private PortalView portalView;
 
     /**
      * HashMap with the view of the horizontal and vertical colored doors to be opened by the colored buttons
@@ -189,6 +144,21 @@ public class GameScreen extends ScreenAdapter{
      * Queue with the blue diamonds to be caught by Water Girl
      */
     Queue<DiamondBody> bluediamonds;
+
+    /**
+     * Queue with the red lakes that Water Girl can not touch
+     */
+    Queue<LakeBody> redlakes;
+
+    /**
+     * Queue with the blue lakes that Fire Boy can not touch
+     */
+    Queue<LakeBody> bluelakes;
+
+    /**
+     * Queue with the green lakes that neither Water Girl and Fire Boy can not touch
+     */
+    Queue<LakeBody> greenlakes;
 
     /**
      * HashMap with the horizontal and vertical colored doors to be opened by the colored buttons
@@ -273,14 +243,7 @@ public class GameScreen extends ScreenAdapter{
 
     public void createViews(){
 
-        ballView = new BallView(fbwg, "ball.png");
-        buttonView = new ButtonView(fbwg, "purpleButton.png");
-        cubeView = new CubeView(fbwg, "cube.png");
         fireBoyView = new FireBoyView(fbwg, "fire.png");
-        lakeView = new LakeView(fbwg, "redLake.png");
-        leverView = new LeverView(fbwg, "lever.png");
-        platformView = new PlatformView(fbwg, "purplePlatform.png");
-        portalView = new PortalView(fbwg, "portal.png");
         waterGirlView = new WaterGirlView(fbwg, "water.png");
     }
 
@@ -324,7 +287,7 @@ public class GameScreen extends ScreenAdapter{
         fbwg.getSpriteBatch().end();
 
         music.setVolume((float) 0.1);
-        music.play();
+        //music.play();
 
         if (DEBUG_PHYSICS) {
             debugCamera = camera.combined.cpy();
@@ -342,7 +305,7 @@ public class GameScreen extends ScreenAdapter{
 
     private void destroyObjects() {
         for(int i = 0 ; i < todestroydiamonds.size ; i++){
-             if(todestroydiamonds.get(i).getFixtureList().get(0).getUserData() == "bluediamond")
+            if(todestroydiamonds.get(i).getFixtureList().get(0).getUserData() == "bluediamond")
                  bluediamonds.removeLast();
             if(todestroydiamonds.get(i).getFixtureList().get(0).getUserData() == "reddiamond")
                 reddiamonds.removeLast();
@@ -466,10 +429,30 @@ public class GameScreen extends ScreenAdapter{
         FixtureDef fdef = new FixtureDef();
         Body body;
 
+
+        //Green Lakes
+        greenlakes = new Queue<LakeBody>();
+        for (MapObject object : tiledmap.getLayers().get(14).getObjects().getByType(RectangleMapObject.class)) {
+            greenlakes.addFirst(new LakeBody(world,object,2));      //2 if green
+        }
+
+        //Blue Lakes
+        bluelakes = new Queue<LakeBody>();
+        for (MapObject object : tiledmap.getLayers().get(13).getObjects().getByType(RectangleMapObject.class)) {
+            bluelakes.addFirst(new LakeBody(world,object,1));      //1 if blue
+        }
+
+        //Red Lakes
+        redlakes = new Queue<LakeBody>();
+        for (MapObject object : tiledmap.getLayers().get(12).getObjects().getByType(RectangleMapObject.class)) {
+            redlakes.addFirst(new LakeBody(world,object,0));      //2 if green
+        }
+
+
         ODoors = new HashMap<String, ODoorBody>();
         ODoorsView = new HashMap<String, ODoorView>();
         for (MapObject object : tiledmap.getLayers().get(11).getObjects().getByType(RectangleMapObject.class)){         //ADD DOORS COLORS HERE
-            System.out.println("out" + object.getName());
+
             ODoors.put(object.getName(),new ODoorBody(world,object,0));
             if(object.getName().equals("purple"))
                 ODoorsView.put(object.getName(), new ODoorView(fbwg, "horpurpledoor.png"));
@@ -482,7 +465,6 @@ public class GameScreen extends ScreenAdapter{
             if(object.getName().equals("purple"))
                 ODoorsView.put(object.getName(), new ODoorView(fbwg, "verpurpledoor.png"));
             if(object.getName().equals("red")) {
-                System.out.println("doorview:dir: ");
                 ODoorsView.put(object.getName(), new ODoorView(fbwg, "verreddoor.png"));
             }
         }
