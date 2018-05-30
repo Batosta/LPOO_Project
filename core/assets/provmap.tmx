@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="2017.07.26" orientation="orthogonal" renderorder="right-down" width="30" height="25" tilewidth="32" tileheight="32" nextobjectid="195">
+<map version="1.0" tiledversion="2017.07.26" orientation="orthogonal" renderorder="right-down" width="30" height="25" tilewidth="32" tileheight="32" nextobjectid="200">
  <tileset firstgid="1" source="provtiledset.tsx"/>
  <tileset firstgid="673" source="diamondset.tsx"/>
  <tileset firstgid="708" source="reddiamondset.tsx"/>
@@ -208,6 +208,8 @@
   <object id="174" x="672.409" y="437.884" width="31.183" height="10.2328"/>
   <object id="186" x="446.949" y="632.454" width="80.101" height="9.09209"/>
   <object id="187" x="318.596" y="316.756" width="77.809" height="8.48816"/>
+  <object id="198" x="-3" y="193" width="9" height="607"/>
+  <object id="199" x="958.5" y="1.5" width="9" height="517"/>
  </objectgroup>
  <objectgroup name="Wall Polys">
   <object id="79" x="189.307" y="510.787">
