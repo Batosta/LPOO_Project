@@ -106,7 +106,7 @@ public class CharacterView extends BodyView {
         this.body = body;
 
         //move sprite a bit up
-        sprite.setCenter(body.b2body.getPosition().x/PIXEL_TO_METER, body.b2body.getPosition().y/PIXEL_TO_METER+10);
+        sprite.setCenter(body.getB2body().getPosition().x/PIXEL_TO_METER, body.getB2body().getPosition().y/PIXEL_TO_METER+10);
 
         stand();
         moving();

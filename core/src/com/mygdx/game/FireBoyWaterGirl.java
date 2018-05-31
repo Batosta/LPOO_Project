@@ -25,7 +25,6 @@ public class FireBoyWaterGirl extends Game {
 	
 	@Override
 	public void dispose () {
-
 		batch.dispose();
 		assetManager.dispose();
 	}
@@ -83,6 +82,9 @@ public class FireBoyWaterGirl extends Game {
 		this.assetManager.load("startButtonPressed.png", Texture.class);
 		this.assetManager.load("quitButtonNormal.png", Texture.class);
 		this.assetManager.load("quitButtonPressed.png", Texture.class);
+
+        this.assetManager.load("gameover_dialog.png", Texture.class);
+
 
 
 

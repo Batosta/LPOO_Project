@@ -11,7 +11,7 @@ public class BoxBody {
      */
     public World world;
 
-    protected Body b2body;
+    private Body b2body;
     protected BodyDef bdef;
     protected FixtureDef fdef;
 
@@ -82,5 +82,13 @@ public class BoxBody {
     public MapObject getMapObject(){
 
         return this.object;
+    }
+
+    public Body getB2body() {
+        return b2body;
+    }
+
+    public void setB2body(Body b2body) {
+        this.b2body = b2body;
     }
 }

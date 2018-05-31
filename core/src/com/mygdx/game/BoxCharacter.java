@@ -4,6 +4,7 @@ import com.badlogic.gdx.physics.box2d.*;
 
 public class BoxCharacter extends BoxBody {
 
+
     /**
      * The state Moving
      */
@@ -33,6 +34,8 @@ public class BoxCharacter extends BoxBody {
      */
     protected boolean canjump;
 
+    private boolean alive;
+
     /**
      * Constructor of the character b2body
      *
@@ -41,6 +44,7 @@ public class BoxCharacter extends BoxBody {
      */
     public BoxCharacter(World world, float x, float y){
         super(world, x,y);
+        alive=true;
     }
 
     /**
@@ -51,19 +55,36 @@ public class BoxCharacter extends BoxBody {
     public void update(float delta){
         moving=Moving.STAND;
         jumpstate=Jump.STOP;
-        if(b2body.getLinearVelocity().y>0){
+        if(getB2body().getLinearVelocity().y>0){
             jumpstate=Jump.ASCENDING;
-        }else if(b2body.getLinearVelocity().y<0){
+        }else if(getB2body().getLinearVelocity().y<0){
             jumpstate=Jump.DESCENDING;
         } else jumpstate=Jump.STOP;
 
-        if(b2body.getLinearVelocity().x>0){
+        if(getB2body().getLinearVelocity().x>0){
             moving=Moving.RIGHT;
         }
 
-        if (b2body.getLinearVelocity().x<0){
+        if (getB2body().getLinearVelocity().x<0){
             moving=Moving.LEFT;
         }
+    }
+
+    /**
+     * Function that returns if the character is still alive
+     *
+     * @return alive
+     */
+    public boolean isAlive() {
+        return alive;
+    }
+
+    /**
+     * Function that sets alive for character
+     *
+     */
+    public void setAlive(boolean alive) {
+        this.alive = alive;
     }
 
     /**

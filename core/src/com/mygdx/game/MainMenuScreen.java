@@ -42,6 +42,7 @@ public class MainMenuScreen extends ScreenAdapter implements InputProcessor {
      */
     public MainMenuScreen(FireBoyWaterGirl game){
 
+
         this.game = game;
         viewport = new FitViewport(GameScreen.VIEWPORT_WIDTH/GameScreen.PIXEL_TO_METER, GameScreen.VIEWPORT_WIDTH/GameScreen.PIXEL_TO_METER * ((float) Gdx.graphics.getHeight() / (float) Gdx.graphics.getWidth()));
         stage = new Stage(viewport, game.getSpriteBatch());
@@ -101,8 +102,10 @@ public class MainMenuScreen extends ScreenAdapter implements InputProcessor {
                 if(button == startButton) {
                     ScreenManager.getInstance().showScreen(ScreenState.GAME_SCREEN, game);
                 }
-                else
-                    System.out.println("2");
+                else {
+                    Gdx.app.exit();
+                    System.exit(0);
+                }
             }
         }
     }
@@ -152,7 +155,7 @@ public class MainMenuScreen extends ScreenAdapter implements InputProcessor {
 
     @Override
     public void resize(int width, int height) {
-
+        viewport.update(width,height,true);
     }
 
     @Override

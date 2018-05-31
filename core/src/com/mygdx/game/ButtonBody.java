@@ -42,11 +42,11 @@ public class ButtonBody extends BoxBody{
         bdef.type = BodyDef.BodyType.StaticBody;
         bdef.position.set((rect.getX() + rect.getWidth() / 2)  * GameScreen.PIXEL_TO_METER, (rect.getY() + rect.getHeight() / 2)*GameScreen.PIXEL_TO_METER);
 
-        b2body = world.createBody(bdef);
+        setB2body(world.createBody(bdef));
 
         polyshape.setAsBox((rect.getWidth() / 2)*GameScreen.PIXEL_TO_METER, (rect.getHeight() / 2)*GameScreen.PIXEL_TO_METER);
         fdef.shape = polyshape;
 
-        b2body.createFixture(fdef).setUserData(this);
+        getB2body().createFixture(fdef).setUserData(this);
     }
 }

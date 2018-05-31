@@ -1,12 +1,6 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.maps.MapLayer;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.maps.tiled.TiledMapTileSet;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.Body;
 
@@ -84,10 +78,12 @@ public class WorldContactListener implements ContactListener {
 
         if (fixtureA.getUserData() == "fireboy" && fixtureB.getUserData() == "reddoor") {
             gamescreen.reddoorbody.setDooropened(true);
+            gamescreen.checkLevelStatus();
         }
 
         if (fixtureA.getUserData() == "watergirl" && fixtureB.getUserData() == "bluedoor") {
             gamescreen.bluedoorbody.setDooropened(true);
+            gamescreen.checkLevelStatus();
         }
     }
 
@@ -112,12 +108,12 @@ public class WorldContactListener implements ContactListener {
 
         //  allows fire boy to jump on slopes
         if (fixtureA.getUserData() == "fireboy" && fixtureB.getUserData() == "rampa") {
-            gamescreen.fireboy2d.canjump = true;
+            gamescreen.getFireboy2d().canjump = true;
         }
 
         //  allows water girl to jump on slopes
         if (fixtureA.getUserData() == "watergirl" && fixtureB.getUserData() == "rampa") {
-            gamescreen.watergirl2d.canjump = true;
+            gamescreen.getWatergirl2d().canjump = true;
         }
     }
 
@@ -127,19 +123,23 @@ public class WorldContactListener implements ContactListener {
     private void contactLake(){
 
         if(fixtureA.getUserData() == "watergirl" && fixtureB.getUserData() == "redlake"){
-            System.out.println("water morre");
+            gamescreen.getFireboy2d().setAlive(false);
+            gamescreen.endGame();
         }
 
         if(fixtureA.getUserData() == "fireboy" && fixtureB.getUserData() == "bluelake"){
-            System.out.println("fire morre");
+            gamescreen.getFireboy2d().setAlive(false);
+            gamescreen.endGame();
         }
 
         if(fixtureA.getUserData() == "watergirl" && fixtureB.getUserData() == "greenlake"){
-            System.out.println("water morre green");
+            gamescreen.getWatergirl2d().setAlive(false);
+            gamescreen.endGame();
         }
 
         if(fixtureA.getUserData() == "fireboy" && fixtureB.getUserData() == "greenlake"){
-            System.out.println("fire more green");
+            gamescreen.getFireboy2d().setAlive(false);
+            gamescreen.endGame();
         }
     }
 

@@ -102,9 +102,6 @@ public class GameScreen extends ScreenAdapter implements InputProcessor {
      */
     private Music music = Gdx.audio.newMusic(Gdx.files.internal("facil.mp3"));
 
-    /**
-     * The Fire Boy view used to the Fire Boy.
-     */
     private FireBoyView fireBoyView;
 
     /**
@@ -112,20 +109,11 @@ public class GameScreen extends ScreenAdapter implements InputProcessor {
      */
     HashMap<String, ODoorView> ODoorsView;
 
-    /**
-     * The Water Girl view used to draw the Water Girl.
-     */
     private WaterGirlView waterGirlView;
-    /**
-     * Fire Boy used in Box2D
-     */
 
-    public FireBoy2D fireboy2d;
+    private FireBoy2D fireboy2d;
 
-    /**
-     * Water Girl used in Box2D
-     */
-    public WaterGirl2D watergirl2d;
+    private WaterGirl2D watergirl2d;
 
     /**
      * Blue door body used in Box2D. Is only a sensor
@@ -181,6 +169,8 @@ public class GameScreen extends ScreenAdapter implements InputProcessor {
 
     private Box2DDebugRenderer boxrenderer;
 
+    private boolean rendering=true;
+
     TmxMapLoader maploader;
 
     TiledMap tiledmap;
@@ -192,9 +182,28 @@ public class GameScreen extends ScreenAdapter implements InputProcessor {
      */
     public float gameTimer = 0;
 
+    /**
+     * gamewon tells if the level was won.
+     */
     public boolean gamewon = false;
 
     private Stage stage;
+
+
+    /**
+     * flag used in game over dialog
+     */
+    public boolean gameover_flag = false;
+
+    //      Game table (with game over dialog)
+
+    Stage gamestage;
+
+    Table table;
+
+    Image background;
+
+
 
 
     /**
@@ -223,6 +232,8 @@ public class GameScreen extends ScreenAdapter implements InputProcessor {
 
         createInputProcessor();
 
+        createStage();
+
     }
 
 
@@ -249,8 +260,8 @@ public class GameScreen extends ScreenAdapter implements InputProcessor {
 
     public void createViews(){
 
-        fireBoyView = new FireBoyView(fbwg, "fire.png");
-        waterGirlView = new WaterGirlView(fbwg, "water.png");
+        setFireBoyView(new FireBoyView(fbwg, "fire.png"));
+        setWaterGirlView(new WaterGirlView(fbwg, "water.png"));
     }
 
     public void createInputProcessor(){
@@ -284,11 +295,14 @@ public class GameScreen extends ScreenAdapter implements InputProcessor {
         // world renderer
 //        boxrenderer.render(world,camera.combined);
 
+        if(rendering)
         world.step(1/60f, 6, 2);
 
-        destroyObjects();
-
-        checkLevelEnd();
+        try {
+            destroyObjects();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         fbwg.getSpriteBatch().enableBlending();
         fbwg.getSpriteBatch().begin();
@@ -305,24 +319,24 @@ public class GameScreen extends ScreenAdapter implements InputProcessor {
         }
 
         showGameTime(delta);
+
+        gamestage.draw();
     }
 
-    private void checkLevelEnd() {
+    public void checkLevelStatus() {
         if(bluedoorbody.getDooropened() && reddoorbody.getDooropened() && bluediamonds.size == 0 && reddiamonds.size == 0) {
             tiledmap.getLayers().get(10).setVisible(false);
             gamewon=true;
-
-                            // THIS WILL BE THE GAMEOVER MINI MENU
-//            FitViewport stageport= new FitViewport(GameScreen.VIEWPORT_WIDTH/GameScreen.PIXEL_TO_METER, GameScreen.VIEWPORT_WIDTH/GameScreen.PIXEL_TO_METER * ((float) Gdx.graphics.getHeight() / (float) Gdx.graphics.getWidth()));
-//            Stage gameover_dialog = new Stage(stageport, fbwg.getSpriteBatch());
-//            Image image = new Image((Texture)fbwg.getAssetManager().get("transparentdoor.png"));
-//            stagee.addActor(image);
-//            stagee.draw();
         }
+    }
+
+    public void endGame(){
+            rendering=false;
+            gamestage.addActor(background);
 
     }
 
-    private void destroyObjects() {
+    private void destroyObjects() throws InterruptedException {
         for(int i = 0 ; i < todestroydiamonds.size ; i++){
             if(todestroydiamonds.get(i).getFixtureList().get(0).getUserData() == "bluediamond")
                  bluediamonds.removeLast();
@@ -335,18 +349,18 @@ public class GameScreen extends ScreenAdapter implements InputProcessor {
 
     @Override
     public void resize(int width, int height){
-        viewport.update(width,height);
+        viewPort.update(width,height,true);
     }
 
     /**
      * Draw objects on the screen
      */
     private void drawObjects(){
-        fireBoyView.update(fireboy2d);
-        fireBoyView.draw(fbwg.getSpriteBatch());
+        getFireBoyView().update(getFireboy2d());
+        getFireBoyView().draw(fbwg.getSpriteBatch());
 
-        waterGirlView.update(watergirl2d);
-        waterGirlView.draw(fbwg.getSpriteBatch());
+        getWaterGirlView().update(getWatergirl2d());
+        getWaterGirlView().draw(fbwg.getSpriteBatch());
 
         for (HashMap.Entry<String, ODoorView> entry: ODoorsView.entrySet()) {
 
@@ -430,58 +444,58 @@ public class GameScreen extends ScreenAdapter implements InputProcessor {
 
         //              FireBoy input
         if(Gdx.input.isKeyJustPressed(Input.Keys.UP)){
-            if(fireboy2d.jumpstate == BoxCharacter.Jump.STOP)
-            fireboy2d.b2body.applyLinearImpulse(new Vector2(0,8.3f),fireboy2d.b2body.getWorldCenter(),true);
-            else if (fireboy2d.canjump) {
-                fireboy2d.b2body.applyLinearImpulse(new Vector2(0, 8.3f), fireboy2d.b2body.getWorldCenter(), true);
-                fireboy2d.canjump=false;
+            if(getFireboy2d().jumpstate == BoxCharacter.Jump.STOP)
+            getFireboy2d().getB2body().applyLinearImpulse(new Vector2(0,8.3f), getFireboy2d().getB2body().getWorldCenter(),true);
+            else if (getFireboy2d().canjump) {
+                getFireboy2d().getB2body().applyLinearImpulse(new Vector2(0, 8.3f), getFireboy2d().getB2body().getWorldCenter(), true);
+                getFireboy2d().canjump=false;
             }
         }
-        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) && fireboy2d.b2body.getLinearVelocity().x <= 6){
-            fireboy2d.b2body.applyLinearImpulse(new Vector2(0.5f,0),fireboy2d.b2body.getWorldCenter(),true);
+        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) && getFireboy2d().getB2body().getLinearVelocity().x <= 6){
+            getFireboy2d().getB2body().applyLinearImpulse(new Vector2(0.5f,0), getFireboy2d().getB2body().getWorldCenter(),true);
         }
-        if(Gdx.input.isKeyPressed(Input.Keys.LEFT) && fireboy2d.b2body.getLinearVelocity().x >= -6) {
-            fireboy2d.b2body.applyLinearImpulse(new Vector2(-0.5f, 0), fireboy2d.b2body.getWorldCenter(), true);
+        if(Gdx.input.isKeyPressed(Input.Keys.LEFT) && getFireboy2d().getB2body().getLinearVelocity().x >= -6) {
+            getFireboy2d().getB2body().applyLinearImpulse(new Vector2(-0.5f, 0), getFireboy2d().getB2body().getWorldCenter(), true);
         }
                 // TODO por isto a dar bem. a sprite a cair para a direita/esquerda;
         if(!Gdx.input.isKeyPressed(Input.Keys.LEFT) && !Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            if(fireboy2d.b2body.getLinearVelocity().x>0) {
-                fireboy2d.b2body.applyLinearImpulse(new Vector2(-0.4f, 0), fireboy2d.b2body.getWorldCenter(), true);
-                if(fireboy2d.b2body.getLinearVelocity().x<0)
-                    fireboy2d.b2body.setLinearVelocity(0,fireboy2d.b2body.getLinearVelocity().y);
+            if(getFireboy2d().getB2body().getLinearVelocity().x>0) {
+                getFireboy2d().getB2body().applyLinearImpulse(new Vector2(-0.4f, 0), getFireboy2d().getB2body().getWorldCenter(), true);
+                if(getFireboy2d().getB2body().getLinearVelocity().x<0)
+                    getFireboy2d().getB2body().setLinearVelocity(0, getFireboy2d().getB2body().getLinearVelocity().y);
             }
-            if(fireboy2d.b2body.getLinearVelocity().x<0) {
-                fireboy2d.b2body.applyLinearImpulse(new Vector2(0.4f, 0), fireboy2d.b2body.getWorldCenter(), true);
-                if (fireboy2d.b2body.getLinearVelocity().x > 0)
-                    fireboy2d.b2body.setLinearVelocity(0, fireboy2d.b2body.getLinearVelocity().y);
+            if(getFireboy2d().getB2body().getLinearVelocity().x<0) {
+                getFireboy2d().getB2body().applyLinearImpulse(new Vector2(0.4f, 0), getFireboy2d().getB2body().getWorldCenter(), true);
+                if (getFireboy2d().getB2body().getLinearVelocity().x > 0)
+                    getFireboy2d().getB2body().setLinearVelocity(0, getFireboy2d().getB2body().getLinearVelocity().y);
             }
         }
         //              WaterGirl input
         if(Gdx.input.isKeyJustPressed(Input.Keys.W)){
-            if(watergirl2d.jumpstate == BoxCharacter.Jump.STOP)
-            watergirl2d.b2body.applyLinearImpulse(new Vector2(0,8.3f),watergirl2d.b2body.getWorldCenter(),true);
-            else if (watergirl2d.canjump) {
-                watergirl2d.b2body.applyLinearImpulse(new Vector2(0, 8.3f), fireboy2d.b2body.getWorldCenter(), true);
-                watergirl2d.canjump=false;
+            if(getWatergirl2d().jumpstate == BoxCharacter.Jump.STOP)
+            getWatergirl2d().getB2body().applyLinearImpulse(new Vector2(0,8.3f), getWatergirl2d().getB2body().getWorldCenter(),true);
+            else if (getWatergirl2d().canjump) {
+                getWatergirl2d().getB2body().applyLinearImpulse(new Vector2(0, 8.3f), getFireboy2d().getB2body().getWorldCenter(), true);
+                getWatergirl2d().canjump=false;
             }
         }
-        if(Gdx.input.isKeyPressed(Input.Keys.D) && watergirl2d.b2body.getLinearVelocity().x <= 6){
-            watergirl2d.b2body.applyLinearImpulse(new Vector2(0.5f,0),watergirl2d.b2body.getWorldCenter(),true);
+        if(Gdx.input.isKeyPressed(Input.Keys.D) && getWatergirl2d().getB2body().getLinearVelocity().x <= 6){
+            getWatergirl2d().getB2body().applyLinearImpulse(new Vector2(0.5f,0), getWatergirl2d().getB2body().getWorldCenter(),true);
         }
-        if(Gdx.input.isKeyPressed(Input.Keys.A) && watergirl2d.b2body.getLinearVelocity().x >= -6) {
-            watergirl2d.b2body.applyLinearImpulse(new Vector2(-0.5f, 0), watergirl2d.b2body.getWorldCenter(), true);
+        if(Gdx.input.isKeyPressed(Input.Keys.A) && getWatergirl2d().getB2body().getLinearVelocity().x >= -6) {
+            getWatergirl2d().getB2body().applyLinearImpulse(new Vector2(-0.5f, 0), getWatergirl2d().getB2body().getWorldCenter(), true);
         }
         // TODO por isto a dar bem. a sprite a cair para a direita/esquerda;
         if(!Gdx.input.isKeyPressed(Input.Keys.A) && !Gdx.input.isKeyPressed(Input.Keys.D)) {
-            if(watergirl2d.b2body.getLinearVelocity().x>0) {
-                watergirl2d.b2body.applyLinearImpulse(new Vector2(-0.4f, 0), watergirl2d.b2body.getWorldCenter(), true);
-                if (watergirl2d.b2body.getLinearVelocity().x < 0)
-                    watergirl2d.b2body.setLinearVelocity(0, watergirl2d.b2body.getLinearVelocity().y);
+            if(getWatergirl2d().getB2body().getLinearVelocity().x>0) {
+                getWatergirl2d().getB2body().applyLinearImpulse(new Vector2(-0.4f, 0), getWatergirl2d().getB2body().getWorldCenter(), true);
+                if (getWatergirl2d().getB2body().getLinearVelocity().x < 0)
+                    getWatergirl2d().getB2body().setLinearVelocity(0, getWatergirl2d().getB2body().getLinearVelocity().y);
             }
-            if(watergirl2d.b2body.getLinearVelocity().x<0) {
-                watergirl2d.b2body.applyLinearImpulse(new Vector2(0.4f, 0), watergirl2d.b2body.getWorldCenter(), true);
-                if (watergirl2d.b2body.getLinearVelocity().x > 0)
-                    watergirl2d.b2body.setLinearVelocity(0, watergirl2d.b2body.getLinearVelocity().y);
+            if(getWatergirl2d().getB2body().getLinearVelocity().x<0) {
+                getWatergirl2d().getB2body().applyLinearImpulse(new Vector2(0.4f, 0), getWatergirl2d().getB2body().getWorldCenter(), true);
+                if (getWatergirl2d().getB2body().getLinearVelocity().x > 0)
+                    getWatergirl2d().getB2body().setLinearVelocity(0, getWatergirl2d().getB2body().getLinearVelocity().y);
             }
         }
     }
@@ -489,8 +503,8 @@ public class GameScreen extends ScreenAdapter implements InputProcessor {
     public void createObjects(){
 
         todestroydiamonds = new Queue<Body>();
-        fireboy2d = new FireBoy2D(world,50f*PIXEL_TO_METER,100f*PIXEL_TO_METER);
-        watergirl2d = new WaterGirl2D(world,50f*PIXEL_TO_METER,200f*PIXEL_TO_METER);
+        setFireboy2d(new FireBoy2D(world,50f*PIXEL_TO_METER,100f*PIXEL_TO_METER));
+        setWatergirl2d(new WaterGirl2D(world,50f*PIXEL_TO_METER,200f*PIXEL_TO_METER));
 
         BodyDef bdef = new BodyDef();
         PolygonShape polyshape = new PolygonShape();
@@ -590,6 +604,12 @@ public class GameScreen extends ScreenAdapter implements InputProcessor {
         }
     }
 
+    public void createStage(){
+        background = new Image((Texture)fbwg.getAssetManager().get("gameover_dialog.png"));
+        gamestage= new Stage(viewPort,fbwg.getSpriteBatch());
+        table = new Table();
+    }
+
 
     @Override
     public boolean keyDown(int keycode) {
@@ -629,5 +649,49 @@ public class GameScreen extends ScreenAdapter implements InputProcessor {
     @Override
     public boolean scrolled(int amount) {
         return false;
+    }
+
+    /**
+     * The Water Girl view used to draw the Water Girl.
+     */
+    public WaterGirlView getWaterGirlView() {
+        return waterGirlView;
+    }
+
+    public void setWaterGirlView(WaterGirlView waterGirlView) {
+        this.waterGirlView = waterGirlView;
+    }
+
+    /**
+     * Fire Boy used in Box2D
+     */
+    public FireBoy2D getFireboy2d() {
+        return fireboy2d;
+    }
+
+    public void setFireboy2d(FireBoy2D fireboy2d) {
+        this.fireboy2d = fireboy2d;
+    }
+
+    /**
+     * The Fire Boy view used to the Fire Boy.
+     */
+    public FireBoyView getFireBoyView() {
+        return fireBoyView;
+    }
+
+    public void setFireBoyView(FireBoyView fireBoyView) {
+        this.fireBoyView = fireBoyView;
+    }
+
+    /**
+     * Water Girl used in Box2D
+     */
+    public WaterGirl2D getWatergirl2d() {
+        return watergirl2d;
+    }
+
+    public void setWatergirl2d(WaterGirl2D watergirl2d) {
+        this.watergirl2d = watergirl2d;
     }
 }

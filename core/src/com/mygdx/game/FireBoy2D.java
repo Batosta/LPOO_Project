@@ -1,10 +1,6 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.physics.box2d.*;
-import com.badlogic.gdx.physics.box2d.Body;
-
-import java.awt.*;
 
 public class FireBoy2D extends BoxCharacter{
 
@@ -18,7 +14,7 @@ public class FireBoy2D extends BoxCharacter{
         bdef = new BodyDef();
         bdef.position.set(x,y);
         bdef.type = BodyDef.BodyType.DynamicBody;
-        b2body = world.createBody(bdef);
+        setB2body(world.createBody(bdef));
 
         fdef = new FixtureDef();
         PolygonShape shape = new PolygonShape();
@@ -26,7 +22,7 @@ public class FireBoy2D extends BoxCharacter{
 
         fdef.shape = shape;
         fdef.friction = 1f;
-        b2body.createFixture(fdef).setUserData("fireboy");
+        getB2body().createFixture(fdef).setUserData("fireboy");
 
     }
 
