@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.sun.istack.internal.NotNull;
 
 
 public class MainMenuScreen extends ScreenAdapter implements InputProcessor {
@@ -45,8 +46,6 @@ public class MainMenuScreen extends ScreenAdapter implements InputProcessor {
         viewport = new FitViewport(GameScreen.VIEWPORT_WIDTH/GameScreen.PIXEL_TO_METER, GameScreen.VIEWPORT_WIDTH/GameScreen.PIXEL_TO_METER * ((float) Gdx.graphics.getHeight() / (float) Gdx.graphics.getWidth()));
         stage = new Stage(viewport, game.getSpriteBatch());
 
-        Label.LabelStyle font = new Label.LabelStyle(new BitmapFont(), Color.YELLOW);
-
         Table table = new Table();
         table.center();
         table.setFillParent(true);
@@ -63,7 +62,6 @@ public class MainMenuScreen extends ScreenAdapter implements InputProcessor {
 
         table.debugAll();
         stage.addActor(table);
-
 
 
         Gdx.input.setInputProcessor(this);

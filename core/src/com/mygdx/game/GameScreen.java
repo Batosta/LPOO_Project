@@ -4,9 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
@@ -18,7 +19,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Queue;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -86,7 +88,7 @@ public class GameScreen extends ScreenAdapter{
     /**
      * The game viewport.
      */
-    private Viewport gamePort;
+    private Viewport viewport;
 
     /**
      * The transformation matrix used to transform meters into
@@ -184,21 +186,23 @@ public class GameScreen extends ScreenAdapter{
 
     OrthogonalTiledMapRenderer renderer;
 
-    public float gametimer;
+    /**
+     * Float variable that keeps the number of seconds that passed since the level has started
+     */
+    public float gameTimer = 0;
 
     public boolean gamewon = false;
+
+    private Stage stage;
+
 
     /**
      * Creates the screen.
      *
      * @param fbwg The game
-//     * @param model The model to be drawn
      */
-    public GameScreen(FireBoyWaterGirl fbwg/*, GameModel model*/) {
+    public GameScreen(FireBoyWaterGirl fbwg) {
         this.fbwg = fbwg;
-//        this.model = model;
-
-        gametimer=0;
 
         maploader = new TmxMapLoader();
         tiledmap = maploader.load("provmap.tmx");
@@ -207,16 +211,15 @@ public class GameScreen extends ScreenAdapter{
         createViews();
 
         camera = createCamera();
-//        gamePort = new FitViewport(VIEWPORT_WIDTH*2/PIXEL_TO_METER,VIEWPORT_WIDTH*2/PIXEL_TO_METER* ((float) Gdx.graphics.getHeight() / (float)Gdx.graphics.getWidth()),camera);
-//        gamePort.apply();
+
+        viewport = new FitViewport(GameScreen.VIEWPORT_WIDTH/GameScreen.PIXEL_TO_METER, GameScreen.VIEWPORT_WIDTH/GameScreen.PIXEL_TO_METER * ((float) Gdx.graphics.getHeight() / (float) Gdx.graphics.getWidth()));
+        stage = new Stage(viewport, (fbwg).getSpriteBatch());
 
         world = new World(new Vector2(0, -15f), true);
 
         createObjects();
         world.setContactListener(new WorldContactListener(this));
-
     }
-
 
 
     /**
@@ -247,15 +250,14 @@ public class GameScreen extends ScreenAdapter{
     }
 
     /**
-     * renders this screen
+     * Renders this screen
      *
      * @param delta time in seconds since last render
      */
     @Override
     public void render(float delta) {
-        gametimer++;
+
         handleInput(delta);
-//        handleInputs(delta);
         updateObjects(delta);
         renderer.setView(camera);
 
@@ -282,7 +284,6 @@ public class GameScreen extends ScreenAdapter{
 
         fbwg.getSpriteBatch().enableBlending();
         fbwg.getSpriteBatch().begin();
-        //drawBackground
         drawObjects();
         fbwg.getSpriteBatch().end();
 
@@ -294,6 +295,8 @@ public class GameScreen extends ScreenAdapter{
             debugCamera.scl(1 / PIXEL_TO_METER);
             boxrenderer.render(world, debugCamera);
         }
+
+        showGameTime(delta);
     }
 
     private void checkLevelEnd() {
@@ -322,10 +325,10 @@ public class GameScreen extends ScreenAdapter{
         }
     }
 
-//    @Override
-//    public void resize(int width, int height){
-//        gamePort.update(width,height);
-//    }
+    @Override
+    public void resize(int width, int height){
+        viewport.update(width,height);
+    }
 
     /**
      * Draw objects on the screen
@@ -348,8 +351,6 @@ public class GameScreen extends ScreenAdapter{
 
     private void updateObjects(float delta) {
 
-        //model.getFireBoy().update(delta);
-        //model.getWaterGirl().handleInputs(delta);
         fireboy2d.update(delta);
         watergirl2d.update(delta);
         bluedoorbody.update(delta);
@@ -357,13 +358,67 @@ public class GameScreen extends ScreenAdapter{
         ODoors.get("red").update(delta);
     }
 
-//    private void handleInputs(float delta) {
-//        model.getFireBoy().handleInputs(delta);
-//        model.getWaterGirl().handleInputs(delta);
-//    }
 
+    /**
+     * Function that takes care of showing the time on the screen
+     *
+     * @param delta time in seconds since last render
+     */
+    private void showGameTime(float delta){
+
+        gameTimer += delta;
+
+        Label.LabelStyle font = new Label.LabelStyle(new BitmapFont(), Color.GREEN);
+
+        Table table = new Table();
+        table.top();
+        table.setFillParent(true);
+
+        Label timeLabel = new Label("TIME", font);
+        table.add(timeLabel).expandX();
+
+        table.row();
+        createTimeLabel(table, font);
+
+        table.debugAll();
+        stage.addActor(table);
+
+        stage.draw();
+        stage.dispose();
+    }
+
+    /**
+     * Creates the label with the time played in the form "Minutes:Seconds"
+     *
+     * @param table The table where the label will appear
+     * @param font The font of the String to be showed
+     */
+    private void createTimeLabel(Table table, Label.LabelStyle font){
+
+        int minutes = (int)(gameTimer/60);
+        int seconds = (int)(gameTimer % 60);
+
+        Label label;
+        if(minutes < 10){
+
+            if(seconds < 10)
+                label = new Label("0" + Integer.toString(minutes) + ":" + "0" + Integer.toString(seconds), font);
+            else
+                label = new Label("0" + Integer.toString(minutes) + ":" + Integer.toString(seconds), font);
+        } else{
+
+            if(seconds < 10)
+                label = new Label(Integer.toString(minutes) + ":" + "0" + Integer.toString(seconds), font);
+            else
+                label = new Label(Integer.toString(minutes) + ":" + Integer.toString(seconds), font);
+        }
+
+        table.add(label).expandX();
+    }
+
+
+                                                                //Compor esta funcao para ficar mais simples
     public void handleInput(float delta){
-
 
         //              FireBoy input
         if(Gdx.input.isKeyJustPressed(Input.Keys.UP)){
@@ -421,9 +476,6 @@ public class GameScreen extends ScreenAdapter{
                     watergirl2d.b2body.setLinearVelocity(0, watergirl2d.b2body.getLinearVelocity().y);
             }
         }
-
-
-
     }
 
     public void createObjects(){
@@ -528,8 +580,5 @@ public class GameScreen extends ScreenAdapter{
         for (MapObject object : tiledmap.getLayers().get(4).getObjects().getByType(PolygonMapObject.class)) {
             reddiamonds.addFirst(new DiamondBody(world,object,0));      //0 if red
         }
-
     }
-
-
 }

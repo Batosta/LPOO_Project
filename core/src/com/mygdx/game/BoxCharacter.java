@@ -44,9 +44,9 @@ public class BoxCharacter extends BoxBody {
     }
 
     /**
-     * Update
+     * Update the box of the character
      *
-     * @param delta
+     * @param delta time in seconds since last render
      */
     public void update(float delta){
         moving=Moving.STAND;

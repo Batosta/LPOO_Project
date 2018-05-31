@@ -44,7 +44,6 @@ public class WorldContactListener implements ContactListener {
      */
     @Override
     public void beginContact(Contact contact) {
-        System.out.println("begin" + contact.getFixtureA().getUserData() + contact.getFixtureB().getUserData());
 
         this.contact = contact;
         fixtureA = contact.getFixtureA();
@@ -151,7 +150,6 @@ public class WorldContactListener implements ContactListener {
      */
     @Override
     public void endContact(Contact contact) {
-        System.out.println("end");
 
         this.contact = contact;
         fixtureA = contact.getFixtureA();

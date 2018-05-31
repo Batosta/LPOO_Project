@@ -98,7 +98,6 @@ public class ODoorView extends BodyView {
 
         }
 
-        System.out.println("after");
         // 0.25 seconds per frame
         animation = new Animation<TextureRegion>(.10f, frames);
         animation.setPlayMode(Animation.PlayMode.NORMAL);                           // Can hide this
