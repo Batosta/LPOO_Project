@@ -14,6 +14,7 @@ public class FireBoyWaterGirl extends Game {
 
 	private SpriteBatch batch;
 	private AssetManager assetManager;
+
 	
 	@Override
 	public void create() {

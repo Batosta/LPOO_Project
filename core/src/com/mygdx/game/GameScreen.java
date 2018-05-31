@@ -2,6 +2,7 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
@@ -31,7 +32,7 @@ import java.util.HashMap;
 /**
  * Game screen. Draws all the views of all objects of the game.
  */
-public class GameScreen extends ScreenAdapter{
+public class GameScreen extends ScreenAdapter implements InputProcessor {
 
 
     public static float BATCH_CONST = 1.5f;
@@ -207,13 +208,15 @@ public class GameScreen extends ScreenAdapter{
         createViews();
 
         camera = createCamera();
-//        gamePort = new FitViewport(VIEWPORT_WIDTH*2/PIXEL_TO_METER,VIEWPORT_WIDTH*2/PIXEL_TO_METER* ((float) Gdx.graphics.getHeight() / (float)Gdx.graphics.getWidth()),camera);
-//        gamePort.apply();
+        gamePort = new FitViewport(VIEWPORT_WIDTH/PIXEL_TO_METER,VIEWPORT_WIDTH/PIXEL_TO_METER* ((float) Gdx.graphics.getHeight() / (float)Gdx.graphics.getWidth()),camera);
+        gamePort.apply();
 
         world = new World(new Vector2(0, -15f), true);
 
         createObjects();
         world.setContactListener(new WorldContactListener(this));
+
+        createInputProcessor();
 
     }
 
@@ -244,6 +247,10 @@ public class GameScreen extends ScreenAdapter{
 
         fireBoyView = new FireBoyView(fbwg, "fire.png");
         waterGirlView = new WaterGirlView(fbwg, "water.png");
+    }
+
+    public void createInputProcessor(){
+        Gdx.input.setInputProcessor(this);
     }
 
     /**
@@ -322,10 +329,10 @@ public class GameScreen extends ScreenAdapter{
         }
     }
 
-//    @Override
-//    public void resize(int width, int height){
-//        gamePort.update(width,height);
-//    }
+    @Override
+    public void resize(int width, int height){
+        gamePort.update(width,height);
+    }
 
     /**
      * Draw objects on the screen
@@ -532,4 +539,43 @@ public class GameScreen extends ScreenAdapter{
     }
 
 
+    @Override
+    public boolean keyDown(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyUp(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyTyped(char character) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDragged(int screenX, int screenY, int pointer) {
+        return false;
+    }
+
+    @Override
+    public boolean mouseMoved(int screenX, int screenY) {
+        return false;
+    }
+
+    @Override
+    public boolean scrolled(int amount) {
+        return false;
+    }
 }
