@@ -48,9 +48,8 @@ public abstract class BodyView {
      *
      * @param body Body from World which view will use to be updated.
      */
-    public void update(BoxBody body){                       //      NAO SEI COM USAR ISTO
+    public void update(BoxBody body){
 
         sprite.setCenter(body.getB2body().getPosition().x/PIXEL_TO_METER, body.getB2body().getPosition().y/PIXEL_TO_METER);
-
     }
 }
