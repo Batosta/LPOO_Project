@@ -18,7 +18,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.concurrent.TimeUnit;
 
-public class MainMenuScreen implements Screen, InputProcessor {
+public class MainMenuScreen extends ScreenAdapter implements InputProcessor {
 
     private Viewport viewport;
     private Stage stage;
@@ -42,11 +42,11 @@ public class MainMenuScreen implements Screen, InputProcessor {
      *
      * @param game the game.
      */
-    public MainMenuScreen(Game game){
+    public MainMenuScreen(FireBoyWaterGirl game){
 
         this.game = game;
         viewport = new FitViewport(GameScreen.VIEWPORT_WIDTH/GameScreen.PIXEL_TO_METER, GameScreen.VIEWPORT_WIDTH/GameScreen.PIXEL_TO_METER * ((float) Gdx.graphics.getHeight() / (float) Gdx.graphics.getWidth()));
-        stage = new Stage(viewport, ((FireBoyWaterGirl) game).getSpriteBatch());
+        stage = new Stage(viewport, game.getSpriteBatch());
 
         Label.LabelStyle font = new Label.LabelStyle(new BitmapFont(), Color.YELLOW);
 
@@ -54,14 +54,14 @@ public class MainMenuScreen implements Screen, InputProcessor {
         table.center();
         table.setFillParent(true);
 
-        backgroundImage = new Image((Texture)((FireBoyWaterGirl) game).getAssetManager().get("mainMenuBackground.jpg"));
+        backgroundImage = new Image((Texture)game.getAssetManager().get("mainMenuBackground.jpg"));
         stage.addActor(backgroundImage);
 
-        startButton = new Image((Texture)((FireBoyWaterGirl) game).getAssetManager().get("startButtonNormal.png"));
+        startButton = new Image((Texture)game.getAssetManager().get("startButtonNormal.png"));
         table.add(startButton);
         table.row();
 
-        quitButton = new Image((Texture)((FireBoyWaterGirl) game).getAssetManager().get("quitButtonNormal.png"));
+        quitButton = new Image((Texture)game.getAssetManager().get("quitButtonNormal.png"));
         table.add(quitButton).padTop(50f);
 
         table.debugAll();
@@ -104,7 +104,7 @@ public class MainMenuScreen implements Screen, InputProcessor {
             if(screenY >= buttonY && screenY <= (buttonY + height)){
 
                 if(button == startButton) {
-                    System.out.println("1");
+                    ScreenManager.getInstance().showScreen(ScreenState.GAME_SCREEN, game);
                 }
                 else
                     System.out.println("2");

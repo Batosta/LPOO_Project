@@ -51,7 +51,7 @@ public abstract class BodyView {
      */
     public void update(BoxBody body){                       //      NAO SEI COM USAR ISTO
 
-        sprite.setCenter(body.b2body.getPosition().x/PIXEL_TO_METER/BATCH_CONST, body.b2body.getPosition().y/PIXEL_TO_METER/BATCH_CONST);
+        sprite.setCenter(body.b2body.getPosition().x/PIXEL_TO_METER, body.b2body.getPosition().y/PIXEL_TO_METER);
 
     }
 }

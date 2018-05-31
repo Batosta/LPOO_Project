@@ -12,21 +12,20 @@ import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.*;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.maps.tiled.tiles.AnimatedTiledMapTile;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Queue;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.maps.Map;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 
 
-import java.lang.Object;
 import java.util.HashMap;
 
 /**
@@ -74,10 +73,10 @@ public class GameScreen extends ScreenAdapter{
      */
     FireBoyWaterGirl fbwg;
 
-    /**
-     * The game data.
-     */
-    GameModel model;
+//    /**
+//     * The game data.
+//     */
+//    GameModel model;
 
     /**
      * The camera used to show the viewport.
@@ -193,11 +192,11 @@ public class GameScreen extends ScreenAdapter{
      * Creates the screen.
      *
      * @param fbwg The game
-     * @param model The model to be drawn
+//     * @param model The model to be drawn
      */
-    public GameScreen(FireBoyWaterGirl fbwg, GameModel model) {
+    public GameScreen(FireBoyWaterGirl fbwg/*, GameModel model*/) {
         this.fbwg = fbwg;
-        this.model = model;
+//        this.model = model;
 
         gametimer=0;
 
@@ -208,8 +207,8 @@ public class GameScreen extends ScreenAdapter{
         createViews();
 
         camera = createCamera();
-        //gamePort = new FitViewport(VIEWPORT_WIDTH/PIXEL_TO_METER,VIEWPORT_WIDTH/PIXEL_TO_METER* ((float) Gdx.graphics.getHeight() / (float)Gdx.graphics.getWidth()),camera);
-        //gamePort.apply();
+//        gamePort = new FitViewport(VIEWPORT_WIDTH*2/PIXEL_TO_METER,VIEWPORT_WIDTH*2/PIXEL_TO_METER* ((float) Gdx.graphics.getHeight() / (float)Gdx.graphics.getWidth()),camera);
+//        gamePort.apply();
 
         world = new World(new Vector2(0, -15f), true);
 
@@ -256,7 +255,7 @@ public class GameScreen extends ScreenAdapter{
     public void render(float delta) {
         gametimer++;
         handleInput(delta);
-        handleInputs(delta);
+//        handleInputs(delta);
         updateObjects(delta);
         renderer.setView(camera);
 
@@ -281,6 +280,7 @@ public class GameScreen extends ScreenAdapter{
 
         checkLevelEnd();
 
+        fbwg.getSpriteBatch().enableBlending();
         fbwg.getSpriteBatch().begin();
         //drawBackground
         drawObjects();
@@ -300,7 +300,15 @@ public class GameScreen extends ScreenAdapter{
         if(bluedoorbody.getDooropened() && reddoorbody.getDooropened() && bluediamonds.size == 0 && reddiamonds.size == 0) {
             tiledmap.getLayers().get(10).setVisible(false);
             gamewon=true;
+
+                            // THIS WILL BE THE GAMEOVER MINI MENU
+//            FitViewport stageport= new FitViewport(GameScreen.VIEWPORT_WIDTH/GameScreen.PIXEL_TO_METER, GameScreen.VIEWPORT_WIDTH/GameScreen.PIXEL_TO_METER * ((float) Gdx.graphics.getHeight() / (float) Gdx.graphics.getWidth()));
+//            Stage gameover_dialog = new Stage(stageport, fbwg.getSpriteBatch());
+//            Image image = new Image((Texture)fbwg.getAssetManager().get("transparentdoor.png"));
+//            stagee.addActor(image);
+//            stagee.draw();
         }
+
     }
 
     private void destroyObjects() {
@@ -349,10 +357,10 @@ public class GameScreen extends ScreenAdapter{
         ODoors.get("red").update(delta);
     }
 
-    private void handleInputs(float delta) {
-        model.getFireBoy().handleInputs(delta);
-        model.getWaterGirl().handleInputs(delta);
-    }
+//    private void handleInputs(float delta) {
+//        model.getFireBoy().handleInputs(delta);
+//        model.getWaterGirl().handleInputs(delta);
+//    }
 
     public void handleInput(float delta){
 
@@ -522,5 +530,6 @@ public class GameScreen extends ScreenAdapter{
         }
 
     }
+
 
 }
