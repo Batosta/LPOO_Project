@@ -2,6 +2,7 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
@@ -33,7 +34,7 @@ import java.util.HashMap;
 /**
  * Game screen. Draws all the views of all objects of the game.
  */
-public class GameScreen extends ScreenAdapter{
+public class GameScreen extends ScreenAdapter implements InputProcessor {
 
 
     public static float BATCH_CONST = 1.5f;
@@ -219,6 +220,9 @@ public class GameScreen extends ScreenAdapter{
 
         createObjects();
         world.setContactListener(new WorldContactListener(this));
+
+        createInputProcessor();
+
     }
 
 
@@ -247,6 +251,10 @@ public class GameScreen extends ScreenAdapter{
 
         fireBoyView = new FireBoyView(fbwg, "fire.png");
         waterGirlView = new WaterGirlView(fbwg, "water.png");
+    }
+
+    public void createInputProcessor(){
+        Gdx.input.setInputProcessor(this);
     }
 
     /**
@@ -580,5 +588,46 @@ public class GameScreen extends ScreenAdapter{
         for (MapObject object : tiledmap.getLayers().get(4).getObjects().getByType(PolygonMapObject.class)) {
             reddiamonds.addFirst(new DiamondBody(world,object,0));      //0 if red
         }
+    }
+
+
+    @Override
+    public boolean keyDown(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyUp(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyTyped(char character) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDragged(int screenX, int screenY, int pointer) {
+        return false;
+    }
+
+    @Override
+    public boolean mouseMoved(int screenX, int screenY) {
+        return false;
+    }
+
+    @Override
+    public boolean scrolled(int amount) {
+        return false;
     }
 }
