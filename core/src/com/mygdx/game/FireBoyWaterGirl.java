@@ -13,16 +13,23 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class FireBoyWaterGirl extends Game {
 
 	private SpriteBatch batch;
+
 	private AssetManager assetManager;
 
-	
+
+	/**
+	 * Creates the game. Initializes the sprite batch and asset manager.
+	 */
 	@Override
 	public void create() {
 		batch = new SpriteBatch();
 		assetManager = new AssetManager();
 		beginGame();
 	}
-	
+
+	/**
+	 * Disposes all assets.
+	 */
 	@Override
 	public void dispose () {
 		batch.dispose();
@@ -34,11 +41,8 @@ public class FireBoyWaterGirl extends Game {
 	 */
 	private void beginGame(){
 
-		GameModel game = new GameModel(15, 15, 5, 10);
-
 		loadImages();
-		//setScreen(new GameScreen(this, game));
-		//setScreen(new MainMenuScreen(this));
+
 		ScreenManager.getInstance().initialize(this);
 		ScreenManager.getInstance().showScreen(ScreenState.MENU_SCREEN,this);
 	}

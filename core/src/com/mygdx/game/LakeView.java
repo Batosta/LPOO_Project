@@ -10,6 +10,7 @@ public class LakeView extends BodyView {
 
     /**
      * Constructor of the lake view
+     *
      * @param game the game
      * @param text the texture with all possible positions for a certain object.
      */

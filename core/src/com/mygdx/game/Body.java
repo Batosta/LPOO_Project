@@ -15,6 +15,12 @@ public class Body {
      */
     private float y;
 
+    /**
+     * Constructor of a body
+     *
+     * @param x The X coordinate of the body
+     * @param y The Y coordinate of the body
+     */
     public Body(float x, float y){
 
         this.x = x;

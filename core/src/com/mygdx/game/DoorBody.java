@@ -12,13 +12,28 @@ import com.badlogic.gdx.physics.box2d.Body;
 import java.awt.*;
 
 /**
- * A class derived from BoxBody that represents the button bodies on the world
+ * A class derived from BoxBody that represents the closed door bodies on the world
  */
 public class DoorBody{
 
+    /**
+     * The world of the object
+     */
     public World world;
+
+    /**
+     * The body itself
+     */
     public Body body;
+
+    /**
+     * A body definition that holds all the data needed to construct a rigid body
+     */
     protected BodyDef bdef;
+
+    /**
+     * A fixture definition is used to create a fixture
+     */
     protected FixtureDef fdef;
 
     /**
@@ -31,21 +46,19 @@ public class DoorBody{
      */
     int color;
 
-    float doortimer;
-
     /**
      * Boolean that is 0 in case the door is not open yet and 1 in case it is
      */
     boolean dooropened;
 
     /**
-     * Constructor of the moving door body.
+     * Constructor of the door body.
      *
      * @param world the box2d world.
      * @param object the object from the tiled map that defines the box2d body
      * @param color it decides the door color (0 if red, 1 if blue)
      */
-    public DoorBody(World world,MapObject object,int color){     //x , y meters ??           color = 0 if red, 1 if blue
+    public DoorBody(World world,MapObject object,int color){
         dooropened=false;
         this.world = world;
         this.color = color;
@@ -102,10 +115,9 @@ public class DoorBody{
     /**
      * Updates the door body
      *
-     * @param delta ?
+     * @param delta time in seconds since last render
      */
     public void update(float delta){
 
     }
-
 }

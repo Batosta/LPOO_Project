@@ -6,42 +6,80 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.Body;
 
+/**
+ * A class derived from BoxBody that represents the lake bodies on the world
+ */
 public class LakeBody {
 
-        public World world;
-        public Body b2body;
-        protected BodyDef bdef;
-        protected FixtureDef fdef;
-        PolygonShape polyshape;
-        int color;
+    /**
+     * The world of the object
+     */
+    public World world;
 
-        public LakeBody(World world, MapObject object, int color){     //x , y meters ??           color = 0 if red, 1 if blue, 2 if green
+    /**
+     * The body itself
+     */
+    public Body b2body;
 
-            this.world = world;
-            this.color = color;
-            defineLake(object);
-        }
+    /**
+     * A body definition that holds all the data needed to construct a rigid body
+     */
+    protected BodyDef bdef;
 
-        public void defineLake(MapObject object){
+    /**
+     * A fixture definition is used to create a fixture
+     */
+    protected FixtureDef fdef;
 
-            polyshape = new PolygonShape();
-            bdef = new BodyDef();
-            fdef = new FixtureDef();
+    /**
+     * Shape of the object
+     */
+    PolygonShape polyshape;
 
-            Rectangle rect = ((RectangleMapObject) object).getRectangle();
-            bdef.type = BodyDef.BodyType.StaticBody;
-            bdef.position.set((rect.getX() + rect.getWidth() / 2) * GameScreen.PIXEL_TO_METER, (rect.getY() + rect.getHeight() / 2) * GameScreen.PIXEL_TO_METER);
+    /**
+     * The color of the door
+     */
+    int color;
 
-            b2body = world.createBody(bdef);
+    /**
+     * Constructor of the lake body.
+     *
+     * @param world the box2d world.
+     * @param object the object from the tiled map that defines the box2d body
+     * @param color it decides the door color (0 if red, 1 if blue)
+     */
+    public LakeBody(World world, MapObject object, int color) {
 
-            polyshape.setAsBox((rect.getWidth() / 2)*GameScreen.PIXEL_TO_METER, (rect.getHeight() / 2)*GameScreen.PIXEL_TO_METER);
-            fdef.shape = polyshape;
+        this.world = world;
+        this.color = color;
+        defineLake(object);
+    }
 
-            if(this.color == 0)
-                b2body.createFixture(fdef).setUserData("redlake");
-            else if(this.color == 1)
-                b2body.createFixture(fdef).setUserData("bluelake");
-            else
-                b2body.createFixture(fdef).setUserData("greenlake");
-        }
+    /**
+     * Defines the lakes in the map
+     *
+     * @param object The lakes in the map
+     */
+    public void defineLake(MapObject object) {
+
+        polyshape = new PolygonShape();
+        bdef = new BodyDef();
+        fdef = new FixtureDef();
+
+        Rectangle rect = ((RectangleMapObject) object).getRectangle();
+        bdef.type = BodyDef.BodyType.StaticBody;
+        bdef.position.set((rect.getX() + rect.getWidth() / 2) * GameScreen.PIXEL_TO_METER, (rect.getY() + rect.getHeight() / 2) * GameScreen.PIXEL_TO_METER);
+
+        b2body = world.createBody(bdef);
+
+        polyshape.setAsBox((rect.getWidth() / 2) * GameScreen.PIXEL_TO_METER, (rect.getHeight() / 2) * GameScreen.PIXEL_TO_METER);
+        fdef.shape = polyshape;
+
+        if (this.color == 0)
+            b2body.createFixture(fdef).setUserData("redlake");
+        else if (this.color == 1)
+            b2body.createFixture(fdef).setUserData("bluelake");
+        else
+            b2body.createFixture(fdef).setUserData("greenlake");
+    }
     }

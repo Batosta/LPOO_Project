@@ -8,6 +8,7 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
@@ -20,6 +21,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Queue;
@@ -107,7 +109,7 @@ public class GameScreen extends ScreenAdapter implements InputProcessor {
     /**
      * HashMap with the view of the horizontal and vertical colored doors to be opened by the colored buttons
      */
-    HashMap<String, ODoorView> ODoorsView;
+    HashMap<String, PlatformView> ODoorsView;
 
     private WaterGirlView waterGirlView;
 
@@ -153,7 +155,7 @@ public class GameScreen extends ScreenAdapter implements InputProcessor {
     /**
      * HashMap with the horizontal and vertical colored doors to be opened by the colored buttons
      */
-    HashMap<String, ODoorBody> ODoors;
+    HashMap<String, PlatformBody> ODoors;
 
     /**
      * Queue with the diamonds set before to destroy
@@ -169,7 +171,7 @@ public class GameScreen extends ScreenAdapter implements InputProcessor {
 
     private Box2DDebugRenderer boxrenderer;
 
-    private boolean rendering=true;
+    private boolean rendering = true;
 
     TmxMapLoader maploader;
 
@@ -204,8 +206,6 @@ public class GameScreen extends ScreenAdapter implements InputProcessor {
     Image background;
 
 
-
-
     /**
      * Creates the screen.
      *
@@ -216,13 +216,13 @@ public class GameScreen extends ScreenAdapter implements InputProcessor {
 
         maploader = new TmxMapLoader();
         tiledmap = maploader.load("provmap.tmx");
-        renderer = new OrthogonalTiledMapRenderer(tiledmap,1);
+        renderer = new OrthogonalTiledMapRenderer(tiledmap, 1);
 
         createViews();
 
         camera = createCamera();
 
-        viewport = new FitViewport(GameScreen.VIEWPORT_WIDTH/GameScreen.PIXEL_TO_METER, GameScreen.VIEWPORT_WIDTH/GameScreen.PIXEL_TO_METER * ((float) Gdx.graphics.getHeight() / (float) Gdx.graphics.getWidth()));
+        viewport = new FitViewport(GameScreen.VIEWPORT_WIDTH / GameScreen.PIXEL_TO_METER, GameScreen.VIEWPORT_WIDTH / GameScreen.PIXEL_TO_METER * ((float) Gdx.graphics.getHeight() / (float) Gdx.graphics.getWidth()));
         stage = new Stage(viewport, (fbwg).getSpriteBatch());
 
         world = new World(new Vector2(0, -15f), true);
@@ -242,9 +242,9 @@ public class GameScreen extends ScreenAdapter implements InputProcessor {
      *
      * @return the camera.
      */
-    private OrthographicCamera createCamera(){
+    private OrthographicCamera createCamera() {
 
-        OrthographicCamera camera = new OrthographicCamera(VIEWPORT_WIDTH/PIXEL_TO_METER, VIEWPORT_WIDTH/PIXEL_TO_METER * ((float) Gdx.graphics.getHeight() / (float)Gdx.graphics.getWidth()));
+        OrthographicCamera camera = new OrthographicCamera(VIEWPORT_WIDTH / PIXEL_TO_METER, VIEWPORT_WIDTH / PIXEL_TO_METER * ((float) Gdx.graphics.getHeight() / (float) Gdx.graphics.getWidth()));
 
         camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
         camera.update();
@@ -258,13 +258,13 @@ public class GameScreen extends ScreenAdapter implements InputProcessor {
         return camera;
     }
 
-    public void createViews(){
+    public void createViews() {
 
         setFireBoyView(new FireBoyView(fbwg, "fire.png"));
         setWaterGirlView(new WaterGirlView(fbwg, "water.png"));
     }
 
-    public void createInputProcessor(){
+    public void createInputProcessor() {
         Gdx.input.setInputProcessor(this);
     }
 
@@ -295,8 +295,8 @@ public class GameScreen extends ScreenAdapter implements InputProcessor {
         // world renderer
 //        boxrenderer.render(world,camera.combined);
 
-        if(rendering)
-        world.step(1/60f, 6, 2);
+        if (rendering)
+            world.step(1 / 60f, 6, 2);
 
         try {
             destroyObjects();
@@ -324,23 +324,23 @@ public class GameScreen extends ScreenAdapter implements InputProcessor {
     }
 
     public void checkLevelStatus() {
-        if(bluedoorbody.getDooropened() && reddoorbody.getDooropened() && bluediamonds.size == 0 && reddiamonds.size == 0) {
+        if (bluedoorbody.getDooropened() && reddoorbody.getDooropened() && bluediamonds.size == 0 && reddiamonds.size == 0) {
             tiledmap.getLayers().get(10).setVisible(false);
-            gamewon=true;
+            gamewon = true;
         }
     }
 
-    public void endGame(){
-            rendering=false;
-            gamestage.addActor(background);
+    public void endGame() {
+        rendering = false;
+        gamestage.addActor(background);
 
     }
 
     private void destroyObjects() throws InterruptedException {
-        for(int i = 0 ; i < todestroydiamonds.size ; i++){
-            if(todestroydiamonds.get(i).getFixtureList().get(0).getUserData() == "bluediamond")
-                 bluediamonds.removeLast();
-            if(todestroydiamonds.get(i).getFixtureList().get(0).getUserData() == "reddiamond")
+        for (int i = 0; i < todestroydiamonds.size; i++) {
+            if (todestroydiamonds.get(i).getFixtureList().get(0).getUserData() == "bluediamond")
+                bluediamonds.removeLast();
+            if (todestroydiamonds.get(i).getFixtureList().get(0).getUserData() == "reddiamond")
                 reddiamonds.removeLast();
             world.destroyBody(todestroydiamonds.get(i));
             todestroydiamonds.removeIndex(i);
@@ -348,21 +348,21 @@ public class GameScreen extends ScreenAdapter implements InputProcessor {
     }
 
     @Override
-    public void resize(int width, int height){
-        viewPort.update(width,height,true);
+    public void resize(int width, int height) {
+        viewport.update(width, height, true);
     }
 
     /**
      * Draw objects on the screen
      */
-    private void drawObjects(){
+    private void drawObjects() {
         getFireBoyView().update(getFireboy2d());
         getFireBoyView().draw(fbwg.getSpriteBatch());
 
         getWaterGirlView().update(getWatergirl2d());
         getWaterGirlView().draw(fbwg.getSpriteBatch());
 
-        for (HashMap.Entry<String, ODoorView> entry: ODoorsView.entrySet()) {
+        for (HashMap.Entry<String, PlatformView> entry : ODoorsView.entrySet()) {
 
             entry.getValue().update(ODoors.get(entry.getKey()));
             entry.getValue().draw(fbwg.getSpriteBatch());
@@ -386,7 +386,7 @@ public class GameScreen extends ScreenAdapter implements InputProcessor {
      *
      * @param delta time in seconds since last render
      */
-    private void showGameTime(float delta){
+    private void showGameTime(float delta) {
 
         gameTimer += delta;
 
@@ -413,23 +413,23 @@ public class GameScreen extends ScreenAdapter implements InputProcessor {
      * Creates the label with the time played in the form "Minutes:Seconds"
      *
      * @param table The table where the label will appear
-     * @param font The font of the String to be showed
+     * @param font  The font of the String to be showed
      */
-    private void createTimeLabel(Table table, Label.LabelStyle font){
+    private void createTimeLabel(Table table, Label.LabelStyle font) {
 
-        int minutes = (int)(gameTimer/60);
-        int seconds = (int)(gameTimer % 60);
+        int minutes = (int) (gameTimer / 60);
+        int seconds = (int) (gameTimer % 60);
 
         Label label;
-        if(minutes < 10){
+        if (minutes < 10) {
 
-            if(seconds < 10)
+            if (seconds < 10)
                 label = new Label("0" + Integer.toString(minutes) + ":" + "0" + Integer.toString(seconds), font);
             else
                 label = new Label("0" + Integer.toString(minutes) + ":" + Integer.toString(seconds), font);
-        } else{
+        } else {
 
-            if(seconds < 10)
+            if (seconds < 10)
                 label = new Label(Integer.toString(minutes) + ":" + "0" + Integer.toString(seconds), font);
             else
                 label = new Label(Integer.toString(minutes) + ":" + Integer.toString(seconds), font);
@@ -439,60 +439,60 @@ public class GameScreen extends ScreenAdapter implements InputProcessor {
     }
 
 
-                                                                //Compor esta funcao para ficar mais simples
-    public void handleInput(float delta){
+    //Compor esta funcao para ficar mais simples
+    public void handleInput(float delta) {
 
         //              FireBoy input
-        if(Gdx.input.isKeyJustPressed(Input.Keys.UP)){
-            if(getFireboy2d().jumpstate == BoxCharacter.Jump.STOP)
-            getFireboy2d().getB2body().applyLinearImpulse(new Vector2(0,8.3f), getFireboy2d().getB2body().getWorldCenter(),true);
+        if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
+            if (getFireboy2d().jumpstate == BoxCharacter.Jump.STOP)
+                getFireboy2d().getB2body().applyLinearImpulse(new Vector2(0, 8.3f), getFireboy2d().getB2body().getWorldCenter(), true);
             else if (getFireboy2d().canjump) {
                 getFireboy2d().getB2body().applyLinearImpulse(new Vector2(0, 8.3f), getFireboy2d().getB2body().getWorldCenter(), true);
-                getFireboy2d().canjump=false;
+                getFireboy2d().canjump = false;
             }
         }
-        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) && getFireboy2d().getB2body().getLinearVelocity().x <= 6){
-            getFireboy2d().getB2body().applyLinearImpulse(new Vector2(0.5f,0), getFireboy2d().getB2body().getWorldCenter(),true);
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && getFireboy2d().getB2body().getLinearVelocity().x <= 6) {
+            getFireboy2d().getB2body().applyLinearImpulse(new Vector2(0.5f, 0), getFireboy2d().getB2body().getWorldCenter(), true);
         }
-        if(Gdx.input.isKeyPressed(Input.Keys.LEFT) && getFireboy2d().getB2body().getLinearVelocity().x >= -6) {
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && getFireboy2d().getB2body().getLinearVelocity().x >= -6) {
             getFireboy2d().getB2body().applyLinearImpulse(new Vector2(-0.5f, 0), getFireboy2d().getB2body().getWorldCenter(), true);
         }
-                // TODO por isto a dar bem. a sprite a cair para a direita/esquerda;
-        if(!Gdx.input.isKeyPressed(Input.Keys.LEFT) && !Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            if(getFireboy2d().getB2body().getLinearVelocity().x>0) {
+        // TODO por isto a dar bem. a sprite a cair para a direita/esquerda;
+        if (!Gdx.input.isKeyPressed(Input.Keys.LEFT) && !Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            if (getFireboy2d().getB2body().getLinearVelocity().x > 0) {
                 getFireboy2d().getB2body().applyLinearImpulse(new Vector2(-0.4f, 0), getFireboy2d().getB2body().getWorldCenter(), true);
-                if(getFireboy2d().getB2body().getLinearVelocity().x<0)
+                if (getFireboy2d().getB2body().getLinearVelocity().x < 0)
                     getFireboy2d().getB2body().setLinearVelocity(0, getFireboy2d().getB2body().getLinearVelocity().y);
             }
-            if(getFireboy2d().getB2body().getLinearVelocity().x<0) {
+            if (getFireboy2d().getB2body().getLinearVelocity().x < 0) {
                 getFireboy2d().getB2body().applyLinearImpulse(new Vector2(0.4f, 0), getFireboy2d().getB2body().getWorldCenter(), true);
                 if (getFireboy2d().getB2body().getLinearVelocity().x > 0)
                     getFireboy2d().getB2body().setLinearVelocity(0, getFireboy2d().getB2body().getLinearVelocity().y);
             }
         }
         //              WaterGirl input
-        if(Gdx.input.isKeyJustPressed(Input.Keys.W)){
-            if(getWatergirl2d().jumpstate == BoxCharacter.Jump.STOP)
-            getWatergirl2d().getB2body().applyLinearImpulse(new Vector2(0,8.3f), getWatergirl2d().getB2body().getWorldCenter(),true);
+        if (Gdx.input.isKeyJustPressed(Input.Keys.W)) {
+            if (getWatergirl2d().jumpstate == BoxCharacter.Jump.STOP)
+                getWatergirl2d().getB2body().applyLinearImpulse(new Vector2(0, 8.3f), getWatergirl2d().getB2body().getWorldCenter(), true);
             else if (getWatergirl2d().canjump) {
                 getWatergirl2d().getB2body().applyLinearImpulse(new Vector2(0, 8.3f), getFireboy2d().getB2body().getWorldCenter(), true);
-                getWatergirl2d().canjump=false;
+                getWatergirl2d().canjump = false;
             }
         }
-        if(Gdx.input.isKeyPressed(Input.Keys.D) && getWatergirl2d().getB2body().getLinearVelocity().x <= 6){
-            getWatergirl2d().getB2body().applyLinearImpulse(new Vector2(0.5f,0), getWatergirl2d().getB2body().getWorldCenter(),true);
+        if (Gdx.input.isKeyPressed(Input.Keys.D) && getWatergirl2d().getB2body().getLinearVelocity().x <= 6) {
+            getWatergirl2d().getB2body().applyLinearImpulse(new Vector2(0.5f, 0), getWatergirl2d().getB2body().getWorldCenter(), true);
         }
-        if(Gdx.input.isKeyPressed(Input.Keys.A) && getWatergirl2d().getB2body().getLinearVelocity().x >= -6) {
+        if (Gdx.input.isKeyPressed(Input.Keys.A) && getWatergirl2d().getB2body().getLinearVelocity().x >= -6) {
             getWatergirl2d().getB2body().applyLinearImpulse(new Vector2(-0.5f, 0), getWatergirl2d().getB2body().getWorldCenter(), true);
         }
         // TODO por isto a dar bem. a sprite a cair para a direita/esquerda;
-        if(!Gdx.input.isKeyPressed(Input.Keys.A) && !Gdx.input.isKeyPressed(Input.Keys.D)) {
-            if(getWatergirl2d().getB2body().getLinearVelocity().x>0) {
+        if (!Gdx.input.isKeyPressed(Input.Keys.A) && !Gdx.input.isKeyPressed(Input.Keys.D)) {
+            if (getWatergirl2d().getB2body().getLinearVelocity().x > 0) {
                 getWatergirl2d().getB2body().applyLinearImpulse(new Vector2(-0.4f, 0), getWatergirl2d().getB2body().getWorldCenter(), true);
                 if (getWatergirl2d().getB2body().getLinearVelocity().x < 0)
                     getWatergirl2d().getB2body().setLinearVelocity(0, getWatergirl2d().getB2body().getLinearVelocity().y);
             }
-            if(getWatergirl2d().getB2body().getLinearVelocity().x<0) {
+            if (getWatergirl2d().getB2body().getLinearVelocity().x < 0) {
                 getWatergirl2d().getB2body().applyLinearImpulse(new Vector2(0.4f, 0), getWatergirl2d().getB2body().getWorldCenter(), true);
                 if (getWatergirl2d().getB2body().getLinearVelocity().x > 0)
                     getWatergirl2d().getB2body().setLinearVelocity(0, getWatergirl2d().getB2body().getLinearVelocity().y);
@@ -500,11 +500,11 @@ public class GameScreen extends ScreenAdapter implements InputProcessor {
         }
     }
 
-    public void createObjects(){
+    public void createObjects() {
 
         todestroydiamonds = new Queue<Body>();
-        setFireboy2d(new FireBoy2D(world,50f*PIXEL_TO_METER,100f*PIXEL_TO_METER));
-        setWatergirl2d(new WaterGirl2D(world,50f*PIXEL_TO_METER,200f*PIXEL_TO_METER));
+        setFireboy2d(new FireBoy2D(world, 50f * PIXEL_TO_METER, 100f * PIXEL_TO_METER));
+        setWatergirl2d(new WaterGirl2D(world, 50f * PIXEL_TO_METER, 200f * PIXEL_TO_METER));
 
         BodyDef bdef = new BodyDef();
         PolygonShape polyshape = new PolygonShape();
@@ -515,79 +515,78 @@ public class GameScreen extends ScreenAdapter implements InputProcessor {
         //Green Lakes
         greenlakes = new Queue<LakeBody>();
         for (MapObject object : tiledmap.getLayers().get(14).getObjects().getByType(RectangleMapObject.class)) {
-            greenlakes.addFirst(new LakeBody(world,object,2));      //2 if green
+            greenlakes.addFirst(new LakeBody(world, object, 2));      //2 if green
         }
 
         //Blue Lakes
         bluelakes = new Queue<LakeBody>();
         for (MapObject object : tiledmap.getLayers().get(13).getObjects().getByType(RectangleMapObject.class)) {
-            bluelakes.addFirst(new LakeBody(world,object,1));      //1 if blue
+            bluelakes.addFirst(new LakeBody(world, object, 1));      //1 if blue
         }
 
         //Red Lakes
         redlakes = new Queue<LakeBody>();
         for (MapObject object : tiledmap.getLayers().get(12).getObjects().getByType(RectangleMapObject.class)) {
-            redlakes.addFirst(new LakeBody(world,object,0));      //2 if green
+            redlakes.addFirst(new LakeBody(world, object, 0));      //2 if green
         }
 
 
-        ODoors = new HashMap<String, ODoorBody>();
-        ODoorsView = new HashMap<String, ODoorView>();
-        for (MapObject object : tiledmap.getLayers().get(11).getObjects().getByType(RectangleMapObject.class)){         //ADD DOORS COLORS HERE
+        ODoors = new HashMap<String, PlatformBody>();
+        ODoorsView = new HashMap<String, PlatformView>();
+        for (MapObject object : tiledmap.getLayers().get(11).getObjects().getByType(RectangleMapObject.class)) {         //ADD DOORS COLORS HERE
 
-            ODoors.put(object.getName(),new ODoorBody(world,object,0));
-            if(object.getName().equals("purple"))
-                ODoorsView.put(object.getName(), new ODoorView(fbwg, "horpurpledoor.png"));
-            if(object.getName().equals("red"))
-                ODoorsView.put(object.getName(), new ODoorView(fbwg, "horreddoor.png"));
+            ODoors.put(object.getName(), new PlatformBody(world, object, 0));
+            if (object.getName().equals("purple"))
+                ODoorsView.put(object.getName(), new PlatformView(fbwg, "horpurpledoor.png"));
+            if (object.getName().equals("red"))
+                ODoorsView.put(object.getName(), new PlatformView(fbwg, "horreddoor.png"));
         }
 
-        for (MapObject object : tiledmap.getLayers().get(10).getObjects().getByType(RectangleMapObject.class)){
-            ODoors.put(object.getName(),new ODoorBody(world,object,1));
-            if(object.getName().equals("purple"))
-                ODoorsView.put(object.getName(), new ODoorView(fbwg, "verpurpledoor.png"));
-            if(object.getName().equals("red")) {
-                ODoorsView.put(object.getName(), new ODoorView(fbwg, "verreddoor.png"));
+        for (MapObject object : tiledmap.getLayers().get(10).getObjects().getByType(RectangleMapObject.class)) {
+            ODoors.put(object.getName(), new PlatformBody(world, object, 1));
+            if (object.getName().equals("purple"))
+                ODoorsView.put(object.getName(), new PlatformView(fbwg, "verpurpledoor.png"));
+            if (object.getName().equals("red")) {
+                ODoorsView.put(object.getName(), new PlatformView(fbwg, "verreddoor.png"));
             }
         }
 
         buttons = new HashMap<String, ButtonBody>();
         for (MapObject object : tiledmap.getLayers().get(9).getObjects().getByType(RectangleMapObject.class)) {
-            buttons.put(object.getName(),new ButtonBody(world,object));
+            buttons.put(object.getName(), new ButtonBody(world, object));
         }
 
         for (MapObject object : tiledmap.getLayers().get(8).getObjects().getByType(RectangleMapObject.class)) {
-            if(object.getName().equals("bluedoor")) {
+            if (object.getName().equals("bluedoor")) {
                 bluedoorbody = new DoorBody(world, object, 1);
-            }
-            else if (object.getName().equals("reddoor"))
+            } else if (object.getName().equals("reddoor"))
                 reddoorbody = new DoorBody(world, object, 0);
         }
 
         for (MapObject object : tiledmap.getLayers().get(7).getObjects().getByType(PolygonMapObject.class)) {
             Polygon poly = ((PolygonMapObject) object).getPolygon();
             bdef.type = BodyDef.BodyType.StaticBody;
-            bdef.position.set(poly.getX()*PIXEL_TO_METER,poly.getY()*PIXEL_TO_METER);
+            bdef.position.set(poly.getX() * PIXEL_TO_METER, poly.getY() * PIXEL_TO_METER);
             float[] vertices = poly.getVertices();
             float[] newVertices = new float[vertices.length];
             for (int i = 0; i < vertices.length; ++i) {
-                newVertices[i] = vertices[i]*PIXEL_TO_METER;
+                newVertices[i] = vertices[i] * PIXEL_TO_METER;
             }
             body = world.createBody(bdef);
             polyshape.set(newVertices);
             fdef.shape = polyshape;
-            fdef.isSensor=false;
+            fdef.isSensor = false;
             body.createFixture(fdef).setUserData("rampa");
         }
 
         for (MapObject object : tiledmap.getLayers().get(6).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
             bdef.type = BodyDef.BodyType.StaticBody;
-            bdef.position.set((rect.getX() + rect.getWidth() / 2)  * PIXEL_TO_METER, (rect.getY() + rect.getHeight() / 2)*PIXEL_TO_METER);
+            bdef.position.set((rect.getX() + rect.getWidth() / 2) * PIXEL_TO_METER, (rect.getY() + rect.getHeight() / 2) * PIXEL_TO_METER);
 
             body = world.createBody(bdef);
 
-            polyshape.setAsBox((rect.getWidth() / 2)*PIXEL_TO_METER, (rect.getHeight() / 2)*PIXEL_TO_METER);
+            polyshape.setAsBox((rect.getWidth() / 2) * PIXEL_TO_METER, (rect.getHeight() / 2) * PIXEL_TO_METER);
             fdef.shape = polyshape;
 
             body.createFixture(fdef);
@@ -595,18 +594,18 @@ public class GameScreen extends ScreenAdapter implements InputProcessor {
 
         bluediamonds = new Queue<DiamondBody>();
         for (MapObject object : tiledmap.getLayers().get(5).getObjects().getByType(PolygonMapObject.class)) {
-            bluediamonds.addFirst(new DiamondBody(world,object,1));     //1 if blue
+            bluediamonds.addFirst(new DiamondBody(world, object, 1));     //1 if blue
         }
 
         reddiamonds = new Queue<DiamondBody>();
         for (MapObject object : tiledmap.getLayers().get(4).getObjects().getByType(PolygonMapObject.class)) {
-            reddiamonds.addFirst(new DiamondBody(world,object,0));      //0 if red
+            reddiamonds.addFirst(new DiamondBody(world, object, 0));      //0 if red
         }
     }
 
-    public void createStage(){
-        background = new Image((Texture)fbwg.getAssetManager().get("gameover_dialog.png"));
-        gamestage= new Stage(viewPort,fbwg.getSpriteBatch());
+    public void createStage() {
+        background = new Image((Texture) fbwg.getAssetManager().get("gameover_dialog.png"));
+        gamestage = new Stage(viewport, fbwg.getSpriteBatch());
         table = new Table();
     }
 

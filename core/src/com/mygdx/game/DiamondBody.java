@@ -1,29 +1,49 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.Body;
 
-import java.awt.*;
-
 /**
  * A class derived from BoxBody that represents the diamonds bodies on the world
  */
 public class DiamondBody{
 
+    /**
+     * The world of the object
+     */
     public World world;
+
+    /**
+     * The body itself
+     */
     public Body body;
+
+    /**
+     * A body definition that holds all the data needed to construct a rigid body
+     */
     protected BodyDef bdef;
+
+    /**
+     * A fixture definition is used to create a fixture
+     */
     protected FixtureDef fdef;
 
     /**
      * Shape of the object
      */
     PolygonShape polyshape;
+
+    /**
+     * Boolean value that determines if a certain diamond has already been caught by the corresponding character or not
+     */
     boolean caught = false;
+
+    /**
+     * Color of the diamond (red or blue)
+     */
     int color;
 
     /**
@@ -69,22 +89,4 @@ public class DiamondBody{
             body.createFixture(fdef).setUserData("reddiamond");
 
     }
-
-    /**
-     * Function that returns if the diamond has been yet caught
-     *
-     * @return if the diamond has already been caught
-     */
-    public boolean getCaught(){
-
-        return this.caught;}
-
-    /**
-     * Function that sets the oposite of the value of the caught variable
-     */
-    public void setCaught(){
-
-        this.caught = !this.caught;
-    }
-
 }

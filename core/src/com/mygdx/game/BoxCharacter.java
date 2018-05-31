@@ -2,21 +2,51 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.physics.box2d.*;
 
+/**
+ * A class derived from BoxBody that represents the characters bodies on the world
+ */
 public class BoxCharacter extends BoxBody {
 
-
     /**
-     * The state Moving
+     * Possible states of Moving
      */
     public enum Moving {
-        RIGHT,LEFT,STAND
+
+        /**
+         * Right direction
+         */
+        RIGHT,
+
+        /**
+         * Left direction
+         */
+        LEFT,
+
+        /**
+         * Standing
+         */
+        STAND
     }
 
     /**
-     * The state Jump
+     * Possible states while Jumping
      */
     public enum Jump {
-        ASCENDING, DESCENDING, STOP
+
+        /**
+         * While going up
+         */
+        ASCENDING,
+
+        /**
+         * While going down
+         */
+        DESCENDING,
+
+        /**
+         * Not jumping
+         */
+        STOP
     }
 
     /**
@@ -34,6 +64,9 @@ public class BoxCharacter extends BoxBody {
      */
     protected boolean canjump;
 
+    /**
+     * If character is still alive or net
+     */
     private boolean alive;
 
     /**

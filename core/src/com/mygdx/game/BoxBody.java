@@ -4,6 +4,9 @@ import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.Body;
 
+/**
+ * Represents all the bodies in the world
+ */
 public class BoxBody {
 
     /**
@@ -11,12 +14,23 @@ public class BoxBody {
      */
     public World world;
 
+    /**
+     * The body itself
+     */
     private Body b2body;
+
+    /**
+     * A body definition that holds all the data needed to construct a rigid body
+     */
     protected BodyDef bdef;
+
+    /**
+     * A fixture definition is used to create a fixture
+     */
     protected FixtureDef fdef;
 
     /**
-     * The object itself
+     * The object itself on the map
      */
     protected MapObject object;
 
@@ -84,10 +98,20 @@ public class BoxBody {
         return this.object;
     }
 
+    /**
+     * Function that returns the body itself
+     *
+     * @return The body itself
+     */
     public Body getB2body() {
         return b2body;
     }
 
+    /**
+     * Function that sets the body itself
+     *
+     * @param b2body The new body itself
+     */
     public void setB2body(Body b2body) {
         this.b2body = b2body;
     }

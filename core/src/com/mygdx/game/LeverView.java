@@ -9,7 +9,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 public class LeverView extends BodyView {
 
     /**
-     * constructor of the lever view
+     * Constructor of the lever view
+     *
      * @param game the game.
      * @param text the texture with all possible positions for a certain object.
      */

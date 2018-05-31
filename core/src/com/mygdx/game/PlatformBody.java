@@ -6,42 +6,103 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 
-public class ODoorBody extends BoxBody{
+/**
+ * A class derived from BoxBody that represents the platforms on the world
+ */
+public class PlatformBody extends BoxBody{
 
+    /**
+     * Shape of the platform
+     */
     PolygonShape polyshape;
-    int color;
 
-    float doortimer;
+    /**
+     * Possible states of the platform
+     */
+    public enum PlatformState {
 
-    public enum DoorState {                // PARA METER NO CHARACTER. NAO VALE A PENA REPETIR para as duas personagens
-        CLOSED,OPENED,OPENING,CLOSING
+        /**
+         * When platform is closed
+         */
+        CLOSED,
+
+        /**
+         * When platform is open
+         */
+        OPENED,
+
+        /**
+         * While the platform is opening
+         */
+        OPENING,
+
+        /**
+         * While the platform is closing
+         */
+        CLOSING
     }
 
-    public DoorState doorstate;
+    /**
+     * The state of the platform (Check DPlatformStateoorState)
+     */
+    public PlatformState platformState;
 
+    /**
+     * The platform's corresponding button is being pressed
+     */
     boolean buttonpressed;
 
+    /**
+     * Boolean value that is true if the platform has been completly opened and false if not
+     */
     boolean fullyopened;
 
+    /**
+     * Last width the user saw when opening/closing the platforms
+     */
     private float oldwidth;
 
+    /**
+     * Last heigth the user saw when opening/closing the platforms
+     */
     private float oldheight;
 
+    /**
+     * Platform's width size
+     */
     private float width;
 
+    /**
+     * Platform's height size
+     */
     private float height;
 
+    /**
+     * Platform's direction of movement
+     */
     private int dir;
 
-    public ODoorBody(World world,MapObject object,int dir){             // dir == 0 if horizontal; 1 if vertical
+    /**
+     * Constructor of the platform body.
+     *
+     * @param world the box2d world.
+     * @param object the object from the tiled map that defines the box2d body
+     * @param dir platform's direction of movement
+     */
+    public PlatformBody(World world, MapObject object, int dir){             // dir == 0 if horizontal; 1 if vertical
         super(world,object);
         this.dir=dir;
-        doorstate=DoorState.CLOSED;
+        platformState=PlatformState.CLOSED;
         buttonpressed=false;
         fullyopened=false;
         defineBody(object);
     }
 
+    /**
+     * Defines the platforms in the map
+     *
+     * @param object The doors in the map
+     */
     public void defineBody(MapObject object){
         bdef = new BodyDef();
         fdef = new FixtureDef();
@@ -62,30 +123,35 @@ public class ODoorBody extends BoxBody{
 
     }
 
-    public boolean getButtonpressed(){
-        return this.buttonpressed;
-    }
-
+    /**
+     * Sets the button corresponding to a certain platform as pressed
+     */
     public void setButtonpressed(boolean buttonpressed){
         this.buttonpressed = buttonpressed;
     }
 
+    /**
+     * Updates the platform's body
+     *
+     * @param delta time in seconds since last render
+     */
     public void update(float delta){
         if(this.buttonpressed) {              // button is pressed
-            if(doorstate!=DoorState.OPENED)
-            doorstate=DoorState.OPENING;
+            if(platformState!=PlatformState.OPENED)
+                platformState=PlatformState.OPENING;
         } else {
-            if(doorstate!=DoorState.CLOSED){        // button was released
-                doorstate=DoorState.CLOSING;
+            if(platformState!=PlatformState.CLOSED){        // button was released
+                platformState=PlatformState.CLOSING;
             }
         }
-        if(doorstate == DoorState.CLOSING || doorstate == DoorState.OPENING)
+        if(platformState == PlatformState.CLOSING || platformState == PlatformState.OPENING)
             if(this.dir==0)
         resizeHor(delta);
         else resizeVer(delta);
     }
 
-    /*                ESTE ERA PA O BODY DA PORTA IR DIMINUINDO D TAMANHO
+    /**
+     * Functions that changes the body's dimensions when the platform is opening/closing in the horizontal
      */
     public void resizeHor(float delta) {
 
@@ -99,16 +165,16 @@ public class ODoorBody extends BoxBody{
         newVertices[3] = new Vector2(-1.5f,height);
         polyshape.set(newVertices);
         //polyshape.setAsBox(oldwidth*0.9f,oldheight);
-        if(doorstate==DoorState.OPENING) {
+        if(platformState==PlatformState.OPENING) {
             oldwidth = oldwidth - 0.04f;
             if(oldwidth<-1.3f) {
-                doorstate=DoorState.OPENED;
+                platformState=PlatformState.OPENED;
             }
         }
-        else if (doorstate==DoorState.CLOSING) {
+        else if (platformState==PlatformState.CLOSING) {
             oldwidth = oldwidth + 0.04f;
             if(oldwidth>=width) {
-                doorstate=DoorState.CLOSED;
+                platformState=PlatformState.CLOSED;
             }
         }
 
@@ -121,6 +187,9 @@ public class ODoorBody extends BoxBody{
 
     }
 
+    /**
+     * Functions that changes the body's dimensions when the platform is opening/closing in the vertical
+     */
     public void resizeVer(float delta) {
 
         getB2body().destroyFixture(getB2body().getFixtureList().get(0));
@@ -133,16 +202,16 @@ public class ODoorBody extends BoxBody{
         newVertices[3] = new Vector2(-width,-oldheight);
 
         polyshape.set(newVertices);
-        if(doorstate==DoorState.OPENING) {
+        if(platformState==PlatformState.OPENING) {
             oldheight = oldheight - 0.04f;
             if(oldheight<-1.3f) {
-                doorstate=DoorState.OPENED;
+                platformState=PlatformState.OPENED;
             }
         }
-        else if (doorstate==DoorState.CLOSING) {
+        else if (platformState==PlatformState.CLOSING) {
             oldheight = oldheight + 0.04f;
             if(oldheight>=height) {
-                doorstate=DoorState.CLOSED;
+                platformState=PlatformState.CLOSED;
             }
         }
 
@@ -153,5 +222,4 @@ public class ODoorBody extends BoxBody{
         getB2body().createFixture(fdef).setUserData(object.getName());
 
     }
-
 }
