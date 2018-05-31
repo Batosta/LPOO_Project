@@ -104,7 +104,7 @@ public class ODoorView extends BodyView {
         animation.setPlayMode(Animation.PlayMode.NORMAL);                           // Can hide this
         //return new Sprite((Texture)game.getAssetManager().get(text));
         Sprite sprite = new Sprite((TextureRegion)animation.getKeyFrame(0));
-        sprite.setSize(sprite.getWidth()/BATCH_CONST,sprite.getHeight()/BATCH_CONST);
+        sprite.setSize(sprite.getWidth(),sprite.getHeight());
         return sprite;
     }
 }

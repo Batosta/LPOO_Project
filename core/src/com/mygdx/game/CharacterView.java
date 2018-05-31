@@ -4,6 +4,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
+import static com.mygdx.game.GameScreen.PIXEL_TO_METER;
+
 /**
  * A view representing a character
  */
@@ -102,7 +104,9 @@ public class CharacterView extends BodyView {
     public void update(BoxBody body) {
 
         this.body = body;
-        super.update(body);
+
+        //move sprite a bit up
+        sprite.setCenter(body.b2body.getPosition().x/PIXEL_TO_METER, body.b2body.getPosition().y/PIXEL_TO_METER+10);
 
         stand();
         moving();

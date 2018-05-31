@@ -38,7 +38,9 @@ public class FireBoyWaterGirl extends Game {
 
 		loadImages();
 		//setScreen(new GameScreen(this, game));
-		setScreen(new MainMenuScreen(this));
+		//setScreen(new MainMenuScreen(this));
+		ScreenManager.getInstance().initialize(this);
+		ScreenManager.getInstance().showScreen(ScreenState.MENU_SCREEN,this);
 	}
 
 	/**
@@ -80,6 +82,8 @@ public class FireBoyWaterGirl extends Game {
 		this.assetManager.load("startButtonPressed.png", Texture.class);
 		this.assetManager.load("quitButtonNormal.png", Texture.class);
 		this.assetManager.load("quitButtonPressed.png", Texture.class);
+
+
 
 
 		this.assetManager.load("facil.mp3", Music.class);
