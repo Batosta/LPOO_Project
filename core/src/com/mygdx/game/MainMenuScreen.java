@@ -1,20 +1,24 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.*;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-public class MainMenuScreen implements Screen {
+import java.util.concurrent.TimeUnit;
+
+public class MainMenuScreen implements Screen, InputProcessor {
 
     private Viewport viewport;
     private Stage stage;
@@ -23,6 +27,15 @@ public class MainMenuScreen implements Screen {
      * Main game object
      */
     private Game game;
+
+    Image backgroundImage;
+    Image startButton;
+    Image quitButton;
+
+    int buttonX = 155;
+    int buttonY;
+    int width = 335;
+    int height = 45;
 
     /**
      * Constructor of the main menu screen
@@ -41,19 +54,93 @@ public class MainMenuScreen implements Screen {
         table.center();
         table.setFillParent(true);
 
-        Image backgroundImage = new Image((Texture)((FireBoyWaterGirl) game).getAssetManager().get("mainMenuBackground.jpg"));
+        backgroundImage = new Image((Texture)((FireBoyWaterGirl) game).getAssetManager().get("mainMenuBackground.jpg"));
         stage.addActor(backgroundImage);
-        Image startButton = new Image((Texture)((FireBoyWaterGirl) game).getAssetManager().get("startButtonNormal.png"));
+
+        startButton = new Image((Texture)((FireBoyWaterGirl) game).getAssetManager().get("startButtonNormal.png"));
         table.add(startButton);
         table.row();
-        Image quitButton = new Image((Texture)((FireBoyWaterGirl) game).getAssetManager().get("quitButtonNormal.png"));
+
+        quitButton = new Image((Texture)((FireBoyWaterGirl) game).getAssetManager().get("quitButtonNormal.png"));
         table.add(quitButton).padTop(50f);
 
-
-        //table.debugAll();
+        table.debugAll();
         stage.addActor(table);
+
+
+
+        Gdx.input.setInputProcessor(this);
     }
 
+    /**
+     * Function that defines the buttonY value according with the received button
+     *
+     * @param button Which button is begin worked on
+     */
+    private void decideButtonY(Image button){
+
+        if(button == startButton) {
+
+            buttonY = 180;
+        } else{
+
+            buttonY = 255;
+        }
+    }
+
+    /**
+     * Function that checks if the mouse was clicked while above a button
+     *
+     * @param screenX The X position of the mouse when clicked
+     * @param screenY The Y position of the mouse when clicked
+     * @param button The button to be checked
+     */
+    private void touchedButton(int screenX, int screenY, Image button){
+
+        decideButtonY(button);
+
+        if(screenX >= buttonX && screenX <= (buttonX + width)){
+
+            if(screenY >= buttonY && screenY <= (buttonY + height)){
+
+                if(button == startButton) {
+                    System.out.println("1");
+                }
+                else
+                    System.out.println("2");
+            }
+        }
+    }
+
+    /**
+     * Function that checks if the mouse has passed over the top of a button
+     *
+     * @param screenX The X position of the mouse when moved
+     * @param screenY The Y position of the mouse when moved
+     * @param button The button to be checked
+     */
+    private void colorButtons(int screenX, int screenY, Image button){
+
+        decideButtonY(button);
+
+        if(screenX >= buttonX && screenX <= (buttonX + width) && screenY >= buttonY && screenY <= (buttonY + height)) {
+
+            if (button == startButton) {
+
+                button.setDrawable(new TextureRegionDrawable(new TextureRegion(new Texture("startButtonPressed.png"))));
+            } else {
+
+                button.setDrawable(new TextureRegionDrawable(new TextureRegion(new Texture("quitButtonPressed.png"))));
+            }
+
+        } else {
+
+            if (button == startButton)
+                button.setDrawable(new TextureRegionDrawable(new TextureRegion(new Texture("startButtonNormal.png"))));
+            else
+                button.setDrawable(new TextureRegionDrawable(new TextureRegion(new Texture("quitButtonNormal.png"))));
+        }
+    }
 
     @Override
     public void show() {
@@ -91,5 +178,56 @@ public class MainMenuScreen implements Screen {
     @Override
     public void dispose() {
 
+    }
+
+    @Override
+    public boolean keyDown(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyUp(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyTyped(char character) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+
+        if(button == Input.Buttons.LEFT) {
+
+            touchedButton(screenX, screenY, startButton);
+            touchedButton(screenX, screenY, quitButton);
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDragged(int screenX, int screenY, int pointer) {
+        return false;
+    }
+
+    @Override
+    public boolean mouseMoved(int screenX, int screenY) {
+
+        colorButtons(screenX, screenY, startButton);
+        colorButtons(screenX, screenY, quitButton);
+
+        return true;
+    }
+
+    @Override
+    public boolean scrolled(int amount) {
+        return false;
     }
 }

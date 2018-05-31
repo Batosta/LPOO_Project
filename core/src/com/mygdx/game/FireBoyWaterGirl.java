@@ -37,8 +37,8 @@ public class FireBoyWaterGirl extends Game {
 		GameModel game = new GameModel(15, 15, 5, 10);
 
 		loadImages();
-		setScreen(new GameScreen(this, game));
-		//setScreen(new MainMenuScreen(this));
+		//setScreen(new GameScreen(this, game));
+		setScreen(new MainMenuScreen(this));
 	}
 
 	/**

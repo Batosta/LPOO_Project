@@ -491,7 +491,6 @@ public class GameScreen extends ScreenAdapter{
             for (int i = 0; i < vertices.length; ++i) {
                 newVertices[i] = vertices[i]*PIXEL_TO_METER;
             }
-
             body = world.createBody(bdef);
             polyshape.set(newVertices);
             fdef.shape = polyshape;
