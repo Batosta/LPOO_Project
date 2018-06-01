@@ -29,9 +29,9 @@ public class PlatformView extends BodyView {
      * @param game the game.
      * @param text the texture with all possible positions for the Platform
      */
-    public PlatformView(FireBoyWaterGirl game, String text) {
+    public PlatformView(FireBoyWaterGirl game,String text) {
 
-        super(game, text);
+        super(game,text);
     }
 
     /**

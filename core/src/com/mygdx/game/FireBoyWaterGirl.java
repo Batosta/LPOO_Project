@@ -12,6 +12,12 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
  */
 public class FireBoyWaterGirl extends Game {
 
+	private static FireBoyWaterGirl ourInstance = new FireBoyWaterGirl();
+
+	public static FireBoyWaterGirl getInstance() {
+		return ourInstance;
+	}
+
 	private SpriteBatch batch;
 
 	private AssetManager assetManager;

@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<<<<<<< Updated upstream
 <map version="1.0" tiledversion="2017.07.26" orientation="orthogonal" renderorder="right-down" width="30" height="25" tilewidth="32" tileheight="32" nextobjectid="201">
+=======
+<map version="1.0" tiledversion="1.1.5" orientation="orthogonal" renderorder="right-down" width="30" height="25" tilewidth="32" tileheight="32" infinite="0" nextobjectid="200">
+>>>>>>> Stashed changes
  <tileset firstgid="1" source="provtiledset.tsx"/>
  <tileset firstgid="673" source="diamondset.tsx"/>
  <tileset firstgid="708" source="reddiamondset.tsx"/>
@@ -225,7 +229,7 @@
    <polygon points="0,0 -33.2566,0 -286.518,127.91 -1.70547,127.057"/>
   </object>
  </objectgroup>
- <objectgroup name="Doors">
+ <objectgroup name="Doors" visible="0">
   <object id="98" name="bluedoor" x="40.5109" y="239.689" width="48.388" height="79.8965"/>
   <object id="100" name="reddoor" x="133.911" y="239.689" width="50.9199" height="80.4591"/>
  </objectgroup>
@@ -241,7 +245,6 @@
  </objectgroup>
  <objectgroup name="redLakes">
   <object id="175" x="533" y="462" width="155" height="17"/>
-  <object id="177" x="663" y="302" width="4"/>
  </objectgroup>
  <objectgroup name="blueLakes">
   <object id="194" x="175" y="338" width="172" height="16"/>

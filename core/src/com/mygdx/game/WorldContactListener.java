@@ -12,16 +12,15 @@ public class WorldContactListener implements ContactListener {
     /**
      * The Game's screen
      */
-    GameScreen gameScreen;
+    Level level;
 
     /**
      * Constructor of the game's screen
      *
      * @param gamescreen The game's screen itself
      */
-    public WorldContactListener(GameScreen gamescreen) {       //game model?
-
-        this.gameScreen = gamescreen;
+    public WorldContactListener(Level level) {       //game model?
+        this.level = level;
     }
 
     /**
@@ -65,15 +64,15 @@ public class WorldContactListener implements ContactListener {
 
         if (fixtureA.getUserData() == "fireboy" && fixtureB.getUserData() == "reddiamond") {
             Body bodyB = fixtureB.getBody();
-            gameScreen.todestroydiamonds.addLast(bodyB);
-            TiledMapTileLayer layer = (TiledMapTileLayer) gameScreen.tiledmap.getLayers().get(12);
+            level.todestroydiamonds.addLast(bodyB);
+            TiledMapTileLayer layer = (TiledMapTileLayer) level.getTiledmap().getLayers().get(3);
             layer.getCell((int) (bodyB.getPosition().x / GameScreen.PIXEL_TO_METER / 32), (int) (bodyB.getPosition().y / GameScreen.PIXEL_TO_METER) / 32).setTile(null);
         }
 
         if (fixtureA.getUserData() == "watergirl" && fixtureB.getUserData() == "bluediamond") {
             Body bodyB = fixtureB.getBody();
-            gameScreen.todestroydiamonds.addLast(bodyB);
-            TiledMapTileLayer layer = (TiledMapTileLayer) gameScreen.tiledmap.getLayers().get(12);
+            level.todestroydiamonds.addLast(bodyB);
+            TiledMapTileLayer layer = (TiledMapTileLayer) level.getTiledmap().getLayers().get(3);
             layer.getCell((int) (bodyB.getPosition().x / GameScreen.PIXEL_TO_METER / 32), (int) (bodyB.getPosition().y / GameScreen.PIXEL_TO_METER) / 32).setTile(null);
         }
     }
@@ -84,13 +83,13 @@ public class WorldContactListener implements ContactListener {
     private void contactDoors(){
 
         if (fixtureA.getUserData() == "fireboy" && fixtureB.getUserData() == "reddoor") {
-            gameScreen.reddoorbody.setDooropened(true);
-            gameScreen.checkLevelStatus();
+            level.reddoorbody.setDooropened(true);
+            level.checkLevelStatus();
         }
 
         if (fixtureA.getUserData() == "watergirl" && fixtureB.getUserData() == "bluedoor") {
-            gameScreen.bluedoorbody.setDooropened(true);
-            gameScreen.checkLevelStatus();
+            level.bluedoorbody.setDooropened(true);
+            level.checkLevelStatus();
         }
     }
 
@@ -100,11 +99,11 @@ public class WorldContactListener implements ContactListener {
     private void contactButtons(){
 
         if (fixtureA.getUserData() == "fireboy" && (fixtureB.getUserData() instanceof ButtonBody)) {
-            gameScreen.platforms.get(((ButtonBody) fixtureB.getUserData()).getMapObject().getName()).setButtonpressed(true);
+            level.getODoors().get(((ButtonBody) fixtureB.getUserData()).getMapObject().getName()).setButtonpressed(true);
         }
 
         if (fixtureA.getUserData() == "watergirl" && (fixtureB.getUserData() instanceof ButtonBody)) {
-            gameScreen.platforms.get(((ButtonBody) fixtureB.getUserData()).getMapObject().getName()).setButtonpressed(true);
+            level.getODoors().get(((ButtonBody) fixtureB.getUserData()).getMapObject().getName()).setButtonpressed(true);
         }
     }
 
@@ -115,12 +114,12 @@ public class WorldContactListener implements ContactListener {
 
         //  allows fire boy to jump on slopes
         if (fixtureA.getUserData() == "fireboy" && fixtureB.getUserData() == "rampa") {
-            gameScreen.getFireboy2d().canjump = true;
+            level.getFireboy2D().canjump = true;
         }
 
         //  allows water girl to jump on slopes
         if (fixtureA.getUserData() == "watergirl" && fixtureB.getUserData() == "rampa") {
-            gameScreen.getWatergirl2d().canjump = true;
+            level.getWatergirl2D().canjump = true;
         }
     }
 
@@ -130,23 +129,24 @@ public class WorldContactListener implements ContactListener {
     private void contactLake(){
 
         if(fixtureA.getUserData() == "watergirl" && fixtureB.getUserData() == "redlake"){
-            gameScreen.getFireboy2d().setAlive(false);
-            gameScreen.endGame();
+            level.getWatergirl2D().setAlive(false);
+            level.endGame();
         }
 
         if(fixtureA.getUserData() == "fireboy" && fixtureB.getUserData() == "bluelake"){
-            gameScreen.getFireboy2d().setAlive(false);
-            gameScreen.endGame();
+            level.getFireboy2D().setAlive(false);
+            level.endGame();
         }
 
         if(fixtureA.getUserData() == "watergirl" && fixtureB.getUserData() == "greenlake"){
-            gameScreen.getWatergirl2d().setAlive(false);
-            gameScreen.endGame();
+            level.getWatergirl2D().setAlive(false);
+            level.setGamewon(true);
+//            level.endGame();
         }
 
         if(fixtureA.getUserData() == "fireboy" && fixtureB.getUserData() == "greenlake"){
-            gameScreen.getFireboy2d().setAlive(false);
-            gameScreen.endGame();
+            level.getFireboy2D().setAlive(false);
+            level.endGame();
         }
     }
 
@@ -164,20 +164,22 @@ public class WorldContactListener implements ContactListener {
 
 
         if (fixtureA.getUserData() == "fireboy" && fixtureB.getUserData() == "reddoor") {
-            gameScreen.reddoorbody.setDooropened(false);
+            level.reddoorbody.setDooropened(false);
         }
 
         if (fixtureA.getUserData() == "watergirl" && fixtureB.getUserData() == "bluedoor") {
-            gameScreen.bluedoorbody.setDooropened(false);
+            level.bluedoorbody.setDooropened(false);
         }
 
 
         if (fixtureA.getUserData() == "fireboy" && (fixtureB.getUserData() instanceof ButtonBody)) {
-            gameScreen.platforms.get(((ButtonBody) fixtureB.getUserData()).getMapObject().getName()).setButtonpressed(false);
+            System.out.println("fire dentro button");
+            level.getODoors().get(((ButtonBody) fixtureB.getUserData()).getMapObject().getName()).setButtonpressed(false);
         }
 
         if (fixtureA.getUserData() == "watergirl" && (fixtureB.getUserData() instanceof ButtonBody)) {
-            gameScreen.platforms.get(((ButtonBody) fixtureB.getUserData()).getMapObject().getName()).setButtonpressed(false);
+            System.out.println("water dentro button");
+            level.getODoors().get(((ButtonBody) fixtureB.getUserData()).getMapObject().getName()).setButtonpressed(false);
         }
     }
 

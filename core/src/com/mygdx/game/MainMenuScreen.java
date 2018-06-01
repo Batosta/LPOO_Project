@@ -27,7 +27,7 @@ public class MainMenuScreen extends ScreenAdapter implements InputProcessor {
     /**
      * Main game object
      */
-    private Game game;
+    private FireBoyWaterGirl game;
 
     /**
      * Main Menu's background Image
@@ -67,12 +67,10 @@ public class MainMenuScreen extends ScreenAdapter implements InputProcessor {
     /**
      * Constructor of the main menu screen
      *
-     * @param game the game.
      */
     public MainMenuScreen(FireBoyWaterGirl game){
+        this.game=game;
 
-
-        this.game = game;
         viewport = new FitViewport(GameScreen.VIEWPORT_WIDTH/GameScreen.PIXEL_TO_METER, GameScreen.VIEWPORT_WIDTH/GameScreen.PIXEL_TO_METER * ((float) Gdx.graphics.getHeight() / (float) Gdx.graphics.getWidth()));
         stage = new Stage(viewport, game.getSpriteBatch());
 
@@ -133,7 +131,6 @@ public class MainMenuScreen extends ScreenAdapter implements InputProcessor {
                 }
                 else {
                     Gdx.app.exit();
-                    System.exit(0);
                 }
             }
         }
