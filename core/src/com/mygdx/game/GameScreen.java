@@ -120,43 +120,6 @@ public class GameScreen extends ScreenAdapter implements InputProcessor{
      */
     public DoorBody reddoorbody;
 
-//    /**
-//     * Queue with the red diamonds to be caught by Fire Boy
-//     */
-//    Queue<DiamondBody> reddiamonds;
-//
-//    /**
-//     * Queue with the blue diamonds to be caught by Water Girl
-//     */
-//    Queue<DiamondBody> bluediamonds;
-//
-//    /**
-//     * Queue with the red lakes that Water Girl can not touch
-//     */
-//    Queue<LakeBody> redlakes;
-//
-//    /**
-//     * Queue with the blue lakes that Fire Boy can not touch
-//     */
-//    Queue<LakeBody> bluelakes;
-//
-//    /**
-//     * Queue with the green lakes that neither Water Girl and Fire Boy can not touch
-//     */
-//    Queue<LakeBody> greenlakes;
-//
-//    /**
-//     * HashMap with the horizontal and vertical colored doors to be opened by the colored buttons
-//     */
-//    HashMap<String, ODoorBody> ODoors;
-
-
-
-//    /**
-//     * hash map with the colored buttons to open colored doors
-//     */
-//    HashMap<String, ButtonBody> buttons;
-
     private World world;
 
     private Box2DDebugRenderer boxrenderer;
@@ -215,15 +178,6 @@ public class GameScreen extends ScreenAdapter implements InputProcessor{
 
     Image background;
 
-    BodyDef bdef;
-
-    PolygonShape polyshape;
-
-    FixtureDef fdef;
-
-    Body body;
-
-
     /**
      * Creates the screen.
      *
@@ -273,27 +227,6 @@ public class GameScreen extends ScreenAdapter implements InputProcessor{
         return camera;
     }
 
-//    public void createWorld(){
-//        if (world != null) {
-//            world.dispose();
-//        }
-//        world = new World(new Vector2(0, -15f), true);
-//        rendering=true;
-//        //createObjects();
-//        createViews();
-//        world.setContactListener(new WorldContactListener(this));
-//        if (DEBUG_PHYSICS) {
-//            boxrenderer = new Box2DDebugRenderer();
-//            debugCamera = camera.combined.cpy();
-//            debugCamera.scl(1 / PIXEL_TO_METER);
-//        }
-//    }
-
-//    public void createViews(){
-//        setFireBoyView(new FireBoyView(fbwg, "fire.png"));
-//        setWaterGirlView(new WaterGirlView(fbwg, "water.png"));
-//    }
-
     /**
      * Creates the input processor
      */
@@ -309,13 +242,14 @@ public class GameScreen extends ScreenAdapter implements InputProcessor{
      */
     @Override
     public void render(float delta) {
-checkLevelStatus();
+
+        checkLevelStatus();
+
         currentLevel.handleInput(delta);
         currentLevel.renderLevel(delta);
 
-        handleInput(delta);
         updateTimeLabel();
-        updateObjects(delta);
+
         renderer.setView(camera);
 
         //Clears screen
@@ -406,13 +340,13 @@ checkLevelStatus();
      * Draw objects on the screen
      */
     private void drawObjects(){
-        currentLevel.getFireBoyView().update(currentLevel.getFireboy2D());
+        currentLevel.getFireBoyView().update(currentLevel.getfireboy2D());
         currentLevel.getFireBoyView().draw(fbwg.getSpriteBatch());
 
-        currentLevel.getWaterGirlView().update(currentLevel.getWatergirl2D());
+        currentLevel.getWaterGirlView().update(currentLevel.getwatergirl2D());
         currentLevel.getWaterGirlView().draw(fbwg.getSpriteBatch());
 
-        for (HashMap.Entry<String, ODoorView> entry: currentLevel.getODoorsView().entrySet()) {
+        for (HashMap.Entry<String, PlatformView> entry: currentLevel.getODoorsView().entrySet()) {
             entry.getValue().update(currentLevel.getODoors().get(entry.getKey()));
             entry.getValue().draw(fbwg.getSpriteBatch());
         }
@@ -431,7 +365,7 @@ checkLevelStatus();
      * Function that loades the level maps
      */
     public void loadLevels(){
-        levels.add(new Level(fbwg,this,"provmap.tmx"));
+        levels.add(new Level(fbwg,this,"level1.tmx"));
         levels.add(new Level(fbwg,this,"level2.tmx"));
     }
 
@@ -456,221 +390,27 @@ checkLevelStatus();
     }
 
     /**
-     * Function that handles both FireBoy and WaterGirl's user inputs
-     *
-     * @param delta time in seconds since last render
+     * Updated the label with the time played in the form "Minutes:Seconds"
      */
-    public void handleInput(float delta) {
-
-        handleFireBoyInput();
-        handleWaterGirlInput();
-    }
-
-    /**
-     * Function that handles FireBoy's user inputs
-     */
-    private void handleFireBoyInput(){
-
-        fireBoyUp();
-        fireBoyRight();
-        fireBoyLeft();
-        fireBoyNoDir();
-    }
-
-    /**
-     * Function that handles the jump of the FireBoy
-     */
-    private void fireBoyUp(){
-
-                                                                //Compor esta funcao para ficar mais simples
-//    public void handleInput(float delta){
-//        //              FireBoy inputx.input.isK
-//        if(Gdx.input.isKeyJustPressed(Input.Keys.UP)){
-//            System.out.println(" input: " + getFireboy2d().jumpstate);
-//            if(getFireboy2d().jumpstate == BoxCharacter.Jump.STOP)
-//            getFireboy2d().getB2body().applyLinearImpulse(new Vector2(0,8.3f), getFireboy2d().getB2body().getWorldCenter(),true);
-//            else if (getFireboy2d().canjump) {
-//                getFireboy2d().getB2body().applyLinearImpulse(new Vector2(0, 8.3f), getFireboy2d().getB2body().getWorldCenter(), true);
-//                getFireboy2d().canjump=false;
-//            }
-//        }
-//        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) && getFireboy2d().getB2body().getLinearVelocity().x <= 6){
-//            getFireboy2d().getB2body().applyLinearImpulse(new Vector2(0.5f,0), getFireboy2d().getB2body().getWorldCenter(),true);
-//        }
-//        if(Gdx.input.isKeyPressed(Input.Keys.LEFT) && getFireboy2d().getB2body().getLinearVelocity().x >= -6) {
-//            getFireboy2d().getB2body().applyLinearImpulse(new Vector2(-0.5f, 0), getFireboy2d().getB2body().getWorldCenter(), true);
-//        }
-//                // TODO por isto a dar bem. a sprite a cair para a direita/esquerda;
-//        if(!Gdx.input.isKeyPressed(Input.Keys.LEFT) && !Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-//            if(getFireboy2d().getB2body().getLinearVelocity().x>0) {
-//                getFireboy2d().getB2body().applyLinearImpulse(new Vector2(-0.4f, 0), getFireboy2d().getB2body().getWorldCenter(), true);
-//                if(getFireboy2d().getB2body().getLinearVelocity().x<0)
-//                    getFireboy2d().getB2body().setLinearVelocity(0, getFireboy2d().getB2body().getLinearVelocity().y);
-//            }
-//            if(getFireboy2d().getB2body().getLinearVelocity().x<0) {
-//                getFireboy2d().getB2body().applyLinearImpulse(new Vector2(0.4f, 0), getFireboy2d().getB2body().getWorldCenter(), true);
-//                if (getFireboy2d().getB2body().getLinearVelocity().x > 0)
-//                    getFireboy2d().getB2body().setLinearVelocity(0, getFireboy2d().getB2body().getLinearVelocity().y);
-//            }
-//        }
-//        //              WaterGirl input
-//        if(Gdx.input.isKeyJustPressed(Input.Keys.W)){
-//            if(getWatergirl2d().jumpstate == BoxCharacter.Jump.STOP)
-//            getWatergirl2d().getB2body().applyLinearImpulse(new Vector2(0,8.3f), getWatergirl2d().getB2body().getWorldCenter(),true);
-//            else if (getWatergirl2d().canjump) {
-//                getWatergirl2d().getB2body().applyLinearImpulse(new Vector2(0, 8.3f), getFireboy2d().getB2body().getWorldCenter(), true);
-//                getWatergirl2d().canjump=false;
-//            }
-//        }
-//        if(Gdx.input.isKeyPressed(Input.Keys.D) && getWatergirl2d().getB2body().getLinearVelocity().x <= 6){
-//            getWatergirl2d().getB2body().applyLinearImpulse(new Vector2(0.5f,0), getWatergirl2d().getB2body().getWorldCenter(),true);
-//        }
-//        if(Gdx.input.isKeyPressed(Input.Keys.A) && getWatergirl2d().getB2body().getLinearVelocity().x >= -6) {
-//            getWatergirl2d().getB2body().applyLinearImpulse(new Vector2(-0.5f, 0), getWatergirl2d().getB2body().getWorldCenter(), true);
-//        }
-//        // TODO por isto a dar bem. a sprite a cair para a direita/esquerda;
-//        if(!Gdx.input.isKeyPressed(Input.Keys.A) && !Gdx.input.isKeyPressed(Input.Keys.D)) {
-//            if(getWatergirl2d().getB2body().getLinearVelocity().x>0) {
-//                getWatergirl2d().getB2body().applyLinearImpulse(new Vector2(-0.4f, 0), getWatergirl2d().getB2body().getWorldCenter(), true);
-//                if (getWatergirl2d().getB2body().getLinearVelocity().x < 0)
-//                    getWatergirl2d().getB2body().setLinearVelocity(0, getWatergirl2d().getB2body().getLinearVelocity().y);
-//            }
-//            if(getWatergirl2d().getB2body().getLinearVelocity().x<0) {
-//                getWatergirl2d().getB2body().applyLinearImpulse(new Vector2(0.4f, 0), getWatergirl2d().getB2body().getWorldCenter(), true);
-//                if (getWatergirl2d().getB2body().getLinearVelocity().x > 0)
-//                    getWatergirl2d().getB2body().setLinearVelocity(0, getWatergirl2d().getB2body().getLinearVelocity().y);
-//            }
-//        }
-//    }
-
-        //              FireBoy input
-        if(Gdx.input.isKeyJustPressed(Input.Keys.UP)){
-            if(getFireboy2d().jumpstate == BoxCharacter.Jump.STOP)
-            getFireboy2d().getB2body().applyLinearImpulse(new Vector2(0,8.3f), getFireboy2d().getB2body().getWorldCenter(),true);
-            else if (getFireboy2d().canjump) {
-                getFireboy2d().getB2body().applyLinearImpulse(new Vector2(0, 8.3f), getFireboy2d().getB2body().getWorldCenter(), true);
-                getFireboy2d().canjump=false;
-            }
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) && getFireboy2d().getB2body().getLinearVelocity().x <= 6){
-            getFireboy2d().getB2body().applyLinearImpulse(new Vector2(0.5f,0), getFireboy2d().getB2body().getWorldCenter(),true);
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.LEFT) && getFireboy2d().getB2body().getLinearVelocity().x >= -6) {
-            getFireboy2d().getB2body().applyLinearImpulse(new Vector2(-0.5f, 0), getFireboy2d().getB2body().getWorldCenter(), true);
-        }
-                // TODO por isto a dar bem. a sprite a cair para a direita/esquerda;
-        if(!Gdx.input.isKeyPressed(Input.Keys.LEFT) && !Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            if(getFireboy2d().getB2body().getLinearVelocity().x>0) {
-                getFireboy2d().getB2body().applyLinearImpulse(new Vector2(-0.4f, 0), getFireboy2d().getB2body().getWorldCenter(), true);
-                if(getFireboy2d().getB2body().getLinearVelocity().x<0)
-                    getFireboy2d().getB2body().setLinearVelocity(0, getFireboy2d().getB2body().getLinearVelocity().y);
-            }
-            if(getFireboy2d().getB2body().getLinearVelocity().x<0) {
-                getFireboy2d().getB2body().applyLinearImpulse(new Vector2(0.4f, 0), getFireboy2d().getB2body().getWorldCenter(), true);
-                if (getFireboy2d().getB2body().getLinearVelocity().x > 0)
-                    getFireboy2d().getB2body().setLinearVelocity(0, getFireboy2d().getB2body().getLinearVelocity().y);
-            }
-        }
-        //              WaterGirl input
-        if(Gdx.input.isKeyJustPressed(Input.Keys.W)){
-            if(getWatergirl2d().jumpstate == BoxCharacter.Jump.STOP)
-            getWatergirl2d().getB2body().applyLinearImpulse(new Vector2(0,8.3f), getWatergirl2d().getB2body().getWorldCenter(),true);
-            else if (getWatergirl2d().canjump) {
-                getWatergirl2d().getB2body().applyLinearImpulse(new Vector2(0, 8.3f), getFireboy2d().getB2body().getWorldCenter(), true);
-                getWatergirl2d().canjump=false;
-            }
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.D) && getWatergirl2d().getB2body().getLinearVelocity().x <= 6){
-            getWatergirl2d().getB2body().applyLinearImpulse(new Vector2(0.5f,0), getWatergirl2d().getB2body().getWorldCenter(),true);
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.A) && getWatergirl2d().getB2body().getLinearVelocity().x >= -6) {
-            getWatergirl2d().getB2body().applyLinearImpulse(new Vector2(-0.5f, 0), getWatergirl2d().getB2body().getWorldCenter(), true);
-        }
-        // TODO por isto a dar bem. a sprite a cair para a direita/esquerda;
-        if(!Gdx.input.isKeyPressed(Input.Keys.A) && !Gdx.input.isKeyPressed(Input.Keys.D)) {
-            if(getWatergirl2d().getB2body().getLinearVelocity().x>0) {
-                getWatergirl2d().getB2body().applyLinearImpulse(new Vector2(-0.4f, 0), getWatergirl2d().getB2body().getWorldCenter(), true);
-                if (getWatergirl2d().getB2body().getLinearVelocity().x < 0)
-                    getWatergirl2d().getB2body().setLinearVelocity(0, getWatergirl2d().getB2body().getLinearVelocity().y);
-            }
-            if(getWatergirl2d().getB2body().getLinearVelocity().x<0) {
-                getWatergirl2d().getB2body().applyLinearImpulse(new Vector2(0.4f, 0), getWatergirl2d().getB2body().getWorldCenter(), true);
-                if (getWatergirl2d().getB2body().getLinearVelocity().x > 0)
-                    getWatergirl2d().getB2body().setLinearVelocity(0, getWatergirl2d().getB2body().getLinearVelocity().y);
-            }
-        }
-    }
-
-    public void createObjects(){
-
-        todestroydiamonds = new Queue<Body>();
-        setFireboy2d(new FireBoy2D(world,50f*PIXEL_TO_METER,100f*PIXEL_TO_METER));
-        setWatergirl2d(new WaterGirl2D(world,50f*PIXEL_TO_METER,200f*PIXEL_TO_METER));
-
-        BodyDef bdef = new BodyDef();
-        PolygonShape polyshape = new PolygonShape();
-        FixtureDef fdef = new FixtureDef();
-        Body body;
-
-
-        //Green Lakes
-        greenlakes = new Queue<LakeBody>();
-        for (MapObject object : tiledmap.getLayers().get(14).getObjects().getByType(RectangleMapObject.class)) {
-            greenlakes.addFirst(new LakeBody(world,object,2));      //2 if green
-        }
-
-        //Blue Lakes
-        bluelakes = new Queue<LakeBody>();
-        for (MapObject object : tiledmap.getLayers().get(13).getObjects().getByType(RectangleMapObject.class)) {
-            bluelakes.addFirst(new LakeBody(world,object,1));      //1 if blue
-        }
-
-        //Red Lakes
-        redlakes = new Queue<LakeBody>();
-        for (MapObject object : tiledmap.getLayers().get(12).getObjects().getByType(RectangleMapObject.class)) {
-            redlakes.addFirst(new LakeBody(world,object,0));      //2 if green
-        }
-
-        if(this.fireboy2d!=null){
-            this.fireboy2d=null;
-        }
-        this.fireboy2d = fireboy2d;
-    }
-
-        for (MapObject object : tiledmap.getLayers().get(10).getObjects().getByType(RectangleMapObject.class)){
-            ODoors.put(object.getName(),new ODoorBody(world,object,1));
-            if(object.getName().equals("purple"))
-                ODoorsView.put(object.getName(), new ODoorView(fbwg, "verpurpledoor.png"));
-            if(object.getName().equals("red")) {
-                ODoorsView.put(object.getName(), new ODoorView(fbwg, "verreddoor.png"));
-            }
-        }
-
-        buttons = new HashMap<String, ButtonBody>();
-        for (MapObject object : tiledmap.getLayers().get(9).getObjects().getByType(RectangleMapObject.class)) {
-            buttons.put(object.getName(),new ButtonBody(world,object));
-        }
-
-
     private void updateTimeLabel() {
+
         int minutes = (int) (gameTimer / 60);
-            else
         int seconds = (int) (gameTimer % 60);
+
         if (minutes < 10) {
+
             if (seconds < 10)
 
-            else
                 timeLabel.setText("0" + Integer.toString(minutes) + ":" + "0" + Integer.toString(seconds));
-        } else {
+            else
                 timeLabel.setText("0" + Integer.toString(minutes) + ":" + Integer.toString(seconds));
-            if (seconds < 10)
+        } else {
 
+            if (seconds < 10)
                 timeLabel.setText(Integer.toString(minutes) + ":" + "0" + Integer.toString(seconds));
+            else
                 timeLabel.setText(Integer.toString(minutes) + ":" + Integer.toString(seconds));
         }
-     */
-     * Updated the label with the time played in the form "Minutes:Seconds"
-    /**
     }
 
     /**

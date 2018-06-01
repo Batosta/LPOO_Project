@@ -10,14 +10,14 @@ import com.badlogic.gdx.physics.box2d.Body;
 public class WorldContactListener implements ContactListener {
 
     /**
-     * The Game's screen
+     * The Level's screen
      */
     Level level;
 
     /**
-     * Constructor of the game's screen
+     * Constructor of the World's Contact Listener
      *
-     * @param gamescreen The game's screen itself
+     * @param level The current level itself
      */
     public WorldContactListener(Level level) {       //game model?
         this.level = level;
@@ -114,12 +114,12 @@ public class WorldContactListener implements ContactListener {
 
         //  allows fire boy to jump on slopes
         if (fixtureA.getUserData() == "fireboy" && fixtureB.getUserData() == "rampa") {
-            level.getFireboy2D().canjump = true;
+            level.getfireboy2D().canjump = true;
         }
 
         //  allows water girl to jump on slopes
         if (fixtureA.getUserData() == "watergirl" && fixtureB.getUserData() == "rampa") {
-            level.getWatergirl2D().canjump = true;
+            level.getwatergirl2D().canjump = true;
         }
     }
 
@@ -129,23 +129,23 @@ public class WorldContactListener implements ContactListener {
     private void contactLake(){
 
         if(fixtureA.getUserData() == "watergirl" && fixtureB.getUserData() == "redlake"){
-            level.getWatergirl2D().setAlive(false);
+            level.getwatergirl2D().setAlive(false);
             level.endGame();
         }
 
         if(fixtureA.getUserData() == "fireboy" && fixtureB.getUserData() == "bluelake"){
-            level.getFireboy2D().setAlive(false);
+            level.getfireboy2D().setAlive(false);
             level.endGame();
         }
 
         if(fixtureA.getUserData() == "watergirl" && fixtureB.getUserData() == "greenlake"){
-            level.getWatergirl2D().setAlive(false);
+            level.getwatergirl2D().setAlive(false);
             level.setGamewon(true);
 //            level.endGame();
         }
 
         if(fixtureA.getUserData() == "fireboy" && fixtureB.getUserData() == "greenlake"){
-            level.getFireboy2D().setAlive(false);
+            level.getfireboy2D().setAlive(false);
             level.endGame();
         }
     }
