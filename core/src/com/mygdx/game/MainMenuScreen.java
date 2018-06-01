@@ -1,24 +1,27 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.*;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.sun.istack.internal.NotNull;
 
 
 public class MainMenuScreen extends ScreenAdapter implements InputProcessor {
 
+    /**
+     * Manages and determines how world coordinates are mapped to and from the screen.
+     */
     private Viewport viewport;
+
+    /**
+     * A 2D scene graph containing hierarchies of actors. Stage handles the viewport and distributes input events
+     */
     private Stage stage;
 
     /**
@@ -26,13 +29,39 @@ public class MainMenuScreen extends ScreenAdapter implements InputProcessor {
      */
     private Game game;
 
+    /**
+     * Main Menu's background Image
+     */
     Image backgroundImage;
+
+    /**
+     * Button in the Main Menu Screen that when clicked takes the user to the game itself
+     */
     Image startButton;
+
+    /**
+     * Button in the Main Menu Screen that when clicked finishes the game
+     */
     Image quitButton;
 
+    /**
+     * The X coordinate of the buttons that is equal for both
+     */
     int buttonX = 155;
+
+    /**
+     * The Y coordinate of the buttons that differs on both
+     */
     int buttonY;
+
+    /**
+     * The width of the buttons that is equal for both
+     */
     int width = 335;
+
+    /**
+     * The height of the buttons that is equal for both
+     */
     int height = 45;
 
     /**

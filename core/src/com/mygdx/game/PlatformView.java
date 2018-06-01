@@ -111,8 +111,7 @@ public class PlatformView extends BodyView {
 
         // 0.25 seconds per frame
         animation = new Animation<TextureRegion>(.10f, frames);
-        animation.setPlayMode(Animation.PlayMode.NORMAL);                           // Can hide this
-        //return new Sprite((Texture)game.getAssetManager().get(text));
+        animation.setPlayMode(Animation.PlayMode.NORMAL);
         Sprite sprite = new Sprite((TextureRegion)animation.getKeyFrame(0));
         sprite.setSize(sprite.getWidth(),sprite.getHeight());
         return sprite;
