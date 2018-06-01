@@ -13,7 +13,7 @@
    eJztwzENAAAMBKEb3r/m2ugACaumqqq+ftFEC7k=
   </data>
  </layer>
- <objectgroup name="wallPoly" visible="0">
+ <objectgroup name="wallPoly">
   <object id="153" x="413" y="131.5">
    <polygon points="0,0 34.5,-34.5 45.5,1.5"/>
   </object>
@@ -72,7 +72,7 @@
    <polygon points="0,0 38.5,-37.5 69.5,1"/>
   </object>
  </objectgroup>
- <objectgroup name="wallRect" visible="0">
+ <objectgroup name="wallRect">
   <object id="85" x="-1" y="275" width="969" height="16"/>
   <object id="86" x="930" y="283" width="51" height="157"/>
   <object id="87" x="899" y="368" width="48" height="309"/>
@@ -122,17 +122,17 @@
   <object id="132" x="97.5" y="127.5" width="854.5" height="10"/>
   <object id="133" x="26" y="-2" width="907" height="10"/>
  </objectgroup>
- <objectgroup name="blueLake" visible="0">
+ <objectgroup name="blueLake">
   <object id="43" x="442.167" y="117.167" width="151.333" height="7.8333"/>
   <object id="44" x="248.5" y="435.333" width="146.833" height="8.8333"/>
   <object id="45" x="439.833" y="436.667" width="141.333" height="6.3333"/>
  </objectgroup>
- <objectgroup name="redLake" visible="0">
+ <objectgroup name="redLake">
   <object id="40" x="633.833" y="245.833" width="135.333" height="5.3333"/>
   <object id="41" x="445.834" y="247.667" width="131.333" height="4.8333"/>
   <object id="42" x="733.5" y="595.333" width="133.833" height="7.3333"/>
  </objectgroup>
- <objectgroup name="greenLake" visible="0">
+ <objectgroup name="greenLake">
   <object id="37" x="602" y="118.667" width="138.833" height="5.33333"/>
   <object id="38" x="572.833" y="598" width="133.833" height="6.3333"/>
  </objectgroup>
@@ -171,8 +171,9 @@
    <polygon points="0,0 4.83538,-7.91244 23.2977,-8.35202 30.331,0 20.6602,14.5061 8.35202,14.0666"/>
   </object>
  </objectgroup>
- <objectgroup name="buttons" visible="0"/>
- <objectgroup name="platforms" visible="0"/>
+ <objectgroup name="buttons"/>
+ <objectgroup name="platformsHor"/>
+ <objectgroup name="platformVer"/>
  <layer name="diamonds" width="30" height="25">
   <data encoding="base64" compression="zlib">
    eJxjYBg4MIeZenopMWsU0BcM1rjC567B6uZRMAo2MpEnNwpQwVAPK1zuH67+GgWjYKQCADTaB+0=
