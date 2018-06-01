@@ -187,8 +187,6 @@ public class GameScreen extends ScreenAdapter implements InputProcessor{
 
         this.fbwg = fbwg;
         maploader = new TmxMapLoader();
-        //tiledmap = maploader.load("provmap.tmx");
-        //renderer = new OrthogonalTiledMapRenderer(tiledmap,1);
 
         createCameras();
 
@@ -263,10 +261,6 @@ public class GameScreen extends ScreenAdapter implements InputProcessor{
         if (rendering)
             world.step(1 / 60f, 6, 2);
 
-        if(rendering) {
-            world.step(1 / 60f, 6, 2);
-        }
-
         try {
             destroyObjects();
         } catch (InterruptedException e) {
@@ -279,7 +273,7 @@ public class GameScreen extends ScreenAdapter implements InputProcessor{
         fbwg.getSpriteBatch().end();
 
         music.setVolume((float) 0.1);
-        //music.play();
+        music.play();
 
         if (DEBUG_PHYSICS) {
             debugCamera = camera.combined.cpy();
@@ -287,8 +281,7 @@ public class GameScreen extends ScreenAdapter implements InputProcessor{
             boxrenderer.render(world, debugCamera);
         }
 
-        //showGameTime(delta);
-
+        incGameTimer(delta);
         stage.draw();
     }
 
@@ -318,6 +311,7 @@ public class GameScreen extends ScreenAdapter implements InputProcessor{
     public void endGame(){
             rendering=false;
             background.setVisible(true);
+            restartGame();
     }
 
     private void destroyObjects() throws InterruptedException {
@@ -372,22 +366,6 @@ public class GameScreen extends ScreenAdapter implements InputProcessor{
     public void setMap(TiledMap tiledmap){
         this.tiledmap=tiledmap;
     }
-    /**
-     * Function that takes care of showing the time on the screen
-     *
-     * @param delta time in seconds since last render
-     */
-    private void showGameTime(float delta) {
-
-        gameTimer += delta;
-
-        //table.set
-
-        //stage.addActor(table);
-
-
-        stage.draw();
-    }
 
     /**
      * Updated the label with the time played in the form "Minutes:Seconds"
@@ -413,6 +391,10 @@ public class GameScreen extends ScreenAdapter implements InputProcessor{
         }
     }
 
+    public void incGameTimer(float delta){
+        gameTimer+=delta;
+    }
+
     /**
      * Create the whole Screen Stage
      */
@@ -421,6 +403,8 @@ public class GameScreen extends ScreenAdapter implements InputProcessor{
         background = new Image((Texture) fbwg.getAssetManager().get("gameover_dialog.png"));
         stage = new Stage(viewport, fbwg.getSpriteBatch());
 
+        stage.addActor(background);
+        background.setVisible(false);
         createTable();
     }
 
@@ -428,13 +412,12 @@ public class GameScreen extends ScreenAdapter implements InputProcessor{
      * Function that creates the time table
      */
     private void createTable(){
-
         table = new Table();
         Label.LabelStyle font = new Label.LabelStyle(new BitmapFont(), Color.GREEN);
 
         table.top();
         table.setFillParent(true);
-        table.debugAll();
+//        table.debugAll();
 
         Label timeLabel = new Label("TIME", font);
         table.add(timeLabel).expandX();

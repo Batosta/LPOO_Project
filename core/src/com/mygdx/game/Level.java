@@ -117,7 +117,7 @@ public class Level {
     }
 
     public void endGame(){
-//        rendering=false;
+//        rendering=false;w
         gamescreen.endGame();
     }
 
@@ -153,10 +153,8 @@ public class Level {
         for(MapObject object : tiledmap.getLayers().get(13).getObjects().getByType(RectangleMapObject.class)){
 
             if(object.getName().equals("fireBoy")){
-
                 fireboy2D=(new FireBoy2D(world, ((RectangleMapObject)object).getRectangle().getX() * GameScreen.PIXEL_TO_METER, ((RectangleMapObject)object).getRectangle().getY() * GameScreen.PIXEL_TO_METER));
             } else{
-
                 watergirl2D=(new WaterGirl2D(world, ((RectangleMapObject)object).getRectangle().getX() * GameScreen.PIXEL_TO_METER, ((RectangleMapObject)object).getRectangle().getY() * GameScreen.PIXEL_TO_METER));            }
         }
     }
