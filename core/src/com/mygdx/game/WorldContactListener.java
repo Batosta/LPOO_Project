@@ -66,7 +66,7 @@ public class WorldContactListener implements ContactListener {
         if (fixtureA.getUserData() == "fireboy" && fixtureB.getUserData() == "reddiamond") {
             Body bodyB = fixtureB.getBody();
             gameScreen.todestroydiamonds.addLast(bodyB);
-            TiledMapTileLayer layer = (TiledMapTileLayer) gameScreen.tiledmap.getLayers().get(3);
+            TiledMapTileLayer layer = (TiledMapTileLayer) gameScreen.tiledmap.getLayers().get(11);
             layer.getCell((int) (bodyB.getPosition().x / GameScreen.PIXEL_TO_METER / 32), (int) (bodyB.getPosition().y / GameScreen.PIXEL_TO_METER) / 32).setTile(null);
 
         }
@@ -74,7 +74,7 @@ public class WorldContactListener implements ContactListener {
         if (fixtureA.getUserData() == "watergirl" && fixtureB.getUserData() == "bluediamond") {
             Body bodyB = fixtureB.getBody();
             gameScreen.todestroydiamonds.addLast(bodyB);
-            TiledMapTileLayer layer = (TiledMapTileLayer) gameScreen.tiledmap.getLayers().get(3);
+            TiledMapTileLayer layer = (TiledMapTileLayer) gameScreen.tiledmap.getLayers().get(11);
             layer.getCell((int) (bodyB.getPosition().x / GameScreen.PIXEL_TO_METER / 32), (int) (bodyB.getPosition().y / GameScreen.PIXEL_TO_METER) / 32).setTile(null);
         }
     }

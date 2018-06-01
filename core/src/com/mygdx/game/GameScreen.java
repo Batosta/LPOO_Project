@@ -78,11 +78,6 @@ public class GameScreen extends ScreenAdapter implements InputProcessor {
      */
     FireBoyWaterGirl fbwg;
 
-//    /**
-//     * The game data.
-//     */
-//    GameModel model;
-
     /**
      * The camera used to show the viewport.
      */
@@ -190,6 +185,7 @@ public class GameScreen extends ScreenAdapter implements InputProcessor {
     public boolean gamewon = false;
 
     private Stage stage;
+    private Label timeLabel;
 
 
     /**
@@ -198,8 +194,6 @@ public class GameScreen extends ScreenAdapter implements InputProcessor {
     public boolean gameover_flag = false;
 
     //      Game table (with game over dialog)
-
-    Stage gamestage;
 
     Table table;
 
@@ -215,7 +209,7 @@ public class GameScreen extends ScreenAdapter implements InputProcessor {
         this.fbwg = fbwg;
 
         maploader = new TmxMapLoader();
-        tiledmap = maploader.load("provmap.tmx");
+        tiledmap = maploader.load("level2.tmx");
         renderer = new OrthogonalTiledMapRenderer(tiledmap, 1);
 
         createViews();
@@ -277,6 +271,7 @@ public class GameScreen extends ScreenAdapter implements InputProcessor {
     public void render(float delta) {
 
         handleInput(delta);
+        updateTimeLabel();
         updateObjects(delta);
         renderer.setView(camera);
 
@@ -320,7 +315,7 @@ public class GameScreen extends ScreenAdapter implements InputProcessor {
 
         showGameTime(delta);
 
-        gamestage.draw();
+        stage.draw();
     }
 
     public void checkLevelStatus() {
@@ -332,7 +327,7 @@ public class GameScreen extends ScreenAdapter implements InputProcessor {
 
     public void endGame() {
         rendering = false;
-        gamestage.addActor(background);
+        stage.addActor(background);
 
     }
 
@@ -376,8 +371,12 @@ public class GameScreen extends ScreenAdapter implements InputProcessor {
         fireboy2d.update(delta);
         watergirl2d.update(delta);
         bluedoorbody.update(delta);
-        ODoors.get("purple").update(delta);
-        ODoors.get("red").update(delta);
+        if (ODoors.get("purple") != null) {
+            ODoors.get("purple").update(delta);
+        }
+        if (ODoors.get("red") != null) {
+            ODoors.get("red").update(delta);
+        }
     }
 
 
@@ -390,54 +389,13 @@ public class GameScreen extends ScreenAdapter implements InputProcessor {
 
         gameTimer += delta;
 
-        Label.LabelStyle font = new Label.LabelStyle(new BitmapFont(), Color.GREEN);
+        //table.set
 
-        Table table = new Table();
-        table.top();
-        table.setFillParent(true);
+        //stage.addActor(table);
 
-        Label timeLabel = new Label("TIME", font);
-        table.add(timeLabel).expandX();
-
-        table.row();
-        createTimeLabel(table, font);
-
-        table.debugAll();
-        stage.addActor(table);
 
         stage.draw();
-        stage.dispose();
     }
-
-    /**
-     * Creates the label with the time played in the form "Minutes:Seconds"
-     *
-     * @param table The table where the label will appear
-     * @param font  The font of the String to be showed
-     */
-    private void createTimeLabel(Table table, Label.LabelStyle font) {
-
-        int minutes = (int) (gameTimer / 60);
-        int seconds = (int) (gameTimer % 60);
-
-        Label label;
-        if (minutes < 10) {
-
-            if (seconds < 10)
-                label = new Label("0" + Integer.toString(minutes) + ":" + "0" + Integer.toString(seconds), font);
-            else
-                label = new Label("0" + Integer.toString(minutes) + ":" + Integer.toString(seconds), font);
-        } else {
-
-            if (seconds < 10)
-                label = new Label(Integer.toString(minutes) + ":" + "0" + Integer.toString(seconds), font);
-            else
-                label = new Label(Integer.toString(minutes) + ":" + Integer.toString(seconds), font);
-        }
-
-        table.add(label).expandX();
-    }
-
 
     //Compor esta funcao para ficar mais simples
     public void handleInput(float delta) {
@@ -459,6 +417,7 @@ public class GameScreen extends ScreenAdapter implements InputProcessor {
         }
         // TODO por isto a dar bem. a sprite a cair para a direita/esquerda;
         if (!Gdx.input.isKeyPressed(Input.Keys.LEFT) && !Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            System.out.println(getFireboy2d());
             if (getFireboy2d().getB2body().getLinearVelocity().x > 0) {
                 getFireboy2d().getB2body().applyLinearImpulse(new Vector2(-0.4f, 0), getFireboy2d().getB2body().getWorldCenter(), true);
                 if (getFireboy2d().getB2body().getLinearVelocity().x < 0)
@@ -500,40 +459,62 @@ public class GameScreen extends ScreenAdapter implements InputProcessor {
         }
     }
 
+    private void createCharacters(){
+
+        for(MapObject object : tiledmap.getLayers().get(12).getObjects().getByType(RectangleMapObject.class)){
+
+            if(object.getName().equals("fireBoy")){
+
+                setFireboy2d(new FireBoy2D(world, ((RectangleMapObject)object).getRectangle().getX() * PIXEL_TO_METER, ((RectangleMapObject)object).getRectangle().getY() * PIXEL_TO_METER));
+            } else{
+
+                setWatergirl2d(new WaterGirl2D(world, ((RectangleMapObject)object).getRectangle().getX() * PIXEL_TO_METER, ((RectangleMapObject)object).getRectangle().getY() * PIXEL_TO_METER));            }
+        }
+    }
+
     public void createObjects() {
 
         todestroydiamonds = new Queue<Body>();
-        setFireboy2d(new FireBoy2D(world, 50f * PIXEL_TO_METER, 100f * PIXEL_TO_METER));
-        setWatergirl2d(new WaterGirl2D(world, 50f * PIXEL_TO_METER, 200f * PIXEL_TO_METER));
 
         BodyDef bdef = new BodyDef();
         PolygonShape polyshape = new PolygonShape();
         FixtureDef fdef = new FixtureDef();
         Body body;
 
+        createCharacters();
 
         //Green Lakes
         greenlakes = new Queue<LakeBody>();
-        for (MapObject object : tiledmap.getLayers().get(14).getObjects().getByType(RectangleMapObject.class)) {
+        for (MapObject object : tiledmap.getLayers().get(5).getObjects().getByType(RectangleMapObject.class)) {
             greenlakes.addFirst(new LakeBody(world, object, 2));      //2 if green
+        }
+        //Red Lakes
+        redlakes = new Queue<LakeBody>();
+        for (MapObject object : tiledmap.getLayers().get(4).getObjects().getByType(RectangleMapObject.class)) {
+            redlakes.addFirst(new LakeBody(world, object, 0));      //2 if green
         }
 
         //Blue Lakes
         bluelakes = new Queue<LakeBody>();
-        for (MapObject object : tiledmap.getLayers().get(13).getObjects().getByType(RectangleMapObject.class)) {
+        for (MapObject object : tiledmap.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)) {
             bluelakes.addFirst(new LakeBody(world, object, 1));      //1 if blue
         }
 
-        //Red Lakes
-        redlakes = new Queue<LakeBody>();
-        for (MapObject object : tiledmap.getLayers().get(12).getObjects().getByType(RectangleMapObject.class)) {
-            redlakes.addFirst(new LakeBody(world, object, 0));      //2 if green
+
+        bluediamonds = new Queue<DiamondBody>();
+        for (MapObject object : tiledmap.getLayers().get(7).getObjects().getByType(PolygonMapObject.class)) {
+            bluediamonds.addFirst(new DiamondBody(world, object, 1));     //1 if blue
+        }
+
+        reddiamonds = new Queue<DiamondBody>();
+        for (MapObject object : tiledmap.getLayers().get(8).getObjects().getByType(PolygonMapObject.class)) {
+            reddiamonds.addFirst(new DiamondBody(world, object, 0));      //0 if red
         }
 
 
         ODoors = new HashMap<String, PlatformBody>();
         ODoorsView = new HashMap<String, PlatformView>();
-        for (MapObject object : tiledmap.getLayers().get(11).getObjects().getByType(RectangleMapObject.class)) {         //ADD DOORS COLORS HERE
+        for (MapObject object : tiledmap.getLayers().get(10).getObjects().getByType(RectangleMapObject.class)) {         //ADD DOORS COLORS HERE
 
             ODoors.put(object.getName(), new PlatformBody(world, object, 0));
             if (object.getName().equals("purple"))
@@ -556,14 +537,14 @@ public class GameScreen extends ScreenAdapter implements InputProcessor {
             buttons.put(object.getName(), new ButtonBody(world, object));
         }
 
-        for (MapObject object : tiledmap.getLayers().get(8).getObjects().getByType(RectangleMapObject.class)) {
-            if (object.getName().equals("bluedoor")) {
+        for (MapObject object : tiledmap.getLayers().get(6).getObjects().getByType(RectangleMapObject.class)) {
+            if (object.getName().equals("blueDoor")) {
                 bluedoorbody = new DoorBody(world, object, 1);
-            } else if (object.getName().equals("reddoor"))
+            } else if (object.getName().equals("redDoor"))
                 reddoorbody = new DoorBody(world, object, 0);
         }
 
-        for (MapObject object : tiledmap.getLayers().get(7).getObjects().getByType(PolygonMapObject.class)) {
+        for (MapObject object : tiledmap.getLayers().get(1).getObjects().getByType(PolygonMapObject.class)) {
             Polygon poly = ((PolygonMapObject) object).getPolygon();
             bdef.type = BodyDef.BodyType.StaticBody;
             bdef.position.set(poly.getX() * PIXEL_TO_METER, poly.getY() * PIXEL_TO_METER);
@@ -579,7 +560,7 @@ public class GameScreen extends ScreenAdapter implements InputProcessor {
             body.createFixture(fdef).setUserData("rampa");
         }
 
-        for (MapObject object : tiledmap.getLayers().get(6).getObjects().getByType(RectangleMapObject.class)) {
+        for (MapObject object : tiledmap.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
             bdef.type = BodyDef.BodyType.StaticBody;
             bdef.position.set((rect.getX() + rect.getWidth() / 2) * PIXEL_TO_METER, (rect.getY() + rect.getHeight() / 2) * PIXEL_TO_METER);
@@ -591,22 +572,52 @@ public class GameScreen extends ScreenAdapter implements InputProcessor {
 
             body.createFixture(fdef);
         }
+    }
 
-        bluediamonds = new Queue<DiamondBody>();
-        for (MapObject object : tiledmap.getLayers().get(5).getObjects().getByType(PolygonMapObject.class)) {
-            bluediamonds.addFirst(new DiamondBody(world, object, 1));     //1 if blue
-        }
+    /**
+     * Updated the label with the time played in the form "Minutes:Seconds"
+     */
+    private void updateTimeLabel() {
 
-        reddiamonds = new Queue<DiamondBody>();
-        for (MapObject object : tiledmap.getLayers().get(4).getObjects().getByType(PolygonMapObject.class)) {
-            reddiamonds.addFirst(new DiamondBody(world, object, 0));      //0 if red
+        int minutes = (int) (gameTimer / 60);
+        int seconds = (int) (gameTimer % 60);
+
+        if (minutes < 10) {
+
+            if (seconds < 10)
+
+                timeLabel.setText("0" + Integer.toString(minutes) + ":" + "0" + Integer.toString(seconds));
+            else
+                timeLabel.setText("0" + Integer.toString(minutes) + ":" + Integer.toString(seconds));
+        } else {
+
+            if (seconds < 10)
+                timeLabel.setText(Integer.toString(minutes) + ":" + "0" + Integer.toString(seconds));
+            else
+                timeLabel.setText(Integer.toString(minutes) + ":" + Integer.toString(seconds));
         }
     }
 
+    /**
+     * Create the whole Screen Stage
+     */
     public void createStage() {
+
         background = new Image((Texture) fbwg.getAssetManager().get("gameover_dialog.png"));
-        gamestage = new Stage(viewport, fbwg.getSpriteBatch());
+        stage = new Stage(viewport, fbwg.getSpriteBatch());
         table = new Table();
+
+        Label.LabelStyle font = new Label.LabelStyle(new BitmapFont(), Color.GREEN);
+        table.top();
+        table.setFillParent(true);
+        Label timeLabel = new Label("TIME", font);
+        table.add(timeLabel).expandX();
+        table.row();
+        this.timeLabel = new Label("00:00", font);
+        table.add(this.timeLabel);
+        table.debugAll();
+
+        stage.addActor(table);
     }
 
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="2017.07.26" orientation="orthogonal" renderorder="right-down" width="30" height="25" tilewidth="32" tileheight="32" nextobjectid="200">
+<map version="1.0" tiledversion="2017.07.26" orientation="orthogonal" renderorder="right-down" width="30" height="25" tilewidth="32" tileheight="32" nextobjectid="201">
  <tileset firstgid="1" source="provtiledset.tsx"/>
  <tileset firstgid="673" source="diamondset.tsx"/>
  <tileset firstgid="708" source="reddiamondset.tsx"/>
