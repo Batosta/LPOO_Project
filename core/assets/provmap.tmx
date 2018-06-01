@@ -229,7 +229,7 @@
   <object id="98" name="bluedoor" x="40.5109" y="239.689" width="48.388" height="79.8965"/>
   <object id="100" name="reddoor" x="133.911" y="239.689" width="50.9199" height="80.4591"/>
  </objectgroup>
- <objectgroup name="buttons">
+ <objectgroup name="buttons" visible="0">
   <object id="125" name="purple" x="577.585" y="628.751" width="29.5188" height="9.83961"/>
   <object id="128" name="red" x="321.755" y="307.98" width="29.5188" height="11.8075"/>
  </objectgroup>

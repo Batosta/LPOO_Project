@@ -218,7 +218,7 @@ public class GameScreen extends ScreenAdapter implements InputProcessor {
         this.fbwg = fbwg;
 
         maploader = new TmxMapLoader();
-        tiledmap = maploader.load("level3.tmx");
+        tiledmap = maploader.load("level2.tmx");
         renderer = new OrthogonalTiledMapRenderer(tiledmap, 1);
 
         createViews();
