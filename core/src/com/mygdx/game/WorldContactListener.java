@@ -78,7 +78,7 @@ public class WorldContactListener implements ContactListener {
     }
 
     /**
-     * Checks both characters contact with all the buttons on the game
+     * Checks both characters contact with all the doors on the game
      */
     private void contactDoors(){
 

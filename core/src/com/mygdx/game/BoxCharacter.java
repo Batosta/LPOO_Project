@@ -86,13 +86,15 @@ public class BoxCharacter extends BoxBody {
      * @param delta time in seconds since last render
      */
     public void update(float delta){
+
         moving=Moving.STAND;
+
         jumpstate=Jump.STOP;
         if(getB2body().getLinearVelocity().y>0){
             jumpstate=Jump.ASCENDING;
         }else if(getB2body().getLinearVelocity().y<0){
             jumpstate=Jump.DESCENDING;
-        } else jumpstate=Jump.STOP;
+        } else jumpstate = Jump.STOP;
 
         if(getB2body().getLinearVelocity().x>0){
             moving=Moving.RIGHT;
@@ -136,6 +138,7 @@ public class BoxCharacter extends BoxBody {
      * @return the jumpstate
      */
     public Jump getJumpstate(){
+
         return this.jumpstate;
     }
 }

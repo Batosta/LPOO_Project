@@ -15,8 +15,10 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Queue;
 
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
 public class Level {
+
     private World world;
     private TmxMapLoader maploader;
     private TiledMap tiledmap;
@@ -91,6 +93,13 @@ public class Level {
 
     int jumptimer;
 
+    /**
+     * Constructor of each whole level
+     *
+     * @param game the game itself
+     * @param gamescreen the game screen
+     * @param mappath a string with all information needed to load the map of the level being defined
+     */
     public Level(FireBoyWaterGirl game, GameScreen gamescreen, String mappath){
         jumptimer=0;
         this.mappath=mappath;
@@ -101,41 +110,53 @@ public class Level {
         createWorld();
     }
 
+    /**
+     * Loads the map with all the needed components
+     *
+     * @param mappath a string with all information needed to load the map of the level being defined
+     */
     public void loadMap(String mappath){
         this.setTiledmap(maploader.load(mappath));
     }
 
+    /**
+     * Function that creates the Game once again so the player can restart
+     */
     public void restartGame(){
         createWorld();
     }
 
+    /**
+     * Function that creates the game
+     */
     public void createWorld(){
         if (world != null) {
             world.dispose();
         }
         world = new World(new Vector2(0, -15f), true);
         loadMap(mappath);
-//        rendering=true;
         createObjects();
         createViews();
         world.setContactListener(new WorldContactListener(this));
-//        if (DEBUG_PHYSICS) {
-//            boxrenderer = new Box2DDebugRenderer();
-//            debugCamera = camera.combined.cpy();
-//            debugCamera.scl(1 / PIXEL_TO_METER);
-//        }
     }
 
+    /**
+     * Function that ends the current game
+     */
     public void endGame(){
-//        rendering=false;
+
         gamescreen.endGame();
     }
 
+    /**
+     * Function that updates all the objects present in the current level
+     *
+     * @param delta time in seconds since last render
+     */
     public void renderLevel(float delta){
         updateObjects(delta);
         jumptimer++;
     }
-
 
     /**
      * Function that creates the body for every object that exists in the world
@@ -303,11 +324,19 @@ public class Level {
         }
     }
 
+    /**
+     * Creates both Characters views
+     */
     public void createViews(){
         setFireBoyView(new FireBoyView(game,"fire.png"));
         setWaterGirlView(new WaterGirlView(game, "water.png"));
     }
 
+    /**
+     * Updates every object that needes to be updated
+     *
+     * @param delta time in seconds since last render
+     */
     private void updateObjects(float delta) {
 
         fireboy2D.update(delta);
@@ -319,9 +348,27 @@ public class Level {
             platforms.get("red").update(delta);
     }
 
+    /**
+     * Function that if the conditions for the game to be won have been completed
+     */
     public void checkLevelStatus() {
-        if(bluedoorbody.getDooropened()/* && reddoorbody.getDooropened() && getBluediamonds().size == 0 && getReddiamonds().size == 0*/) {
-            tiledmap.getLayers().get(10).setVisible(false);
+
+        if(bluedoorbody.getDooropened() && reddoorbody.getDooropened() && getBluediamonds().size == 0 && getReddiamonds().size == 0) {
+
+            tiledmap.getLayers().get(15).setVisible(false);
+            try{
+                TimeUnit.SECONDS.sleep(1);
+            } catch(InterruptedException ie){
+
+                ie.printStackTrace();
+            }
+
+            try{
+                TimeUnit.SECONDS.sleep(1);
+            } catch(InterruptedException ie){
+
+                ie.printStackTrace();
+            }
             setGamewon(true);
         }
     }
@@ -473,13 +520,20 @@ public class Level {
 
 
     /**
-     * The Fire Boy view used to the Fire Boy.
+     * The FireBoy view used to the Fire Boy.
      */
     public FireBoyView getFireBoyView() {
+
         return fireBoyView;
     }
 
+    /**
+     * Sets the FireBoy view to the new view
+     *
+     * @param fireBoyView The new FireBoy view
+     */
     public void setFireBoyView(FireBoyView fireBoyView) {
+
         this.fireBoyView = fireBoyView;
     }
 
@@ -487,46 +541,107 @@ public class Level {
      * The Water Girl view used to draw the Water Girl.
      */
     public WaterGirlView getWaterGirlView() {
+
         return waterGirlView;
     }
 
+    /**
+     * Sets the WaterGirl view to the new view
+     *
+     * @param waterGirlView The new WaterGirl view
+     */
     public void setWaterGirlView(WaterGirlView waterGirlView) {
+
         this.waterGirlView = waterGirlView;
     }
 
+    /**
+     * Returns the platform views
+     *
+     * @return the platform view
+     */
     public HashMap<String, PlatformView> getODoorsView(){
+
         return platformsView;
     }
 
+    /**
+     * Returns the Queue with the diamonds set before to destroy
+     *
+     * @return the queue
+     */
     public Queue<Body> getTodestroydiamonds(){
+
         return this.todestroydiamonds;
     };
 
+    /**
+     * Returns the world itself
+     *
+     * @return the world itself
+     */
     public World getWorld(){
+
         return this.world;
     }
 
+    /**
+     * Returns the level tile map
+     *
+     * @return the map
+     */
     public TiledMap getTiledmap() {
+
         return tiledmap;
     }
 
+    /**
+     * Sets the level map to the new map
+     *
+     * @param tiledmap the new map
+     */
     public void setTiledmap(TiledMap tiledmap) {
+
         this.tiledmap = tiledmap;
     }
 
+    /**
+     * Return the body of the FireBoy
+     *
+     * @return the body
+     */
     public FireBoy2D getfireboy2D() {
+
         return fireboy2D;
     }
 
+    /**
+     * Sets the FireBoy body to the new body
+     *
+     * @param fireboy2D the new body
+     */
     public void setfireboy2D(FireBoy2D fireboy2D) {
+
         this.fireboy2D = fireboy2D;
     }
 
+    /**
+     * Return the body of the Watergirl
+     *
+     * @return the body
+     */
     public WaterGirl2D getwatergirl2D() {
+
         return watergirl2D;
     }
 
+    /**
+     * Sets the WaterGirl body to the new body
+     *
+     * @param watergirl2D the new body
+     */
     public void setwatergirl2D(WaterGirl2D watergirl2D) {
+
         this.watergirl2D = watergirl2D;
     }
 
@@ -534,10 +649,17 @@ public class Level {
      * Queue with the red diamonds to be caught by Fire Boy
      */
     public Queue<DiamondBody> getReddiamonds() {
+
         return reddiamonds;
     }
 
+    /**
+     * Sets the queue with the red diamonds to the new queue
+     *
+     * @param reddiamonds the new queue
+     */
     public void setReddiamonds(Queue<DiamondBody> reddiamonds) {
+
         this.reddiamonds = reddiamonds;
     }
 
@@ -545,10 +667,17 @@ public class Level {
      * Queue with the blue diamonds to be caught by Water Girl
      */
     public Queue<DiamondBody> getBluediamonds() {
+
         return bluediamonds;
     }
 
+    /**
+     * Sets the queue with the blue diamonds to the new queue
+     *
+     * @param bluediamonds the new queue
+     */
     public void setBluediamonds(Queue<DiamondBody> bluediamonds) {
+
         this.bluediamonds = bluediamonds;
     }
 
@@ -556,18 +685,37 @@ public class Level {
      * HashMap with the horizontal and vertical colored doors to be opened by the colored buttons
      */
     public HashMap<String, PlatformBody> getODoors() {
+
         return platforms;
     }
 
+    /**
+     * Sets the hash map with the platforms to the new hash map
+     *
+     * @param ODoors the new hash map
+     */
     public void setODoors(HashMap<String, PlatformBody> ODoors) {
+
         this.platforms = ODoors;
     }
 
+    /**
+     * Returns if the game has already been won or not
+     *
+     * @return true if game is won, false if not
+     */
     public boolean isGamewon() {
+
         return gamewon;
     }
 
+    /**
+     * Sets if the game has already been won or not
+     *
+     * @param gamewon true if game has been won, false if not
+     */
     public void setGamewon(boolean gamewon) {
+
         this.gamewon = gamewon;
     }
 }

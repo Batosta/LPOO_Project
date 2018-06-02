@@ -25,6 +25,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Game screen. Draws all the views of all objects of the game.
@@ -296,13 +297,17 @@ public class GameScreen extends ScreenAdapter implements InputProcessor{
     }
 
     public void checkLevelStatus() {
+
         if(currentLevel.isGamewon()){
-            //  TODO dialog com opçoes?
+
             currentLevelID++;
             setCurrentLevel(currentLevelID);
         }
     }
 
+    /**
+     * Restarts the whole game
+     */
     public void restartGame(){
         currentLevel.restartGame();
         getLevelStatus();
@@ -312,12 +317,19 @@ public class GameScreen extends ScreenAdapter implements InputProcessor{
         runtimer=true;
     }
 
+    /**
+     * Finishes the game
+     */
     public void endGame(){
         setButtons();
             rendering=false;
             background.setVisible(true);
             runtimer=false;
     }
+
+    /**
+     * Sets the Menu Screen buttons positions
+     */
     public void setButtons(){
         restartButtoncenterX=Gdx.graphics.getWidth()/2.3f;
         restartButtoncenterY=Gdx.graphics.getHeight()/2f;
@@ -329,7 +341,13 @@ public class GameScreen extends ScreenAdapter implements InputProcessor{
         menuButtonHeight=Gdx.graphics.getHeight()/2.3f;
     }
 
+    /**
+     * Destroys the diamonds view if they have been caught by the corresponding character
+     *
+     * @throws InterruptedException
+     */
     private void destroyObjects() throws InterruptedException {
+
         for(int i = 0 ; i < currentLevel.getTodestroydiamonds().size ; i++){
             if(currentLevel.getTodestroydiamonds().get(i).getFixtureList().get(0).getUserData() == "bluediamond")
                 currentLevel.getBluediamonds().removeLast();
@@ -342,6 +360,7 @@ public class GameScreen extends ScreenAdapter implements InputProcessor{
 
     @Override
     public void resize(int width, int height){
+
         viewport.update(width,height,true);
     }
 
@@ -360,15 +379,6 @@ public class GameScreen extends ScreenAdapter implements InputProcessor{
             entry.getValue().draw(fbwg.getSpriteBatch());
         }
     }
-//
-//    private void updateObjects(float delta) {
-//
-//        fireboy2d.update(delta);
-//        watergirl2d.update(delta);
-//        bluedoorbody.update(delta);
-//        currentLevel.getODoors().get("purple").update(delta);
-//        currentLevel.getODoors().get("red").update(delta);
-//    }
 
     /**
      * Function that loades the level maps
@@ -376,10 +386,6 @@ public class GameScreen extends ScreenAdapter implements InputProcessor{
     public void loadLevels(){
         levels.add(new Level(fbwg,this,"level1.tmx"));
         levels.add(new Level(fbwg,this,"level2.tmx"));
-    }
-
-    public void setMap(TiledMap tiledmap){
-        this.tiledmap=tiledmap;
     }
 
     /**
@@ -406,6 +412,11 @@ public class GameScreen extends ScreenAdapter implements InputProcessor{
         }
     }
 
+    /**
+     * In case the game is not paused, keeps the incrementation of the time
+     *
+     * @param delta time in seconds since last render
+     */
     public void incGameTimer(float delta){
         if(runtimer)
         gameTimer+=delta;
@@ -433,7 +444,6 @@ public class GameScreen extends ScreenAdapter implements InputProcessor{
 
         table.top();
         table.setFillParent(true);
-//        table.debugAll();
 
         Label timeLabel = new Label("TIME", font);
         table.add(timeLabel).expandX();
@@ -498,6 +508,7 @@ public class GameScreen extends ScreenAdapter implements InputProcessor{
      * Fire Boy used in Box2D
      */
     public FireBoy2D getFireboy2d() {
+
         return fireboy2d;
     }
 
@@ -507,6 +518,7 @@ public class GameScreen extends ScreenAdapter implements InputProcessor{
      * @param fireboy2d The new fireBoy2D
      */
     public void setFireboy2d(FireBoy2D fireboy2d) {
+
         this.fireboy2d = fireboy2d;
     }
 
@@ -514,6 +526,7 @@ public class GameScreen extends ScreenAdapter implements InputProcessor{
      * The Fire Boy view used to the Fire Boy.
      */
     public FireBoyView getFireBoyView() {
+
         return fireBoyView;
     }
 
@@ -523,6 +536,7 @@ public class GameScreen extends ScreenAdapter implements InputProcessor{
      * @param fireBoyView The new fireBoyView
      */
     public void setFireBoyView(FireBoyView fireBoyView) {
+
         this.fireBoyView = fireBoyView;
     }
 
@@ -530,6 +544,7 @@ public class GameScreen extends ScreenAdapter implements InputProcessor{
      * Water Girl used in Box2D
      */
     public WaterGirl2D getWatergirl2d() {
+
         return watergirl2d;
     }
 
@@ -539,6 +554,7 @@ public class GameScreen extends ScreenAdapter implements InputProcessor{
      * @param watergirl2d The new waterGirl2d
      */
     public void setWatergirl2d(WaterGirl2D watergirl2d) {
+
         this.watergirl2d = watergirl2d;
     }
 
@@ -546,6 +562,7 @@ public class GameScreen extends ScreenAdapter implements InputProcessor{
      * The Water Girl view used to draw the Water Girl.
      */
     public WaterGirlView getWaterGirlView() {
+
         return waterGirlView;
     }
 
@@ -555,12 +572,25 @@ public class GameScreen extends ScreenAdapter implements InputProcessor{
      * @param waterGirlView The new WaterGirlView
      */
     public void setWaterGirlView(WaterGirlView waterGirlView) {
+
         this.waterGirlView = waterGirlView;
     }
+
+    /**
+     * Returns the current level the user is playing
+     *
+     * @return the level
+     */
     public Level getCurrentLevel() {
+
         return currentLevel;
     }
 
+    /**
+     * Sets the current level to another level
+     *
+     * @param id The int indicator of the level number
+     */
     public void setCurrentLevel(int id) {
         this.currentLevel = levels.get(id);
         getLevelStatus();
