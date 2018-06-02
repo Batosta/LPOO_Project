@@ -76,6 +76,11 @@ public class Level {
      */
     public DoorBody reddoorbody;
 
+    /**
+     * the path of the tmx file with the tilemap of this level.
+     */
+    String mappath;
+
     BodyDef bdef;
 
     PolygonShape polyshape;
@@ -84,7 +89,11 @@ public class Level {
 
     Body body;
 
+    int jumptimer;
+
     public Level(FireBoyWaterGirl game, GameScreen gamescreen, String mappath){
+        jumptimer=0;
+        this.mappath=mappath;
         this.game=game;
         this.gamescreen=gamescreen;
         this.maploader=new TmxMapLoader();
@@ -105,6 +114,7 @@ public class Level {
             world.dispose();
         }
         world = new World(new Vector2(0, -15f), true);
+        loadMap(mappath);
 //        rendering=true;
         createObjects();
         createViews();
@@ -117,12 +127,13 @@ public class Level {
     }
 
     public void endGame(){
-//        rendering=false;w
+//        rendering=false;
         gamescreen.endGame();
     }
 
     public void renderLevel(float delta){
         updateObjects(delta);
+        jumptimer++;
     }
 
 
@@ -322,6 +333,7 @@ public class Level {
      */
     public void handleInput(float delta) {
 
+
         handleFireBoyInput();
         handleWaterGirlInput();
     }
@@ -342,7 +354,8 @@ public class Level {
      */
     private void fireBoyUp(){
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.UP)&&jumptimer>1) {
+            jumptimer=0;
 
             if (fireboy2D.jumpstate == BoxCharacter.Jump.STOP)
                 fireboy2D.getB2body().applyLinearImpulse(new Vector2(0, 8.3f), fireboy2D.getB2body().getWorldCenter(), true);
@@ -408,7 +421,8 @@ public class Level {
      */
     private void waterGirlUp(){
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.W)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.W)&&jumptimer>60) {
+            jumptimer=0;
             if (watergirl2D.jumpstate == BoxCharacter.Jump.STOP)
                 watergirl2D.getB2body().applyLinearImpulse(new Vector2(0, 8.3f), watergirl2D.getB2body().getWorldCenter(), true);
             else if (watergirl2D.canjump) {

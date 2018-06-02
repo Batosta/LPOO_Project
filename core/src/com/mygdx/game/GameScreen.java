@@ -161,7 +161,7 @@ public class GameScreen extends ScreenAdapter implements InputProcessor{
 
     private float restartButtonWidth;
 
-    private float menuButtonwidth;
+    private float menuButtonWidth;
 
     private float restartButtonHeight;
 
@@ -177,6 +177,8 @@ public class GameScreen extends ScreenAdapter implements InputProcessor{
     Table table;
 
     Image background;
+
+    boolean runtimer=true;
 
     /**
      * Creates the screen.
@@ -306,12 +308,25 @@ public class GameScreen extends ScreenAdapter implements InputProcessor{
         getLevelStatus();
         rendering=true;
         background.setVisible(false);
+        gameTimer=0;
+        runtimer=true;
     }
 
     public void endGame(){
+        setButtons();
             rendering=false;
             background.setVisible(true);
-            restartGame();
+            runtimer=false;
+    }
+    public void setButtons(){
+        restartButtoncenterX=Gdx.graphics.getWidth()/2.3f;
+        restartButtoncenterY=Gdx.graphics.getHeight()/2f;
+        restartButtonWidth=Gdx.graphics.getWidth()/3f;
+        restartButtonHeight=Gdx.graphics.getHeight()/2.3f;
+        menuButtoncenterX=Gdx.graphics.getWidth()/1.7f;
+        menuButtoncenterY=Gdx.graphics.getHeight()/2f;
+        menuButtonWidth=Gdx.graphics.getWidth()/3f;
+        menuButtonHeight=Gdx.graphics.getHeight()/2.3f;
     }
 
     private void destroyObjects() throws InterruptedException {
@@ -392,6 +407,7 @@ public class GameScreen extends ScreenAdapter implements InputProcessor{
     }
 
     public void incGameTimer(float delta){
+        if(runtimer)
         gameTimer+=delta;
     }
 
@@ -451,7 +467,7 @@ public class GameScreen extends ScreenAdapter implements InputProcessor{
             restartGame();
         }
 
-        if(screenX > (menuButtoncenterX-menuButtonwidth/2) && screenX < (menuButtoncenterX+menuButtonwidth/2)  && screenY < (menuButtoncenterY+menuButtonHeight/2) && screenY > (menuButtoncenterY-menuButtonHeight/2)){
+        if(screenX > (menuButtoncenterX-menuButtonWidth/2) && screenX < (menuButtoncenterX+menuButtonWidth/2)  && screenY < (menuButtoncenterY+menuButtonHeight/2) && screenY > (menuButtoncenterY-menuButtonHeight/2)){
             ScreenManager.getInstance().showScreen(ScreenState.MENU_SCREEN,fbwg);
         }
 

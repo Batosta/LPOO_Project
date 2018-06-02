@@ -141,8 +141,7 @@ public class WorldContactListener implements ContactListener {
 
         if(fixtureA.getUserData() == "watergirl" && fixtureB.getUserData() == "greenlake"){
             level.getwatergirl2D().setAlive(false);
-            level.setGamewon(true);
-//            level.endGame();
+            level.endGame();
         }
 
         if(fixtureA.getUserData() == "fireboy" && fixtureB.getUserData() == "greenlake"){
