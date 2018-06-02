@@ -93,10 +93,8 @@ public class FireBoyWaterGirl extends Game {
 		this.assetManager.load("quitButtonNormal.png", Texture.class);
 		this.assetManager.load("quitButtonPressed.png", Texture.class);
 
-        this.assetManager.load("gameover_dialog.png", Texture.class);
-
-
-
+        this.assetManager.load("pausemenu.png", Texture.class);
+		this.assetManager.load("gameovermenu.png", Texture.class);
 
 
 		this.assetManager.load("facil.mp3", Music.class);

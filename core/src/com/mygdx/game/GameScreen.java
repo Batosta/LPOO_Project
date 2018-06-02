@@ -156,17 +156,25 @@ public class GameScreen extends ScreenAdapter implements InputProcessor{
 
     private float menuButtoncenterX;
 
+    private float resumeButtoncenterX;
+
     private float restartButtoncenterY;
 
     private float menuButtoncenterY;
+
+    private float resumeButtoncenterY;
 
     private float restartButtonWidth;
 
     private float menuButtonWidth;
 
+    private float resumeButtonWidth;
+
     private float restartButtonHeight;
 
     private float menuButtonHeight;
+
+    private float resumeButtonHeight;
 
     /**
      * flag used in game over dialog
@@ -177,7 +185,9 @@ public class GameScreen extends ScreenAdapter implements InputProcessor{
 
     Table table;
 
-    Image background;
+    Image gameovermenu;
+
+    Image pausemenu;
 
     boolean runtimer=true;
 
@@ -246,6 +256,7 @@ public class GameScreen extends ScreenAdapter implements InputProcessor{
 
         checkLevelStatus();
 
+        handleinput();
         currentLevel.handleInput(delta);
         currentLevel.renderLevel(delta);
 
@@ -288,6 +299,17 @@ public class GameScreen extends ScreenAdapter implements InputProcessor{
         stage.draw();
     }
 
+    private void handleinput(){
+        if(Gdx.input.isKeyPressed(Input.Keys.R)) {
+            System.out.println("test");
+            pauseGame();
+        }
+    }
+
+    private void pauseGame(){
+        setMenu(1);
+    }
+
     /**
      * Checks if the conditions for the level to end were completed
      */
@@ -312,19 +334,33 @@ public class GameScreen extends ScreenAdapter implements InputProcessor{
         currentLevel.restartGame();
         getLevelStatus();
         rendering=true;
-        background.setVisible(false);
+        gameovermenu.setVisible(false);
+        pausemenu.setVisible(false);
         gameTimer=0;
         runtimer=true;
     }
 
-    /**
-     * Finishes the game
-     */
+    public void resumeGame(){
+//        currentLevel.restartGame();
+//        getLevelStatus();
+        rendering=true;
+        gameovermenu.setVisible(false);
+        pausemenu.setVisible(false);
+        runtimer=true;
+    }
+
     public void endGame(){
+        setMenu(0);
+    }
+
+    private void setMenu(int nmr){
         setButtons();
-            rendering=false;
-            background.setVisible(true);
-            runtimer=false;
+        rendering=false;
+        if(nmr==0)
+        gameovermenu.setVisible(true);
+        else if(nmr==1)
+            pausemenu.setVisible(true);
+        runtimer=false;
     }
 
     /**
@@ -334,11 +370,15 @@ public class GameScreen extends ScreenAdapter implements InputProcessor{
         restartButtoncenterX=Gdx.graphics.getWidth()/2.3f;
         restartButtoncenterY=Gdx.graphics.getHeight()/2f;
         restartButtonWidth=Gdx.graphics.getWidth()/3f;
-        restartButtonHeight=Gdx.graphics.getHeight()/2.3f;
+        restartButtonHeight=Gdx.graphics.getHeight()/6f;
         menuButtoncenterX=Gdx.graphics.getWidth()/1.7f;
         menuButtoncenterY=Gdx.graphics.getHeight()/2f;
         menuButtonWidth=Gdx.graphics.getWidth()/3f;
-        menuButtonHeight=Gdx.graphics.getHeight()/2.3f;
+        menuButtonHeight=Gdx.graphics.getHeight()/6f;
+        resumeButtoncenterX=Gdx.graphics.getWidth()/2f;
+        resumeButtoncenterY=Gdx.graphics.getHeight()/1.6f;
+        resumeButtonWidth=Gdx.graphics.getWidth()/3f;
+        resumeButtonHeight=Gdx.graphics.getHeight()/3f;
     }
 
     /**
@@ -427,11 +467,14 @@ public class GameScreen extends ScreenAdapter implements InputProcessor{
      */
     private void createStage() {
 
-        background = new Image((Texture) fbwg.getAssetManager().get("gameover_dialog.png"));
+        gameovermenu = new Image((Texture) fbwg.getAssetManager().get("gameovermenu.png"));
+        pausemenu = new Image((Texture) fbwg.getAssetManager().get("pausemenu.png"));
         stage = new Stage(viewport, fbwg.getSpriteBatch());
 
-        stage.addActor(background);
-        background.setVisible(false);
+        stage.addActor(gameovermenu);
+        stage.addActor(pausemenu);
+        gameovermenu.setVisible(false);
+        pausemenu.setVisible(false);
         createTable();
     }
 
@@ -479,6 +522,10 @@ public class GameScreen extends ScreenAdapter implements InputProcessor{
 
         if(screenX > (menuButtoncenterX-menuButtonWidth/2) && screenX < (menuButtoncenterX+menuButtonWidth/2)  && screenY < (menuButtoncenterY+menuButtonHeight/2) && screenY > (menuButtoncenterY-menuButtonHeight/2)){
             ScreenManager.getInstance().showScreen(ScreenState.MENU_SCREEN,fbwg);
+        }
+
+        if(screenX > (resumeButtoncenterX-resumeButtonWidth/2) && screenX < (resumeButtoncenterX+resumeButtonWidth/2)  && screenY < (resumeButtoncenterY+resumeButtonHeight/2) && screenY > (resumeButtoncenterY-resumeButtonHeight/2)){
+            resumeGame();
         }
 
         return true;
@@ -592,6 +639,7 @@ public class GameScreen extends ScreenAdapter implements InputProcessor{
      * @param id The int indicator of the level number
      */
     public void setCurrentLevel(int id) {
+        gameTimer=0;
         this.currentLevel = levels.get(id);
         getLevelStatus();
     }

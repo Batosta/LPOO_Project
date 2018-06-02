@@ -401,7 +401,7 @@ public class Level {
      */
     private void fireBoyUp(){
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.UP)&&jumptimer>1) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.UP)&&jumptimer>30) {
             jumptimer=0;
 
             if (fireboy2D.jumpstate == BoxCharacter.Jump.STOP)
@@ -468,7 +468,7 @@ public class Level {
      */
     private void waterGirlUp(){
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.W)&&jumptimer>60) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.W)&&jumptimer>30) {
             jumptimer=0;
             if (watergirl2D.jumpstate == BoxCharacter.Jump.STOP)
                 watergirl2D.getB2body().applyLinearImpulse(new Vector2(0, 8.3f), watergirl2D.getB2body().getWorldCenter(), true);
