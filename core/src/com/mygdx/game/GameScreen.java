@@ -301,7 +301,6 @@ public class GameScreen extends ScreenAdapter implements InputProcessor{
 
     private void handleinput(){
         if(Gdx.input.isKeyPressed(Input.Keys.R)) {
-            System.out.println("test");
             pauseGame();
         }
     }

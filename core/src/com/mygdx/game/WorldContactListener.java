@@ -173,12 +173,10 @@ public class WorldContactListener implements ContactListener {
 
 
         if (fixtureA.getUserData() == "fireboy" && (fixtureB.getUserData() instanceof ButtonBody)) {
-            System.out.println("fire dentro button");
             level.getODoors().get(((ButtonBody) fixtureB.getUserData()).getMapObject().getName()).setButtonpressed(false);
         }
 
         if (fixtureA.getUserData() == "watergirl" && (fixtureB.getUserData() instanceof ButtonBody)) {
-            System.out.println("water dentro button");
             level.getODoors().get(((ButtonBody) fixtureB.getUserData()).getMapObject().getName()).setButtonpressed(false);
         }
     }
