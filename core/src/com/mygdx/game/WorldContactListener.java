@@ -99,7 +99,6 @@ public class WorldContactListener implements ContactListener {
     private void contactButtons(){
 
         if (fixtureA.getUserData() == "fireboy" && (fixtureB.getUserData() instanceof ButtonBody)) {
-            System.out.println("fef" + ((ButtonBody)fixtureB.getUserData()).getMapObject().getName());
             level.getODoors().get(((ButtonBody) fixtureB.getUserData()).getMapObject().getName()).setButtonpressed(true);
         }
 

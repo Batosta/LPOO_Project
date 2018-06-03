@@ -327,7 +327,6 @@ public class Level {
 
         buttons = new HashMap<String, ButtonBody>();
         for (MapObject object : tiledmap.getLayers().get(9).getObjects().getByType(RectangleMapObject.class)) {
-            System.out.println("name:"+ object.getName());
             buttons.put(object.getName(), new ButtonBody(world, object));
         }
     }
@@ -439,27 +438,32 @@ public class Level {
      */
     private void handleFireBoyInput(){
 
-        fireBoyUp();
-        fireBoyRight();
-        fireBoyLeft();
-        fireBoyNoDir();
+        if (Gdx.input.isKeyJustPressed(Input.Keys.UP)&&fireboy2D.getJumptimer()>30)
+            fireBoyUp();
+
+
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && fireboy2D.getB2body().getLinearVelocity().x <= 6)
+            fireBoyRight();
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && fireboy2D.getB2body().getLinearVelocity().x >= -6)
+            fireBoyLeft();
+        if (!Gdx.input.isKeyPressed(Input.Keys.LEFT) && !Gdx.input.isKeyPressed(Input.Keys.RIGHT))
+            fireBoyNoDir();
     }
 
     /**
      * Function that handles the jump of the FireBoyd
      */
-    private void fireBoyUp(){
+    private void fireBoyUp() {
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.UP)&&fireboy2D.getJumptimer()>30) {
-            fireboy2D.setJumptimer(0);
+        fireboy2D.setJumptimer(0);
 
-            if (fireboy2D.jumpstate == BoxCharacter.Jump.STOP)
-                fireboy2D.getB2body().applyLinearImpulse(new Vector2(0, 8.3f), fireboy2D.getB2body().getWorldCenter(), true);
-            else if (fireboy2D.canjump) {
-                fireboy2D.getB2body().applyLinearImpulse(new Vector2(0, 8.3f), fireboy2D.getB2body().getWorldCenter(), true);
-                fireboy2D.canjump = false;
-            }
+        if (fireboy2D.jumpstate == BoxCharacter.Jump.STOP)
+            fireboy2D.getB2body().applyLinearImpulse(new Vector2(0, 8.3f), fireboy2D.getB2body().getWorldCenter(), true);
+        else if (fireboy2D.canjump) {
+            fireboy2D.getB2body().applyLinearImpulse(new Vector2(0, 8.3f), fireboy2D.getB2body().getWorldCenter(), true);
+            fireboy2D.canjump = false;
         }
+
     }
 
     /**
@@ -467,9 +471,8 @@ public class Level {
      */
     private void fireBoyRight(){
 
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && fireboy2D.getB2body().getLinearVelocity().x <= 6) {
             fireboy2D.getB2body().applyLinearImpulse(new Vector2(0.5f, 0), fireboy2D.getB2body().getWorldCenter(), true);
-        }
+
     }
 
     /**
@@ -477,9 +480,8 @@ public class Level {
      */
     private void fireBoyLeft(){
 
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && fireboy2D.getB2body().getLinearVelocity().x >= -6) {
             fireboy2D.getB2body().applyLinearImpulse(new Vector2(-0.5f, 0), fireboy2D.getB2body().getWorldCenter(), true);
-        }
+
     }
 
     /**
@@ -487,7 +489,6 @@ public class Level {
      */
     private void fireBoyNoDir(){
 
-        if (!Gdx.input.isKeyPressed(Input.Keys.LEFT) && !Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             if (fireboy2D.getB2body().getLinearVelocity().x > 0) {
                 fireboy2D.getB2body().applyLinearImpulse(new Vector2(-0.4f, 0), fireboy2D.getB2body().getWorldCenter(), true);
                 if (fireboy2D.getB2body().getLinearVelocity().x < 0)
@@ -498,34 +499,37 @@ public class Level {
                 if (fireboy2D.getB2body().getLinearVelocity().x > 0)
                     fireboy2D.getB2body().setLinearVelocity(0, fireboy2D.getB2body().getLinearVelocity().y);
             }
-        }
+
     }
 
     /**
      * Function that handles WaterGirl's user inputs
      */
-    private void handleWaterGirlInput(){
+    private void handleWaterGirlInput() {
 
-        waterGirlUp();
-        waterGirlRight();
-        waterGirlLeft();
-        waterGirlNoDir();
+        if (Gdx.input.isKeyJustPressed(Input.Keys.W) && watergirl2D.getJumptimer() > 30)
+            waterGirlUp();
+        if (Gdx.input.isKeyPressed(Input.Keys.D) && watergirl2D.getB2body().getLinearVelocity().x <= 6)
+            waterGirlRight();
+        if (Gdx.input.isKeyPressed(Input.Keys.A) && watergirl2D.getB2body().getLinearVelocity().x >= -6)
+            waterGirlLeft();
+        if (!Gdx.input.isKeyPressed(Input.Keys.A) && !Gdx.input.isKeyPressed(Input.Keys.D))
+            waterGirlNoDir();
     }
 
     /**
      * Function that handles the jump of the WaterGirl
      */
-    private void waterGirlUp(){
+    private void waterGirlUp() {
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.W)&&watergirl2D.getJumptimer()>30) {
-            watergirl2D.setJumptimer(0);
-            if (watergirl2D.jumpstate == BoxCharacter.Jump.STOP)
-                watergirl2D.getB2body().applyLinearImpulse(new Vector2(0, 8.3f), watergirl2D.getB2body().getWorldCenter(), true);
-            else if (watergirl2D.canjump) {
-                watergirl2D.getB2body().applyLinearImpulse(new Vector2(0, 8.3f), fireboy2D.getB2body().getWorldCenter(), true);
-                watergirl2D.canjump = false;
-            }
+        watergirl2D.setJumptimer(0);
+        if (watergirl2D.jumpstate == BoxCharacter.Jump.STOP)
+            watergirl2D.getB2body().applyLinearImpulse(new Vector2(0, 8.3f), watergirl2D.getB2body().getWorldCenter(), true);
+        else if (watergirl2D.canjump) {
+            watergirl2D.getB2body().applyLinearImpulse(new Vector2(0, 8.3f), fireboy2D.getB2body().getWorldCenter(), true);
+            watergirl2D.canjump = false;
         }
+
     }
 
     /**
@@ -533,9 +537,8 @@ public class Level {
      */
     private void waterGirlRight(){
 
-        if (Gdx.input.isKeyPressed(Input.Keys.D) && watergirl2D.getB2body().getLinearVelocity().x <= 6) {
             watergirl2D.getB2body().applyLinearImpulse(new Vector2(0.5f, 0), watergirl2D.getB2body().getWorldCenter(), true);
-        }
+
     }
 
     /**
@@ -543,9 +546,8 @@ public class Level {
      */
     private void waterGirlLeft(){
 
-        if (Gdx.input.isKeyPressed(Input.Keys.A) && watergirl2D.getB2body().getLinearVelocity().x >= -6) {
             watergirl2D.getB2body().applyLinearImpulse(new Vector2(-0.5f, 0), watergirl2D.getB2body().getWorldCenter(), true);
-        }
+
     }
 
     /**
@@ -553,7 +555,6 @@ public class Level {
      */
     private void waterGirlNoDir(){
 
-        if (!Gdx.input.isKeyPressed(Input.Keys.A) && !Gdx.input.isKeyPressed(Input.Keys.D)) {
             if (watergirl2D.getB2body().getLinearVelocity().x > 0) {
                 watergirl2D.getB2body().applyLinearImpulse(new Vector2(-0.4f, 0), watergirl2D.getB2body().getWorldCenter(), true);
                 if (watergirl2D.getB2body().getLinearVelocity().x < 0)
@@ -564,7 +565,7 @@ public class Level {
                 if (watergirl2D.getB2body().getLinearVelocity().x > 0)
                     watergirl2D.getB2body().setLinearVelocity(0, watergirl2D.getB2body().getLinearVelocity().y);
             }
-        }
+
     }
 
 
