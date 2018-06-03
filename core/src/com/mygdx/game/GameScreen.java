@@ -31,7 +31,7 @@ public class GameScreen extends ScreenAdapter implements InputProcessor{
      */
     private static final boolean DEBUG_PHYSICS = false;
 
-    /*
+    /**
      * Viewport width (meters).
      */
     public static float VIEWPORT_WIDTH = 30;
@@ -504,9 +504,13 @@ public class GameScreen extends ScreenAdapter implements InputProcessor{
      * Function that loades the level maps
      */
     public void loadLevels(){
-        levels.add(new Level(fbwg,this,"level1.tmx"));
-        levels.add(new Level(fbwg,this,"level2.tmx"));
-        levels.add(new Level(fbwg,this,"level3.tmx"));
+        addLevel("level1.tmx");
+        addLevel("level2.tmx");
+        addLevel("level3.tmx");
+    }
+
+    public void addLevel(String mappath){
+        levels.add(new Level(fbwg,this,mappath));
     }
 
     /**
