@@ -24,12 +24,7 @@ public class FireBoy2D extends BoxCharacter{
      * Defines the Fire Boy in the map
      */
     public void defineFireboy(){
-    //        float[] vertices = new float[] {
-    //                0,   0,
-    //                1,    0,
-    //                1, 1,
-    //                0, 1
-    //        };
+
         bdef = new BodyDef();
         bdef.position.set(x,y);
         bdef.type = BodyDef.BodyType.DynamicBody;
@@ -37,12 +32,11 @@ public class FireBoy2D extends BoxCharacter{
 
         fdef = new FixtureDef();
         PolygonShape shape = new PolygonShape();
-//        shape.set(vertices);
+
         shape.setAsBox(10*GameScreen.PIXEL_TO_METER,20*GameScreen.PIXEL_TO_METER);
 
         fdef.shape = shape;
         fdef.friction = 1f;
         getB2body().createFixture(fdef).setUserData("fireboy");
-
     }
 }

@@ -108,7 +108,8 @@ public class DoorBody{
      *
      * @param dooropened
      */
-    public void setDooropened(boolean dooropened){
+    public void setDooropened(boolean dooropened) {
+        
         this.dooropened = dooropened;
     }
 

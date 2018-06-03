@@ -1,7 +1,5 @@
 package com.mygdx.game;
 
-import box2dLight.PointLight;
-import box2dLight.RayHandler;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
@@ -18,27 +16,73 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Queue;
 
 import java.util.HashMap;
-import java.util.concurrent.TimeUnit;
+
 
 public class Level {
 
+    /**
+     * The world itself
+     */
     private World world;
+
+    /**
+     * The tiled map editor loader
+     */
     private TmxMapLoader maploader;
+
+    /**
+     * The map from Tiled Map Editor
+     */
     private TiledMap tiledmap;
+
+    /**
+     * The screen
+     */
     private GameScreen gamescreen;
+
+    /**
+     * The game itself
+     */
     private FireBoyWaterGirl game;
 
+    /**
+     * The view representing the FireBoy
+     */
     private FireBoyView fireBoyView;
+
+    /**
+     * The view representing the WaterGirl
+     */
     private WaterGirlView waterGirlView;
+
+    /**
+     * A box body that represents the FireBoy on the world
+     */
     private FireBoy2D fireboy2D;
+
+    /**
+     * A box body that represents the WaterGirl on the world
+     */
     private WaterGirl2D watergirl2D;
 
+    /**
+     * A queue with all the red diamond bodies in this level
+     */
     private Queue<DiamondBody> reddiamonds;
+
+    /**
+     * A queue with all the blue diamond bodies in this level
+     */
     private Queue<DiamondBody> bluediamonds;
 
+    /**
+     * A boolean that determines if this level has been already won or not
+     */
     private boolean gamewon=false;
 
-
+    /**
+     * An HashMap containing all the platforms in the game
+     */
     private HashMap<String, PlatformBody> platforms;
 
     /**
@@ -86,15 +130,25 @@ public class Level {
      */
     String mappath;
 
+    /**
+     * A body definition holds all the data needed to construct a rigid body
+     */
     BodyDef bdef;
 
+    /**
+     * A Libgdx class that defines a body with a polygonal shape
+     */
     PolygonShape polyshape;
 
+    /**
+     * A fixture definition that is used to create a fixture
+     */
     FixtureDef fdef;
 
+    /**
+     * A rigid body.
+     */
     Body body;
-
-    RayHandler rayhandler;
 
     /**
      * Constructor of each whole level

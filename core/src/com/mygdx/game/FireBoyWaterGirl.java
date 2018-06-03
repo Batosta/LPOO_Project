@@ -22,7 +22,6 @@ public class FireBoyWaterGirl extends Game {
 
 	private AssetManager assetManager;
 
-
 	/**
 	 * Creates the game. Initializes the sprite batch and asset manager.
 	 */
@@ -98,7 +97,7 @@ public class FireBoyWaterGirl extends Game {
 		this.assetManager.load("gameovermenu.png", Texture.class);
 
 
-		this.assetManager.load("facil.mp3", Music.class);
+		this.assetManager.load("StairwayToHeaven.mp3", Music.class);
 
 		this.assetManager.finishLoading();
 	}

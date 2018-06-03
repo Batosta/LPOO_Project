@@ -164,7 +164,7 @@ public class PlatformBody extends BoxBody{
         newVertices[2] = new Vector2(oldwidth,height);
         newVertices[3] = new Vector2(-1.5f,height);
         polyshape.set(newVertices);
-        //polyshape.setAsBox(oldwidth*0.9f,oldheight);
+
         if(platformState==PlatformState.OPENING) {
             oldwidth = oldwidth - 0.04f;
             if(oldwidth<-1.3f) {
@@ -180,11 +180,8 @@ public class PlatformBody extends BoxBody{
 
 
         fdef.shape = polyshape;
-        //polyshape.dispose();
 
         getB2body().createFixture(fdef).setUserData(object.getName());
-        //b2body.setTransform(b2body.getPosition().x,b2body.getPosition().y,0);
-
     }
 
     /**
@@ -217,7 +214,6 @@ public class PlatformBody extends BoxBody{
 
 
         fdef.shape = polyshape;
-        //polyshape.dispose();
 
         getB2body().createFixture(fdef).setUserData(object.getName());
 

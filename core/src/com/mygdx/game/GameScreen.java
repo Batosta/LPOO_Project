@@ -1,8 +1,5 @@
 package com.mygdx.game;
 
-import box2dLight.DirectionalLight;
-import box2dLight.PointLight;
-import box2dLight.RayHandler;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
@@ -20,37 +17,19 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Game screen. Draws all the views of all objects of the game.
  */
 public class GameScreen extends ScreenAdapter implements InputProcessor{
 
-
-    public static float BATCH_CONST = 1.5f;
-
-    private int gameLevel = 0;
-
     /**
      * Used to debug the position of the physics fixtures (show lines)
      */
     private static final boolean DEBUG_PHYSICS = false;
-
-    /**
-     * Map width (meters).
-     */
-    public static int MAP_WIDTH = 30;
-
-    /**
-     * Map height (meters).
-     */
-    //public static int MAP_HEIGHT = 25;
 
     /*
      * Viewport width (meters).
@@ -72,17 +51,15 @@ public class GameScreen extends ScreenAdapter implements InputProcessor{
      */
     FireBoyWaterGirl fbwg;
 
+    /**
+     * The Camera class that operates as a very simple real world camera
+     */
     private OrthographicCamera camera;
 
     /**
      * The game viewport.
      */
     private Viewport viewport;
-
-    /**
-     * The game viewport2.
-     */
-    private Viewport viewport2;
 
     /**
      * The transformation matrix used to transform meters into
@@ -93,47 +70,66 @@ public class GameScreen extends ScreenAdapter implements InputProcessor{
     /**
      * The music playing.
      */
-    private Music music = Gdx.audio.newMusic(Gdx.files.internal("facil.mp3"));
+    private Music music = Gdx.audio.newMusic(Gdx.files.internal("StairwayToHeaven.mp3"));
 
+    /**
+     * The view representing the FireBoy
+     */
     private FireBoyView fireBoyView;
 
     /**
-     * HashMap with the view of the horizontal and vertical colored doors to be opened by the colored buttons
+     * The view representing the WaterGirl
      */
-    HashMap<String, PlatformView> platformsView;
-
     private WaterGirlView waterGirlView;
 
+    /**
+     * A box body that represents the FireBoy on the world
+     */
     private FireBoy2D fireboy2d;
 
+    /**
+     * A box body that represents the WaterGirl on the world
+     */
     private WaterGirl2D watergirl2d;
 
     /**
-     * Blue door body used in Box2D. Is only a sensor
+     * The world itself
      */
-    public DoorBody bluedoorbody;
-
-    /**
-     * Red door body used in Box2D. Is only a sensor
-     */
-    public DoorBody reddoorbody;
-
     private World world;
 
+    /**
+     * The renderer used to debug the world
+     */
     private Box2DDebugRenderer boxrenderer;
 
+    /**
+     * While true the world keeps being renderer
+     */
     private boolean rendering = true;
 
+    /**
+     * The tiled map editor loader
+     */
     TmxMapLoader maploader;
 
-    TiledMap tiledmap;
-
+    /**
+     * The renderer from an Orthogonal Tiled map
+     */
     OrthogonalTiledMapRenderer renderer;
 
+    /**
+     * The current level on the game itself
+     */
     private Level currentLevel;
 
+    /**
+     * The number of the current level on the game itself
+     */
     private int  currentLevelID;
 
+    /**
+     * An array with all the possible levels on the game
+     */
     ArrayList<Level> levels= new ArrayList<Level>();
 
     /**
@@ -146,55 +142,105 @@ public class GameScreen extends ScreenAdapter implements InputProcessor{
      */
     public boolean gamewon = false;
 
+    /**
+     * A 2D scene graph containing hierarchies of actors. Stage handles the viewport
+     */
     private Stage stage;
+
+    /**
+     * A text label, representing the time in this case
+     */
     private Label timeLabel;
 
+    /**
+     * A boolean that determines if the Menu should be being shown or not
+     */
     private boolean showmenu=false;
 
+    /**
+     * A boolean that determines if the Resume button (in the Game Menu) can or can not be used
+     */
     private boolean resumebutton=false;
 
+    /**
+     * The X coordinate of the restart button on the Paused Menu
+     */
     private float restartButtoncenterX;
 
-    private float menuButtoncenterX;
-
-    private float resumeButtoncenterX;
-
+    /**
+     * The Y coordinate of the restart button on the Paused Menu
+     */
     private float restartButtoncenterY;
 
-    private float menuButtoncenterY;
-
-    private float resumeButtoncenterY;
-
+    /**
+     * The width of the restart button on the Paused Menu
+     */
     private float restartButtonWidth;
 
-    private float menuButtonWidth;
-
-    private float resumeButtonWidth;
-
+    /**
+     * The height of the restart button on the Paused Menu
+     */
     private float restartButtonHeight;
 
+    /**
+     * The X coordinate of the menu button on the Paused Menu
+     */
+    private float menuButtoncenterX;
+
+    /**
+     * The Y coordinate of the menu button on the Paused Menu
+     */
+    private float menuButtoncenterY;
+
+    /**
+     * The width of the menu button on the Paused Menu
+     */
+    private float menuButtonWidth;
+
+    /**
+     * The height of the menu button on the Paused Menu
+     */
     private float menuButtonHeight;
 
+    /**
+     * The X coordinate of the resume button on the Paused Menu
+     */
+    private float resumeButtoncenterX;
+
+    /**
+     * The Y coordinate of the resume button on the Paused Menu
+     */
+    private float resumeButtoncenterY;
+
+    /**
+     * The width of the resume button on the Paused Menu
+     */
+    private float resumeButtonWidth;
+
+    /**
+     * The height of the resume button on the Paused Menu
+     */
     private float resumeButtonHeight;
 
     /**
-     * flag used in game over dialog
+     * Game table (with game over dialog)
      */
-    public boolean gameover_flag = false;
-
-    //      Game table (with game over dialog)
-
     Table table;
 
+    /**
+     * A drawable that shows the Game Over Menu
+     */
     Image gameovermenu;
 
+    /**
+     * A drawable that shows the Paused Menu
+     */
     Image pausemenu;
 
+    /**
+     * A boolean that determines if the time should keep counting the seconds played or not
+     */
     boolean runtimer=true;
-
-    RayHandler rayhandler;
-
-    PointLight light;
 
     /**
      * Creates the screen.
@@ -261,7 +307,7 @@ public class GameScreen extends ScreenAdapter implements InputProcessor{
 
         checkLevelStatus();
 
-        handleinput();
+        handleInput();
         currentLevel.handleInput(delta);
         currentLevel.renderLevel(delta);
 
@@ -302,16 +348,21 @@ public class GameScreen extends ScreenAdapter implements InputProcessor{
 
         incGameTimer(delta);
         stage.draw();
-//        light.setPosition(currentLevel.getfireboy2D().getB2body().getPosition().x/PIXEL_TO_METER,currentLevel.getfireboy2D().getB2body().getPosition().y/PIXEL_TO_METER);
-//        rayhandler.updateAndRender();
     }
 
-    private void handleinput(){
+    /**
+     * If the R key is pressed, the game is set as Paused
+     */
+    private void handleInput(){
+
         if(Gdx.input.isKeyPressed(Input.Keys.R)) {
             pauseGame();
         }
     }
 
+    /**
+     * Pauses the game, showing the corresponding menu
+     */
     private void pauseGame(){
         setMenu(1);
     }
@@ -324,6 +375,9 @@ public class GameScreen extends ScreenAdapter implements InputProcessor{
         this.renderer = new OrthogonalTiledMapRenderer(currentLevel.getTiledmap(),1);
     }
 
+    /**
+     * Function that checks if the current level has already been won or not
+     */
     public void checkLevelStatus() {
 
         if(currentLevel.isGamewon()){
@@ -339,6 +393,7 @@ public class GameScreen extends ScreenAdapter implements InputProcessor{
      * Restarts the whole game
      */
     public void restartGame(){
+
         currentLevel.restartGame();
         getLevelStatus();
         rendering=true;
@@ -348,20 +403,32 @@ public class GameScreen extends ScreenAdapter implements InputProcessor{
         runtimer=true;
     }
 
+    /**
+     * Resumes the game again
+     */
     public void resumeGame(){
-//        currentLevel.restartGame();
-//        getLevelStatus();
+
         rendering=true;
         gameovermenu.setVisible(false);
         pausemenu.setVisible(false);
         runtimer=true;
     }
 
+    /**
+     * Shows the Main Menu again in case the players lost
+     */
     public void endGame(){
+
         setMenu(0);
     }
 
+    /**
+     * Shows the Main/Pause Menu
+     *
+     * @param nmr if 0, main menu, if 1 pause menu
+     */
     private void setMenu(int nmr){
+
         showmenu=true;
         setButtons();
         rendering=false;
@@ -660,30 +727,27 @@ public class GameScreen extends ScreenAdapter implements InputProcessor{
      * @param id The int indicator of the level number
      */
     public void setCurrentLevel(int id) {
+
         gameTimer=0;
         this.currentLevel = levels.get(id);
         getLevelStatus();
-//        rayhandler=new RayHandler(world);
-//        rayhandler.setCombinedMatrix(camera.combined, camera.position.x, camera.position.y,camera.viewportWidth, camera.viewportHeight);
-//        rayhandler.setAmbientLight(0,0,0,0.02f);
-//        rayhandler.setShadows(true);
-//        rayhandler.setBlur(true);
-
-//        light = new PointLight(rayhandler, 100, Color.WHITE,300,0,0);
-
-//        new PointLight(rayhandler, 100, Color.ORANGE,100,570,420);
-//        new PointLight(rayhandler, 100, Color.ORANGE,100,430,420);
-//        DirectionalLight light = new DirectionalLight(rayhandler, 3, Color.YELLOW, 30);
     }
 
     /**
      * The camera used to show the viewport.
      */
     public OrthographicCamera getCamera() {
+
         return camera;
     }
 
+    /**
+     * Sets the camera that shows the game as the new camera
+     *
+     * @param camera the new camera
+     */
     public void setCamera(OrthographicCamera camera) {
+
         this.camera = camera;
     }
 }

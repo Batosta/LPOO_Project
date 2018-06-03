@@ -7,11 +7,23 @@ import com.badlogic.gdx.physics.box2d.*;
  */
 public class BoxCharacter extends BoxBody {
 
+    /**
+     * Returns the timer of the jump
+     *
+     * @return the timer of the jump
+     */
     public int getJumptimer() {
+
         return jumptimer;
     }
 
+    /**
+     * Sets the timer of the jump to the new timer
+     *
+     * @param jumptimer the new timer
+     */
     public void setJumptimer(int jumptimer) {
+
         this.jumptimer = jumptimer;
     }
 
@@ -67,6 +79,9 @@ public class BoxCharacter extends BoxBody {
      */
     protected Jump jumpstate;
 
+    /**
+     * The timer of the jump. The characters can only jump again if a certain time has passed
+     */
     private int jumptimer;
 
     /**

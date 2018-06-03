@@ -11,7 +11,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-
+/**
+ * Main Menu screen. Draws all the views of all objects of the game.
+ */
 public class MainMenuScreen extends ScreenAdapter implements InputProcessor {
 
     /**

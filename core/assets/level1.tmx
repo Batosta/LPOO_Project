@@ -225,7 +225,7 @@
   <object id="193" name="waterGirl" x="47" y="340" width="30" height="32"/>
   <object id="194" name="fireBoy" x="847" y="89" width="27" height="29"/>
  </objectgroup>
- <layer name="walls" width="30" height="25" visible="0">
+ <layer name="walls" width="30" height="25">
   <data encoding="base64" compression="zlib">
    eJzNlckOgjAQhpv2ySSROy4HXA4uBx+GRCLq64j78lQOkYm1DLUqLU7yh7Sl85XO3xJxxgagvsNnBIpBrmNdE7f5JTeb5/PXtkf0+URufHchjQ25fXl5fak12YiNYCwVD26c89WY8aJ+jT0wDxpuCO0EtFSePU3tsGa6Gp+BeZG4XWmObU1A05rOUBaxQ1/JkZT4ymasiP1vgzpv1hEqHsMIoK9lkAO/dazhf+JbykdUDXFsDhqV8KuQysZ+157+J25g4CsbXOruMjnfpv9FOa9unym/Ya4yD5uK4m7h/t6J4t5UKYp7BOapBu4VmDfxvINccBuWOKoS7p6Z6Q7sL37I
   </data>

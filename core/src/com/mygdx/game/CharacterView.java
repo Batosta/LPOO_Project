@@ -56,7 +56,12 @@ public class CharacterView extends BodyView {
      */
     public TextureRegion downLeftTex;
 
-
+    /**
+     * The constructor of the view for the character
+     *
+     * @param game the game itself
+     * @param text the path for the image
+     */
     public CharacterView(FireBoyWaterGirl game, String text){
 
         super(game, text);

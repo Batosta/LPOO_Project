@@ -104,6 +104,7 @@ public class BoxBody {
      * @return The body itself
      */
     public Body getB2body() {
+
         return b2body;
     }
 
@@ -113,6 +114,7 @@ public class BoxBody {
      * @param b2body The new body itself
      */
     public void setB2body(Body b2body) {
+
         this.b2body = b2body;
     }
 }

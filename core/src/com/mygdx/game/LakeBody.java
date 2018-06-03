@@ -82,4 +82,4 @@ public class LakeBody {
         else
             b2body.createFixture(fdef).setUserData("greenlake");
     }
-    }
+}
