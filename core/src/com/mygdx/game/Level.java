@@ -398,7 +398,7 @@ public class Level {
      *
      * @param delta time in seconds since last render
      */
-    private void updateObjects(float delta) {
+    public void updateObjects(float delta) {
 
         fireboy2D.update(delta);
         watergirl2D.update(delta);
@@ -453,7 +453,7 @@ public class Level {
     /**
      * Function that handles the jump of the FireBoyd
      */
-    private void fireBoyUp() {
+    public void fireBoyUp() {
 
         fireboy2D.setJumptimer(0);
 
@@ -469,7 +469,7 @@ public class Level {
     /**
      * Function that handles the going right of the FireBoy
      */
-    private void fireBoyRight(){
+    public void fireBoyRight(){
 
             fireboy2D.getB2body().applyLinearImpulse(new Vector2(0.5f, 0), fireboy2D.getB2body().getWorldCenter(), true);
 
@@ -478,7 +478,7 @@ public class Level {
     /**
      * Function that handles the going left of the FireBoy
      */
-    private void fireBoyLeft(){
+    public void fireBoyLeft(){
 
             fireboy2D.getB2body().applyLinearImpulse(new Vector2(-0.5f, 0), fireboy2D.getB2body().getWorldCenter(), true);
 
@@ -487,7 +487,7 @@ public class Level {
     /**
      * Function that handles when the FireBoy is not moving
      */
-    private void fireBoyNoDir(){
+    public void fireBoyNoDir(){
 
             if (fireboy2D.getB2body().getLinearVelocity().x > 0) {
                 fireboy2D.getB2body().applyLinearImpulse(new Vector2(-0.4f, 0), fireboy2D.getB2body().getWorldCenter(), true);
@@ -505,7 +505,7 @@ public class Level {
     /**
      * Function that handles WaterGirl's user inputs
      */
-    private void handleWaterGirlInput() {
+    public void handleWaterGirlInput() {
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.W) && watergirl2D.getJumptimer() > 30)
             waterGirlUp();
@@ -520,7 +520,7 @@ public class Level {
     /**
      * Function that handles the jump of the WaterGirl
      */
-    private void waterGirlUp() {
+    public void waterGirlUp() {
 
         watergirl2D.setJumptimer(0);
         if (watergirl2D.jumpstate == BoxCharacter.Jump.STOP)
@@ -535,7 +535,7 @@ public class Level {
     /**
      * Function that handles the going right of the WaterGirl
      */
-    private void waterGirlRight(){
+    public void waterGirlRight(){
 
             watergirl2D.getB2body().applyLinearImpulse(new Vector2(0.5f, 0), watergirl2D.getB2body().getWorldCenter(), true);
 
@@ -544,7 +544,7 @@ public class Level {
     /**
      * Function that handles the going left of the WaterGirl
      */
-    private void waterGirlLeft(){
+    public void waterGirlLeft(){
 
             watergirl2D.getB2body().applyLinearImpulse(new Vector2(-0.5f, 0), watergirl2D.getB2body().getWorldCenter(), true);
 
@@ -553,7 +553,7 @@ public class Level {
     /**
      * Function that handles when the WaterGirl is not moving
      */
-    private void waterGirlNoDir(){
+    public void waterGirlNoDir(){
 
             if (watergirl2D.getB2body().getLinearVelocity().x > 0) {
                 watergirl2D.getB2body().applyLinearImpulse(new Vector2(-0.4f, 0), watergirl2D.getB2body().getWorldCenter(), true);

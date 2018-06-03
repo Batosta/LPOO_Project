@@ -63,17 +63,9 @@ public class FireBoyWaterGirl extends Game {
 
 		this.assetManager.load("fire.png", Texture.class);
 		this.assetManager.load("water.png", Texture.class);
-		this.assetManager.load("ball.png", Texture.class);
-		this.assetManager.load("cube.png", Texture.class);
-		this.assetManager.load("blueDiamond.png", Texture.class);
-		this.assetManager.load("redDiamond.png", Texture.class);
 		this.assetManager.load("greenLake.png", Texture.class);
 		this.assetManager.load("blueLake.png", Texture.class);
 		this.assetManager.load("redLake.png", Texture.class);
-		this.assetManager.load("portal.png", Texture.class);
-		this.assetManager.load("lever.png", Texture.class);
-		this.assetManager.load("wall.png", Texture.class);
-		this.assetManager.load("purplePlatform.png", Texture.class);
 		this.assetManager.load("horreddoor.png", Texture.class);
 		this.assetManager.load("horpurpledoor.png", Texture.class);
 		this.assetManager.load("horgreendoor.png", Texture.class);
