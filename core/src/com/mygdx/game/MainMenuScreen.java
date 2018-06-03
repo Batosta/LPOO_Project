@@ -90,7 +90,6 @@ public class MainMenuScreen extends ScreenAdapter implements InputProcessor {
         quitButton = new Image((Texture)game.getAssetManager().get("quitButtonNormal.png"));
         table.add(quitButton).padTop(50f);
 
-        table.debugAll();
         stage.addActor(table);
 
 
