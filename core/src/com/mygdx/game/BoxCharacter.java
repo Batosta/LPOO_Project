@@ -7,6 +7,14 @@ import com.badlogic.gdx.physics.box2d.*;
  */
 public class BoxCharacter extends BoxBody {
 
+    public int getJumptimer() {
+        return jumptimer;
+    }
+
+    public void setJumptimer(int jumptimer) {
+        this.jumptimer = jumptimer;
+    }
+
     /**
      * Possible states of Moving
      */
@@ -59,6 +67,8 @@ public class BoxCharacter extends BoxBody {
      */
     protected Jump jumpstate;
 
+    private int jumptimer;
+
     /**
      * A boolean that represents if the character is able to jump or not
      */
@@ -77,6 +87,7 @@ public class BoxCharacter extends BoxBody {
      */
     public BoxCharacter(World world, float x, float y){
         super(world, x,y);
+        setJumptimer(0);
         alive=true;
     }
 
@@ -86,7 +97,7 @@ public class BoxCharacter extends BoxBody {
      * @param delta time in seconds since last render
      */
     public void update(float delta){
-
+        setJumptimer(getJumptimer() + 1);
         moving=Moving.STAND;
 
         jumpstate=Jump.STOP;

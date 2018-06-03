@@ -71,7 +71,6 @@ public class FireBoyWaterGirl extends Game {
 		this.assetManager.load("fire.png", Texture.class);
 		this.assetManager.load("water.png", Texture.class);
 		this.assetManager.load("ball.png", Texture.class);
-		this.assetManager.load("purpleButton.png", Texture.class);
 		this.assetManager.load("cube.png", Texture.class);
 		this.assetManager.load("blueDiamond.png", Texture.class);
 		this.assetManager.load("redDiamond.png", Texture.class);
@@ -84,8 +83,10 @@ public class FireBoyWaterGirl extends Game {
 		this.assetManager.load("purplePlatform.png", Texture.class);
 		this.assetManager.load("horreddoor.png", Texture.class);
 		this.assetManager.load("horpurpledoor.png", Texture.class);
+		this.assetManager.load("horgreendoor.png", Texture.class);
 		this.assetManager.load("verreddoor.png", Texture.class);
 		this.assetManager.load("verpurpledoor.png", Texture.class);
+		this.assetManager.load("vergreendoor.png", Texture.class);
 
 		this.assetManager.load("mainMenuBackground.jpg", Texture.class);
 		this.assetManager.load("startButtonNormal.png", Texture.class);

@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="1.1.5" orientation="orthogonal" renderorder="right-down" width="30" height="25" tilewidth="32" tileheight="32" infinite="0" nextobjectid="390">
+ <tileset firstgid="1" source="provtiledset3.tsx"/>
+ <tileset firstgid="193" source="provtiledset.tsx"/>
+ <tileset firstgid="865" source="doorsopenedset.tsx"/>
+ <tileset firstgid="877" source="greenlake.tsx"/>
+ <tileset firstgid="885" source="bluelake.tsx"/>
+ <tileset firstgid="893" source="bluediamondset.tsx"/>
+ <tileset firstgid="928" source="reddiamondset.tsx"/>
+ <tileset firstgid="963" source="redlakes.tsx"/>
+ <tileset firstgid="971" source="items.tsx"/>
+ <tileset firstgid="1007" source="provtiledset2.tsx"/>
+ <layer name="background" width="30" height="25">
+  <data encoding="base64" compression="zlib">
+   eJx7xMjA8GgUj+JRTFfswgTBI8XeUTyKR/EoHsWjeBRTjgEwD5a1
+  </data>
+ </layer>
+ <objectgroup name="wallPoly">
+  <object id="297" x="960" y="288">
+   <polygon points="0,0 -32,32 0,32"/>
+  </object>
+  <object id="298" x="928" y="352">
+   <polygon points="0,0 -32,32 0,32"/>
+  </object>
+  <object id="299" x="832" y="32">
+   <polygon points="0,0 -64,-32 0,-32"/>
+  </object>
+  <object id="300" x="928" y="32">
+   <polygon points="0,0 32,32 32,0"/>
+  </object>
+  <object id="301" x="544" y="32">
+   <polygon points="0,0 32,-32 0,-32"/>
+  </object>
+  <object id="302" x="480" y="32">
+   <polygon points="0,0 -64,32 -64,0"/>
+  </object>
+  <object id="305" x="320" y="32">
+   <polygon points="0,0 32,32 32,0"/>
+  </object>
+  <object id="306" x="256" y="32">
+   <polygon points="0,0 -64,-32 0,-32"/>
+  </object>
+  <object id="309" x="320" y="288">
+   <polygon points="0,0 64,-64 64,0"/>
+  </object>
+  <object id="310" x="448" y="320">
+   <polygon points="0,0 32,-32 0,-32"/>
+  </object>
+  <object id="311" x="544" y="288">
+   <polygon points="0,0 -64,-32 -64,-64 0,-32"/>
+  </object>
+  <object id="312" x="32" y="512">
+   <polygon points="0,0 -32,32 -32,0"/>
+  </object>
+  <object id="324" x="896" y="704">
+   <polygon points="0,0 64,-64 32,-64 -32,-32"/>
+  </object>
+  <object id="360" x="960.301" y="619.673">
+   <polygon points="0,0 -62.6821,-13.7461 -63.232,-42.6129 -0.301314,-43.6734"/>
+  </object>
+  <object id="375" x="351.753" y="704.592">
+   <polygon points="0,0 -63.7533,-32.5923 -351.753,-32.5923 -351.753,-0.592335"/>
+  </object>
+  <object id="377" x="800.13" y="262.367">
+   <polygon points="0,0 11.9422,0 15.5611,11.2185 23.8845,19.9037 -0.723772,19.18"/>
+  </object>
+  <object id="378" x="473.815" y="191.831">
+   <polygon points="0,0 0,-23.6828 -5.99965,-16.8938 -12.1572,-12.7887 -19.7357,-11.5256 -19.5778,-0.315771"/>
+  </object>
+  <object id="387" x="160" y="0">
+   <polygon points="0,0 -96,0 -64,32 -32,32"/>
+  </object>
+  <object id="389" x="288" y="160">
+   <polygon points="0,0 64,32 75.0862,46.7574 0,32"/>
+  </object>
+ </objectgroup>
+ <objectgroup name="wallRect">
+  <object id="248" x="0" y="384" width="352" height="32"/>
+  <object id="249" x="0" y="160" width="32" height="224"/>
+  <object id="251" x="0" y="416" width="32" height="96"/>
+  <object id="252" x="128" y="480" width="800" height="32"/>
+  <object id="253" x="640" y="384" width="288" height="32"/>
+  <object id="254" x="928" y="320" width="32" height="256"/>
+  <object id="255" x="96" y="576" width="704" height="32"/>
+  <object id="256" x="448" y="608" width="32" height="96"/>
+  <object id="258" x="0" y="768" width="960" height="32"/>
+  <object id="259" x="576.308" y="672" width="287.692" height="32"/>
+  <object id="262" x="128" y="288" width="320" height="32"/>
+  <object id="263" x="448" y="192" width="32" height="96"/>
+  <object id="264" x="544" y="256" width="256" height="32"/>
+  <object id="265" x="608" y="128" width="320" height="32"/>
+  <object id="266" x="832" y="0" width="128" height="32"/>
+  <object id="267" x="480" y="0" width="64" height="32"/>
+  <object id="268" x="352" y="32" width="64" height="32"/>
+  <object id="269" x="256" y="0" width="64" height="32"/>
+  <object id="272" x="224" y="192" width="64"/>
+  <object id="273" x="0" y="160" width="288" height="32"/>
+  <object id="275" x="352" y="32"/>
+  <object id="276" x="256" y="0" width="64" height="32"/>
+  <object id="277" x="-1.32369" y="153.547" width="289.446" height="7.50088"/>
+  <object id="278" x="32.2097" y="352.1" width="31.3272" height="8.38334"/>
+  <object id="279" x="48.6439" y="344.192" width="14.7406" height="7.61596"/>
+  <object id="280" x="36.6057" y="336.576" width="21.6195" height="7.61596"/>
+  <object id="281" x="30.2182" y="328.469" width="17.443" height="7.61596"/>
+  <object id="282" x="29.2355" y="320.362" width="12.7752" height="7.12461"/>
+  <object id="283" x="0" y="416" width="32" height="96"/>
+  <object id="284" x="-15.8618" y="543.884" width="16.9193" height="63.7998"/>
+  <object id="285" x="576.172" y="152.189" width="41.6354" height="7.88746"/>
+  <object id="286" x="585.094" y="143.914" width="38.7908" height="12.2837"/>
+  <object id="287" x="591.947" y="136.156" width="30.774" height="12.1544"/>
+  <object id="288" x="600.998" y="128.268" width="21.5935" height="19.7833"/>
+  <object id="289" x="608.932" y="120.476" width="319.085" height="17.6429"/>
+  <object id="290" x="926.505" y="128.541" width="11.0898" height="8.56941"/>
+  <object id="291" x="937.595" y="137.111" width="7.56125" height="6.55308"/>
+  <object id="292" x="945.156" y="143.664" width="7.56125" height="11.0898"/>
+  <object id="293" x="928.017" y="152.233" width="33.7736" height="7.56125"/>
+  <object id="313" x="30.6026" y="664.534" width="33.0952" height="19.3863"/>
+  <object id="316" x="32.8182" y="655.81" width="25.0637" height="21.6019"/>
+  <object id="317" x="12.7396" y="648.471" width="36.28" height="24.2329"/>
+  <object id="318" x="13.9858" y="640.163" width="27.5562" height="23.5405"/>
+  <object id="319" x="6.50825" y="632.131" width="25.2022" height="13.0165"/>
+  <object id="320" x="-1.24626" y="624.1" width="26.7254" height="18.0016"/>
+  <object id="321" x="2.0771" y="616.207" width="14.5397" height="17.1707"/>
+  <object id="322" x="-5.67741" y="609.837" width="15.0936" height="6.92367"/>
+  <object id="326" x="927.914" y="759.928" width="45.8607" height="16.4759"/>
+  <object id="327" x="937.086" y="752.964" width="41.4444" height="19.1935"/>
+  <object id="328" x="944.56" y="744.641" width="30.9135" height="13.4185"/>
+  <object id="329" x="953.562" y="736.318" width="21.2318" height="15.117"/>
+  <object id="330" x="-2.80967" y="704.423" width="14.4497" height="67.0306"/>
+  <object id="331" x="960.906" y="640.604" width="25.287" height="93.9231"/>
+  <object id="335" x="960.906" y="60.2071" width="40.9408" height="227.583"/>
+  <object id="337" x="-30.9063" y="1.20414" width="31.7091" height="151.722"/>
+  <object id="358" x="384" y="224" width="64" height="64"/>
+  <object id="362" x="799.197" y="600.704" width="16.4953" height="7.14796"/>
+  <object id="371" x="30.3211" y="504.629" width="18.4092" height="6.49737"/>
+  <object id="372" x="346.527" y="417.456" width="14.6191" height="6.49737"/>
+  <object id="373" x="632.411" y="416.373" width="16.7849" height="7.58027"/>
+ </objectgroup>
+ <objectgroup name="blueLake"/>
+ <objectgroup name="redLake"/>
+ <objectgroup name="greenLake"/>
+ <objectgroup name="door" offsetx="-1.23885" offsety="0">
+  <object id="246" name="blueDoor" x="267.592" y="210.605" width="43.3598" height="75.5699"/>
+  <object id="355" name="redDoor" x="360.297" y="690.138" width="50.1282" height="73.4437"/>
+ </objectgroup>
+ <objectgroup name="blueDiamond">
+  <object id="349" x="934.373" y="174.866">
+   <polygon points="0,0 6.59942,-8.01358 18.3841,-8.48496 29.226,0.471387 12.2561,17.4413"/>
+  </object>
+  <object id="350" x="391.868" y="178.026">
+   <polygon points="0,0 6.59942,-8.01358 18.3841,-8.48496 29.226,0.471387 12.2561,17.4413"/>
+  </object>
+  <object id="351" x="166.706" y="241.315">
+   <polygon points="0,0 6.59942,-8.01358 18.3841,-8.48496 29.226,0.471387 12.2561,17.4413"/>
+  </object>
+  <object id="352" x="165.54" y="623.689">
+   <polygon points="0,0 6.59942,-8.01358 18.3841,-8.48496 29.226,0.471387 12.2561,17.4413"/>
+  </object>
+  <object id="353" x="614.362" y="530.427">
+   <polygon points="0,0 6.59942,-8.01358 18.3841,-8.48496 29.226,0.471387 12.2561,17.4413"/>
+  </object>
+  <object id="354" x="839.356" y="719.282">
+   <polygon points="0,0 6.59942,-8.01358 18.3841,-8.48496 29.226,0.471387 12.2561,17.4413"/>
+  </object>
+  <object id="374" x="807.86" y="432.455">
+   <polygon points="0,0 6.59942,-8.01358 18.3841,-8.48496 29.226,0.471387 12.2561,17.4413"/>
+  </object>
+ </objectgroup>
+ <objectgroup name="redDiamond">
+  <object id="339" x="803.715" y="74.4791">
+   <polygon points="0,0 6.59942,-8.01358 18.3841,-8.48496 29.226,0.471387 12.2561,17.4413"/>
+  </object>
+  <object id="341" x="674.181" y="327.61">
+   <polygon points="0,0 6.59942,-8.01358 18.3841,-8.48496 29.226,0.471387 12.2561,17.4413"/>
+  </object>
+  <object id="342" x="37.9227" y="112.715">
+   <polygon points="0,0 6.59942,-8.01358 18.3841,-8.48496 29.226,0.471387 12.2561,17.4413"/>
+  </object>
+  <object id="343" x="165.385" y="338.144">
+   <polygon points="0,0 6.59942,-8.01358 18.3841,-8.48496 29.226,0.471387 12.2561,17.4413"/>
+  </object>
+  <object id="346" x="902.77" y="527.757">
+   <polygon points="0,0 6.59942,-8.01358 18.3841,-8.48496 29.226,0.471387 12.2561,17.4413"/>
+  </object>
+  <object id="347" x="711.05" y="719.478">
+   <polygon points="0,0 6.59942,-8.01358 18.3841,-8.48496 29.226,0.471387 12.2561,17.4413"/>
+  </object>
+  <object id="348" x="201.201" y="717.371">
+   <polygon points="0,0 6.59942,-8.01358 18.3841,-8.48496 29.226,0.471387 12.2561,17.4413"/>
+  </object>
+ </objectgroup>
+ <objectgroup name="buttons">
+  <object id="243" name="purple" x="130.641" y="756.136" width="27.7118" height="9.23727"/>
+  <object id="245" name="red" x="838.702" y="371.655" width="19.8216" height="9.9108"/>
+  <object id="384" name="green" x="899.569" y="758.315" width="22.8188" height="9.39597"/>
+ </objectgroup>
+ <objectgroup name="platformsHor">
+  <object id="238" name="purple" x="800" y="576" width="96" height="32"/>
+  <object id="244" name="red" x="0" y="576" width="96" height="32"/>
+ </objectgroup>
+ <objectgroup name="platformsVer">
+  <object id="381" name="green" x="96" y="64" width="32" height="96"/>
+ </objectgroup>
+ <layer name="diamonds" width="30" height="25">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgF1AYLmEkTHwUMDLVUCBtqmEFNMNjcM1wBpflqNF8ODBjNH9QFxITnaFpHgNH0Rz9A7TJ6pMcdAIWxB/Y=
+  </data>
+ </layer>
+ <objectgroup name="fbwg" offsetx="0" offsety="-3.95883">
+  <object id="241" name="waterGirl" x="816.838" y="638.691" width="18.4745" height="21.1138"/>
+  <object id="242" name="fireBoy" x="729.744" y="641.33" width="18.4745" height="11.8765"/>
+ </objectgroup>
+ <layer name="walls" width="30" height="25">
+  <data encoding="base64" compression="zlib">
+   eJy1VsuK1EAUrXQFaZURBBUfuBBURt2qy1ZBB3fqRjpJJx3fT8TVoO6cYT7AUQdEBGfADxhBmL8Q9DvEnUvxXuoc6hq7NREtOCRdue97blU/SZx7JHgpWBCsCEbeuVV5rmHvT1Adu777+D7NznLqHNX0dy46Y8HjJOw/TAMmLX4biPxMz7lanuuitC0NsVc+2FCb+vsTctIc10Rmu7E134t2dF/lVK8vcpsFWwRb02A/80F+jFj1nX7VhsZB2/r+EQl+lffCB/3Kx+854h7gqTHsFlt7BHsF+xp+7TqfBExan5Nf5ShrfxPqY1Z8HREcFRxDPuqzRLxPW3JBsdhS7rnghYm1NryxeZc+9mmIWhVG1i61+/o3uCZ61wVvksidQcOv9raEr7k0/B6ghzOmD0nDbw09cqGEzgH5fkuet7H/SmR7PmCh0UPW/fIU7uuy/FX9IXxV0M3ALd27J7gPn++N39Up3Jm0HiTurY3N+s2Qb1tuNM+KLmsJNkrMX4Gnrgy9qXycz8LwJYNcc4+cqwyvasjQHmMvGjWuIaMocNZwjk9L/84IdojtnYJdLu5ZTtc+8jxD3Lq31LKeFtrzi2L/kuCg+DskOOzinsbVxZ4uxsM5YZys4wfwaoT8j4vOCcFJF/coo7WpYIt9q33smfWrsVK/ApfZl8zHOa0hc1Z0zgnm4JezZ8+NCrqsd9Hg7kYSZbvW/m+xkkQOsL7k0BixMI9p5+DIR35z7lkf1jv38e5Rv++SOA+8e3mGrKOftekzZ82eg5TjPZabuHhPsg+l/9kv4/gf2DBn+H7lkgt30hf4/oaYczOD5McQeTIHnjeska07869QF3vmjAyHFuF3E2a/Mpxmj7Se5DZngbNBbvC+yk1v5jEn+u2Z6CyDU13u3yuif9X0yN69XXh8SvIr05iHvQ/JU9ZdZW4Ibpqc7d1LMGeeRfYMyWH7gvjsi9ysb4c7gruobb8XfQzx3c4Lz6qR4Qrr3+U/0b/GD0y2Ebc=
+  </data>
+ </layer>
+ <layer name="doors" width="30" height="25">
+  <data encoding="base64" compression="zlib">
+   eJztzTEOQBEABFFnoKCmoKbg/if7ewjJSv68ZOoJAfiPrIrh29UwfLc6hi8A4H1RJcO3qmb4TrUM35s+fkABvQ==
+  </data>
+ </layer>
+ <layer name="lakesnbuttons" width="30" height="25">
+  <data encoding="base64" compression="zlib">
+   eJzllskKglAYRn+1oPep1yloWAvNQTsbV7VosCKKJuhlWrbqFVq3rc8y1HIeFx44oNd7/byT2iGiLmnJJcgVddiATdiyqDuBUxu5M4ZIkD3AI+Pu2cxw21+7sD7nnpmPfEI51vPJ/bczy00niTKwrXN96WDcVx7miA9gfr/0YB8O4PDnmmCQazR3TpjBORThQi4bIW8sr+sJnAbYbzUb5Gzl3B3cq/aXkXawuoeTe1nhZX15Ye0glyXt2pHa/pbpceUsKoTIKKJxPsUoV4yor3HGbA/mYQEWYSmcx3lThhVYhbUQc/1EGtesy3+au8cPrZSbYhUvnPbcyIeNOnreIn5PvwAYlzVN
+  </data>
+ </layer>
+</map>

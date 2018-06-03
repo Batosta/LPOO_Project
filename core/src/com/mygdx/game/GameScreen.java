@@ -1,5 +1,8 @@
 package com.mygdx.game;
 
+import box2dLight.DirectionalLight;
+import box2dLight.PointLight;
+import box2dLight.RayHandler;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
@@ -9,14 +12,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.maps.tiled.*;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.utils.Queue;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.badlogic.gdx.math.Matrix4;
@@ -40,7 +40,7 @@ public class GameScreen extends ScreenAdapter implements InputProcessor{
     /**
      * Used to debug the position of the physics fixtures (show lines)
      */
-    private static final boolean DEBUG_PHYSICS = true;
+    private static final boolean DEBUG_PHYSICS = false;
 
     /**
      * Map width (meters).
@@ -72,9 +72,6 @@ public class GameScreen extends ScreenAdapter implements InputProcessor{
      */
     FireBoyWaterGirl fbwg;
 
-    /**
-     * The camera used to show the viewport.
-     */
     private OrthographicCamera camera;
 
     /**
@@ -152,6 +149,10 @@ public class GameScreen extends ScreenAdapter implements InputProcessor{
     private Stage stage;
     private Label timeLabel;
 
+    private boolean showmenu=false;
+
+    private boolean resumebutton=false;
+
     private float restartButtoncenterX;
 
     private float menuButtoncenterX;
@@ -191,6 +192,10 @@ public class GameScreen extends ScreenAdapter implements InputProcessor{
 
     boolean runtimer=true;
 
+    RayHandler rayhandler;
+
+    PointLight light;
+
     /**
      * Creates the screen.
      *
@@ -223,19 +228,19 @@ public class GameScreen extends ScreenAdapter implements InputProcessor{
      * @return the camera.
      */
     private OrthographicCamera createCameras(){
-        camera = new OrthographicCamera(VIEWPORT_WIDTH/PIXEL_TO_METER, VIEWPORT_HEIGHT/PIXEL_TO_METER);
+        setCamera(new OrthographicCamera(VIEWPORT_WIDTH/PIXEL_TO_METER, VIEWPORT_HEIGHT/PIXEL_TO_METER));
         viewport = new FitViewport(GameScreen.VIEWPORT_WIDTH/GameScreen.PIXEL_TO_METER, VIEWPORT_HEIGHT/PIXEL_TO_METER);
 
-        camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
-        camera.update();
+        getCamera().position.set(getCamera().viewportWidth / 2f, getCamera().viewportHeight / 2f, 0);
+        getCamera().update();
 
         if (DEBUG_PHYSICS) {
             boxrenderer = new Box2DDebugRenderer();
-            debugCamera = camera.combined.cpy();
+            debugCamera = getCamera().combined.cpy();
             debugCamera.scl(1 / PIXEL_TO_METER);
         }
 
-        return camera;
+        return getCamera();
     }
 
     /**
@@ -262,7 +267,7 @@ public class GameScreen extends ScreenAdapter implements InputProcessor{
 
         updateTimeLabel();
 
-        renderer.setView(camera);
+        renderer.setView(getCamera());
 
         //Clears screen
         Gdx.gl.glClearColor(0 / 255f, 0 / 255f, 0 / 255f, 1);
@@ -290,13 +295,15 @@ public class GameScreen extends ScreenAdapter implements InputProcessor{
         music.play();
 
         if (DEBUG_PHYSICS) {
-            debugCamera = camera.combined.cpy();
+            debugCamera = getCamera().combined.cpy();
             debugCamera.scl(1 / PIXEL_TO_METER);
             boxrenderer.render(world, debugCamera);
         }
 
         incGameTimer(delta);
         stage.draw();
+//        light.setPosition(currentLevel.getfireboy2D().getB2body().getPosition().x/PIXEL_TO_METER,currentLevel.getfireboy2D().getB2body().getPosition().y/PIXEL_TO_METER);
+//        rayhandler.updateAndRender();
     }
 
     private void handleinput(){
@@ -322,7 +329,9 @@ public class GameScreen extends ScreenAdapter implements InputProcessor{
         if(currentLevel.isGamewon()){
 
             currentLevelID++;
+            if(currentLevelID<levels.size())
             setCurrentLevel(currentLevelID);
+            else endGame();
         }
     }
 
@@ -353,12 +362,17 @@ public class GameScreen extends ScreenAdapter implements InputProcessor{
     }
 
     private void setMenu(int nmr){
+        showmenu=true;
         setButtons();
         rendering=false;
-        if(nmr==0)
-        gameovermenu.setVisible(true);
-        else if(nmr==1)
+        if(nmr==0) {
+            resumebutton = false;
+            gameovermenu.setVisible(true);
+        }
+        else if(nmr==1) {
+            resumebutton = true;
             pausemenu.setVisible(true);
+        }
         runtimer=false;
     }
 
@@ -425,6 +439,7 @@ public class GameScreen extends ScreenAdapter implements InputProcessor{
     public void loadLevels(){
         levels.add(new Level(fbwg,this,"level1.tmx"));
         levels.add(new Level(fbwg,this,"level2.tmx"));
+        levels.add(new Level(fbwg,this,"level3.tmx"));
     }
 
     /**
@@ -515,16 +530,23 @@ public class GameScreen extends ScreenAdapter implements InputProcessor{
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 
-        if(screenX > (restartButtoncenterX-restartButtonWidth/2) && screenX < (restartButtoncenterX+restartButtonWidth/2)  && screenY < (restartButtoncenterY+restartButtonHeight/2) && screenY > (restartButtoncenterY-restartButtonHeight/2)){
-            restartGame();
-        }
+        if(showmenu) {
 
-        if(screenX > (menuButtoncenterX-menuButtonWidth/2) && screenX < (menuButtoncenterX+menuButtonWidth/2)  && screenY < (menuButtoncenterY+menuButtonHeight/2) && screenY > (menuButtoncenterY-menuButtonHeight/2)){
-            ScreenManager.getInstance().showScreen(ScreenState.MENU_SCREEN,fbwg);
-        }
+            if (screenX > (restartButtoncenterX - restartButtonWidth / 2) && screenX < (restartButtoncenterX + restartButtonWidth / 2) && screenY < (restartButtoncenterY + restartButtonHeight / 2) && screenY > (restartButtoncenterY - restartButtonHeight / 2)) {
+                showmenu=false;
+                restartGame();
+            }
 
-        if(screenX > (resumeButtoncenterX-resumeButtonWidth/2) && screenX < (resumeButtoncenterX+resumeButtonWidth/2)  && screenY < (resumeButtoncenterY+resumeButtonHeight/2) && screenY > (resumeButtoncenterY-resumeButtonHeight/2)){
-            resumeGame();
+            if (screenX > (menuButtoncenterX - menuButtonWidth / 2) && screenX < (menuButtoncenterX + menuButtonWidth / 2) && screenY < (menuButtoncenterY + menuButtonHeight / 2) && screenY > (menuButtoncenterY - menuButtonHeight / 2)) {
+                showmenu=false;
+                ScreenManager.getInstance().showScreen(ScreenState.MENU_SCREEN, fbwg);
+            }
+
+            if (resumebutton && screenX > (resumeButtoncenterX - resumeButtonWidth / 2) && screenX < (resumeButtoncenterX + resumeButtonWidth / 2) && screenY < (resumeButtoncenterY + resumeButtonHeight / 2) && screenY > (resumeButtoncenterY - resumeButtonHeight / 2)) {
+                showmenu=false;
+                resumeGame();
+            }
+
         }
 
         return true;
@@ -641,5 +663,27 @@ public class GameScreen extends ScreenAdapter implements InputProcessor{
         gameTimer=0;
         this.currentLevel = levels.get(id);
         getLevelStatus();
+//        rayhandler=new RayHandler(world);
+//        rayhandler.setCombinedMatrix(camera.combined, camera.position.x, camera.position.y,camera.viewportWidth, camera.viewportHeight);
+//        rayhandler.setAmbientLight(0,0,0,0.02f);
+//        rayhandler.setShadows(true);
+//        rayhandler.setBlur(true);
+
+//        light = new PointLight(rayhandler, 100, Color.WHITE,300,0,0);
+
+//        new PointLight(rayhandler, 100, Color.ORANGE,100,570,420);
+//        new PointLight(rayhandler, 100, Color.ORANGE,100,430,420);
+//        DirectionalLight light = new DirectionalLight(rayhandler, 3, Color.YELLOW, 30);
+    }
+
+    /**
+     * The camera used to show the viewport.
+     */
+    public OrthographicCamera getCamera() {
+        return camera;
+    }
+
+    public void setCamera(OrthographicCamera camera) {
+        this.camera = camera;
     }
 }

@@ -1,7 +1,10 @@
 package com.mygdx.game;
 
+import box2dLight.PointLight;
+import box2dLight.RayHandler;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
@@ -91,7 +94,7 @@ public class Level {
 
     Body body;
 
-    int jumptimer;
+    RayHandler rayhandler;
 
     /**
      * Constructor of each whole level
@@ -101,13 +104,13 @@ public class Level {
      * @param mappath a string with all information needed to load the map of the level being defined
      */
     public Level(FireBoyWaterGirl game, GameScreen gamescreen, String mappath){
-        jumptimer=0;
         this.mappath=mappath;
         this.game=game;
         this.gamescreen=gamescreen;
         this.maploader=new TmxMapLoader();
         loadMap(mappath);
         createWorld();
+
     }
 
     /**
@@ -123,6 +126,8 @@ public class Level {
      * Function that creates the Game once again so the player can restart
      */
     public void restartGame(){
+
+        setGamewon(false);
         createWorld();
     }
 
@@ -155,7 +160,6 @@ public class Level {
      */
     public void renderLevel(float delta){
         updateObjects(delta);
-        jumptimer++;
     }
 
     /**
@@ -246,6 +250,8 @@ public class Level {
                 platformsView.put(object.getName(), new PlatformView(game, "horpurpledoor.png"));
             if (object.getName().equals("red"))
                 platformsView.put(object.getName(), new PlatformView(game, "horreddoor.png"));
+            if (object.getName().equals("green"))
+                platformsView.put(object.getName(), new PlatformView(game, "horgreendoor.png"));
         }
 
         for (MapObject object : tiledmap.getLayers().get(11).getObjects().getByType(RectangleMapObject.class)) {
@@ -253,9 +259,10 @@ public class Level {
             platforms.put(object.getName(), new PlatformBody(world, object, 1));
             if (object.getName().equals("purple"))
                 platformsView.put(object.getName(), new PlatformView(game, "verpurpledoor.png"));
-            if (object.getName().equals("red")) {
+            if (object.getName().equals("red"))
                 platformsView.put(object.getName(), new PlatformView(game, "verreddoor.png"));
-            }
+                if (object.getName().equals("green"))
+                    platformsView.put(object.getName(), new PlatformView(game, "vergreendoor.png"));
         }
     }
 
@@ -266,6 +273,7 @@ public class Level {
 
         buttons = new HashMap<String, ButtonBody>();
         for (MapObject object : tiledmap.getLayers().get(9).getObjects().getByType(RectangleMapObject.class)) {
+            System.out.println("name:"+ object.getName());
             buttons.put(object.getName(), new ButtonBody(world, object));
         }
     }
@@ -346,29 +354,16 @@ public class Level {
             platforms.get("purple").update(delta);
         if(platforms.get("red")!=null)
             platforms.get("red").update(delta);
+        if(platforms.get("green")!=null)
+            platforms.get("green").update(delta);
     }
 
     /**
      * Function that if the conditions for the game to be won have been completed
      */
     public void checkLevelStatus() {
-
         if(bluedoorbody.getDooropened() && reddoorbody.getDooropened() && getBluediamonds().size == 0 && getReddiamonds().size == 0) {
-
-            tiledmap.getLayers().get(15).setVisible(false);
-            try{
-                TimeUnit.SECONDS.sleep(1);
-            } catch(InterruptedException ie){
-
-                ie.printStackTrace();
-            }
-
-            try{
-                TimeUnit.SECONDS.sleep(1);
-            } catch(InterruptedException ie){
-
-                ie.printStackTrace();
-            }
+            tiledmap.getLayers().get(10).setVisible(false);
             setGamewon(true);
         }
     }
@@ -397,12 +392,12 @@ public class Level {
     }
 
     /**
-     * Function that handles the jump of the FireBoy
+     * Function that handles the jump of the FireBoyd
      */
     private void fireBoyUp(){
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.UP)&&jumptimer>30) {
-            jumptimer=0;
+        if (Gdx.input.isKeyJustPressed(Input.Keys.UP)&&fireboy2D.getJumptimer()>30) {
+            fireboy2D.setJumptimer(0);
 
             if (fireboy2D.jumpstate == BoxCharacter.Jump.STOP)
                 fireboy2D.getB2body().applyLinearImpulse(new Vector2(0, 8.3f), fireboy2D.getB2body().getWorldCenter(), true);
@@ -468,8 +463,8 @@ public class Level {
      */
     private void waterGirlUp(){
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.W)&&jumptimer>30) {
-            jumptimer=0;
+        if (Gdx.input.isKeyJustPressed(Input.Keys.W)&&watergirl2D.getJumptimer()>30) {
+            watergirl2D.setJumptimer(0);
             if (watergirl2D.jumpstate == BoxCharacter.Jump.STOP)
                 watergirl2D.getB2body().applyLinearImpulse(new Vector2(0, 8.3f), watergirl2D.getB2body().getWorldCenter(), true);
             else if (watergirl2D.canjump) {
